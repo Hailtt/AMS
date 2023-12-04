@@ -1,55 +1,50 @@
-html, body, ul {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
-}
+@import "../abstracts/variables.scss";
 
 header {
-    background-color: red;
-    height: 80px;
-    padding: 0 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+	background-color: $primary-color;
+	height: 80px;
+	padding: 0 10px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
-header > .left-side,  
+header > .left-side,
 header > .left-side > .home,
 header > .left-side > nav,
-header > .left-side > nav > .list{
-    display: flex;
-    cursor: pointer;
+header > .left-side > nav > .list {
+	display: flex;
+	cursor: pointer;
 }
 
 header > .left-side > .home > h3,
 header > .left-side > nav > .list {
-    font-size: 25px;
+	font-size: 25px;
 }
 
-header > .left-side > .home{
-    align-items: center;
+header > .left-side > .home {
+	align-items: center;
 }
 
 header > .left-side > .home > h3 {
-    margin-left: 5px;
+	margin-left: 5px;
 }
 
 header > .left-side > nav {
-    align-items: center;
+	align-items: center;
 }
 
 header > .left-side > nav > .list {
-    list-style-type: none;
+	list-style-type: none;
 }
 
 header > .left-side > nav > .list > .item {
-    margin-left: 10px;
-    padding-left: 10px;
-    border-left: 1px solid rgba(0, 0, 0, 0.3);
+	margin-left: 10px;
+	padding-left: 10px;
+	border-left: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 header > .right-side > .anticon {
-    margin: 0 10px;
-    cursor: pointer;
+	margin: 0 10px;
+	cursor: pointer;
 }
