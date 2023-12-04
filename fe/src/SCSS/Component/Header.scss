@@ -3,7 +3,7 @@
 header {
 	background-color: $primary-color;
 	height: 80px;
-	padding: 0 10px;
+	padding: 0 20px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -28,6 +28,7 @@ header > .left-side > .home {
 
 header > .left-side > .home > h3 {
 	margin-left: 5px;
+	color: $title-color;
 }
 
 header > .left-side > nav {
@@ -39,8 +40,8 @@ header > .left-side > nav > .list {
 }
 
 header > .left-side > nav > .list > .item {
-	margin-left: 10px;
-	padding-left: 10px;
+	margin-left: 20px;
+	padding-left: 20px;
 	border-left: 1px solid rgba(0, 0, 0, 0.3);
 }
 
