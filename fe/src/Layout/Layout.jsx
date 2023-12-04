@@ -1,10 +1,14 @@
-import Header from "../Component/Header/Header"
+import Header from "../Component/Header/Header";
+import CreateChungTu from "../Page/CreateChungTu/CreateChungTu";
 
 function Layout() {
-    return(
-        <div>
-            <Header />
-        </div>
-    )
+	return (
+		<div className="layout">
+			<Header />
+			<div className="content">
+				<CreateChungTu />
+			</div>
+		</div>
+	);
 }
-export default Layout
+export default Layout;
