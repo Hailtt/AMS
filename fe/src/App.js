@@ -4,8 +4,8 @@ import Empty from "./Layout/Empty";
 import './SCSS/main.scss'
 function App() {
 	return (
-		// <Layout />
-		<Empty />
+		<Layout />
+		// <Empty />
 	);
 }
 
