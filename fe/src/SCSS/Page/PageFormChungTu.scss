@@ -1,0 +1,93 @@
+.pageformchungtu {
+	padding: 0 5%;
+
+	.title {
+		text-align: center;
+	}
+
+	.forminput {
+		width: 100%;
+		background-color: #eee;
+		border-radius: 12px;
+		padding: 50px 0px;
+		font-size: 22px;
+		display: grid;
+		grid-template-columns: auto auto;
+		position: relative;
+		padding-bottom: 120px;
+
+		.info {
+			align-items: center;
+			margin-bottom: 15px;
+			display: flex;
+			margin-left: 120px;
+		}
+		.info > .label {
+			min-width: 200px;
+			text-align: left;
+		}
+		.info > .tag {
+			&-input {
+				font-size: inherit;
+				box-sizing: border-box;
+				padding: 0;
+				text-align: center;
+			}
+
+			&-p {
+				font-size: inherit;
+				box-sizing: border-box;
+				padding: 0;
+				text-align: center;
+				border-bottom: 1px solid gray;
+				margin: 0;
+			}
+		}
+
+		.nguoiduyet {
+			align-items: center;
+			margin-bottom: 15px;
+			display: flex;
+			margin-left: 120px;
+		}
+
+		.nguoiduyet > .label {
+			display: inline-block;
+			min-width: 200px;
+		}
+
+		.nguoiduyet > .list {
+			min-width: 150px;
+			font-size: 20px;
+			padding: 2px;
+			padding-right: 8px;
+		}
+
+		.nguoiduyet > .list > .item {
+			font-size: 16px;
+			padding: 29px;
+
+			text-align: center;
+		}
+
+		.button {
+			padding: 12px 20px;
+			font-size: 16px;
+			left: 50%;
+			position: absolute;
+			transform: translateX(-50%);
+			bottom: 20px;
+			font-weight: 600;
+			background-color: #1677ff;
+			color: white;
+			border: none;
+			border-radius: 6px;
+			opacity: 0.7;
+
+			&:hover {
+				opacity: 1;
+				cursor: pointer;
+			}
+		}
+	}
+}
