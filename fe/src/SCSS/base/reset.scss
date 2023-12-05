@@ -6,10 +6,14 @@ ul {
 	font-family: "Roboto", sans-serif;
 }
 
-html, body {
-	height: 100%;
+body {
+	min-height: 100vh;
 }
 
 * {
 	box-sizing: border-box;
+}
+
+ul {
+	list-style: none;
 }

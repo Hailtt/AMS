@@ -1,53 +1,53 @@
 @import "../abstracts/variables.scss";
 
 .login {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: $primary-color;
-    min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: $primary-color;
+	min-height: 100vh;
 }
 
 .login > .title {
-    color: $title-color;
-    font-size: 40px;
+	color: $title-color;
+	font-size: 40px;
 }
 
 .login > .form {
-    width: 500px;
-    height: 580px;
-    background-color: white;
+	width: 500px;
+	height: 580px;
+	background-color: white;
 }
 
 .login > .form > .image {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
 }
 
 .login > .form > .title {
-    text-align: center;
-    font-size: 30px;
-    margin: 20px 0;
+	text-align: center;
+	font-size: 30px;
+	margin: 20px 0;
 }
 
 .login > .form > .input {
-    margin: 10px 0;
+	margin: 10px 0;
 }
 
-.login > .form > .input > .label{
-    margin: 15px 0 15px 30px;
-    font-size: 18px;
+.login > .form > .input > .label {
+	margin: 15px 0 15px 30px;
+	font-size: 18px;
 }
 
-.login > .form > .input > .input-area{
-    width: 350px;
-    margin-left: 75px;
+.login > .form > .input > .input-area {
+	width: 350px;
+	margin-left: 75px;
 }
 
 .login > .form > .button {
-    width: 350px;
-    margin-left: 75px;
-    margin-top: 10px;
-    background-image: linear-gradient(to right, #1363df, #2ea1fa);
+	width: 350px;
+	margin-left: 75px;
+	margin-top: 10px;
+	background-image: linear-gradient(to right, #1363df, #2ea1fa);
 }
