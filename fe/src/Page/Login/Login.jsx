@@ -1,5 +1,5 @@
 import { Button, Input } from 'antd';
-import logo from '../img/Logo-MWG.jpg'
+import logo from "../../img/Logo-MWG.jpg"
 import { useEffect, useState } from 'react';
 
 function Login() {

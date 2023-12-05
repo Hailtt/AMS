@@ -1,4 +1,4 @@
-import Login from "../Page/Login"
+import Login from "../Page/Login/Login"
 
 function Empty() {
     return(

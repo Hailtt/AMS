@@ -2,6 +2,7 @@ import Header from "../Component/Header/Header";
 import CreateChungTu from "../Page/CreateChungTu/CreateChungTu";
 import QuanLyChungTu from "../Page/QuanLyChungTu/QuanLyChungTu";
 import PageFormChungTu from "../Page/PageFormChungTu/PageFormChungTu";
+import DetailChungTu from "../Page/DetailChungTu/DetailChungTu";
 
 function Layout() {
 	return (
@@ -10,7 +11,8 @@ function Layout() {
 			<div className="content">
 				{/* <CreateChungTu /> */}
 				{/* <QuanLyChungTu /> */}
-				<PageFormChungTu />
+				{/* <PageFormChungTu /> */}
+				<DetailChungTu />
 			</div>
 		</div>
 	);
