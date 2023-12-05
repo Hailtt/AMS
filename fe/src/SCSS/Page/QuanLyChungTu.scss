@@ -1,0 +1,59 @@
+@import "../abstracts/variables.scss";
+
+.QLCT {
+
+    .filter-section {
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .filter-section > .left > .input,
+    .filter-section > .left > .dropdown {
+        width: 200px;
+    }
+    
+    .filter-section > .left > .dropdown {
+        margin-left: 20px;
+    }
+    
+    .filter-section > .right {
+        display: flex;
+    }
+    
+    .filter-section > .right > .date {
+        &:first-child {
+            margin-right: 20px;
+        }
+    }
+    
+    .filter-section > .right > .date > .input {
+        width: 200px;
+    }
+    
+    .filter-section > .right > .date > span {
+        margin: 0 10px;
+    }
+
+    .filter-section > .right > .button {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-left: 25px;
+        color: $title-color;
+        background-color: #f6ded8;
+    }
+
+    .switch {
+        margin-top: 20px;
+    }
+    
+    .switch > .checkbox {
+        &:last-child {
+            margin-left: 88px;
+        }
+    }
+
+    .table {
+        margin-top: 20px;
+    }
+}

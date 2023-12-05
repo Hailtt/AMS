@@ -3,7 +3,7 @@
 header {
 	background-color: $primary-color;
 	height: 80px;
-	padding: 0 20px;
+	padding: 0 2%;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -17,9 +17,12 @@ header > .left-side > nav > .list {
 	cursor: pointer;
 }
 
-header > .left-side > .home > h3,
-header > .left-side > nav > .list {
+header > .left-side > .home > h3 {
 	font-size: 25px;
+}
+
+header > .left-side > nav > .list{
+	font-size: 18px;
 }
 
 header > .left-side > .home {
