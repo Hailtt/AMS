@@ -1,0 +1,78 @@
+.AMS-formnguoiduyet {
+	width: 100%;
+	background-color: #eee;
+	border-radius: 12px;
+	padding: 50px 120px 150px 100px;
+	font-size: 22px;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 100px;
+	transition: all 0.5s ease;
+
+	@include breakpoint-down(desktop) {
+		grid-template-columns: auto;
+	}
+	@include breakpoint-down(smalldesktop) {
+		flex-direction: column;
+	}
+
+	@include breakpoint-down(smallphone) {
+		padding: 50px 0px 120px 0px;
+	}
+
+	.nguoiduyet {
+		align-items: center;
+		display: flex;
+		transition: all 0.5s ease;
+
+		@include breakpoint-down(smallphone) {
+			flex-direction: column;
+			gap: 8px;
+		}
+	}
+
+	.nguoiduyet > .label {
+		display: inline-block;
+		min-width: 200px;
+	}
+
+	.nguoiduyet > .list {
+		min-width: 150px;
+		font-size: 20px;
+		padding: 2px;
+		padding-right: 8px;
+	}
+
+	.nguoiduyet > .list > .item {
+		font-size: 16px;
+		padding: 29px;
+		text-align: center;
+	}
+
+	.button {
+		padding: 12px 20px;
+		font-size: 16px;
+		left: 50%;
+		position: absolute;
+		transform: translateX(-50%);
+		bottom: 20px;
+		font-weight: 600;
+		background-color: #1677ff;
+		color: white;
+		border: none;
+		border-radius: 6px;
+		opacity: 0.7;
+		transition: all 0.5s ease;
+
+		@include breakpoint-down(smallphone) {
+			padding: 10px 12px;
+		}
+
+		&:hover {
+			opacity: 1;
+			cursor: pointer;
+		}
+	}
+}

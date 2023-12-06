@@ -1,15 +1,13 @@
-import NoiDungChungTu from "../../Component/ChiTietChungTu/NoiDungChungTu"
-
+import NoiDungChungTu from "../../Component/ChiTietChungTu/NoiDungChungTu";
+import { DATA_NghiPhep } from "./data";
 function DetailChungTu() {
-    return (
-        <div className="DTCT">
-            <NoiDungChungTu />
-
-            <div className="track-log">
-                
-            </div>
-        </div>
-    )
+	const { tenchungtu, form } = DATA_NghiPhep;
+	return (
+		<div className="DTCT">
+			<NoiDungChungTu data={form.data} tenchungtu={tenchungtu} />
+			<div className="track-log"></div>
+		</div>
+	);
 }
 
-export default DetailChungTu
+export default DetailChungTu;

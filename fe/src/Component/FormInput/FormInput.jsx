@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 
-const FormInput = ({ form }) => {
-	const { data, nguoiduyet } = form;
-	console.log(nguoiduyet);
+const FormInput = ({ data, nextStep }) => {
+	const [test, setTest] = useState({});
+
+	const handlSubmit = (e) => {
+		e.preventDefault();
+		console.log(test);
+	};
+
 	return (
-		<form className="forminput">
+		<form className="AMS-forminput">
 			{data.map((item) => (
 				<div key={item.key} className="info">
 					<label className="label">{item.label}</label>
@@ -13,25 +18,21 @@ const FormInput = ({ form }) => {
 							type={item.dataType}
 							className={`tag-${item.tag}`}
 							placeholder={"Nhập " + item.label}
+							name={item.key}
+							onChange={(e) =>
+								setTest((prev) => {
+									return { ...prev, [e.target.name]: e.target.value };
+								})
+							}
 						/>
 					) : (
-						<item.tag className={`tag-${item.tag}`}></item.tag>
+						<item.tag className={`tag-${item.tag}`}> </item.tag>
 					)}
 				</div>
 			))}
-			{nguoiduyet.map((item, index) => (
-				<div key={index} className="nguoiduyet">
-					<label className="label">{item.label}</label>
-					<select name="Chọn người duyệt">
-						<option value="">Trống</option>
-						{item.danhSachNguoiDuyet.map((it, index) => (
-							<option value={it.maNguoiDuyet} key={index}>
-								{it.tenNguoiDuyet}
-							</option>
-						))}
-					</select>
-				</div>
-			))}
+			<button className="button" type="submit" onClick={nextStep}>
+				Tiếp tục
+			</button>
 		</form>
 	);
 };

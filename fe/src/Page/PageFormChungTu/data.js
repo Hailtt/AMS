@@ -34,38 +34,38 @@ export const DATA_NghiPhep = {
 			},
 			{
 				key: "tailieudinhkem",
-				label: "Tài liệu đính kèm",
+				label: "Tài liệu",
 				tag: "input",
 				dataType: "file",
 			},
 		],
-		nguoiduyet: [
-			{
-				key: "nguoiduyetcap1",
-				label: "Người duyệt cấp 1",
-				capduyet: 1,
-				danhSachNguoiDuyet: [
-					{
-						maNguoiDuyet: "US00001",
-						tenNguoiDuyet: "Thuận Hải",
-					},
-					{
-						maNguoiDuyet: "US00002",
-						tenNguoiDuyet: "Thanh Thế",
-					},
-				],
-			},
-			{
-				key: "nguoiduyetcap2",
-				label: "Người duyệt cấp 2",
-				capduyet: 2,
-				danhSachNguoiDuyet: [
-					{
-						maNguoiDuyet: "US00003",
-						tenNguoiDuyet: "Minh Trí",
-					},
-				],
-			},
-		],
+
+		//
+		// nguoiduyet: [
+		// 	{
+		// 		key: "nguoiduyetcap1",
+		// 		label: "Người duyệt cấp 1",
+		// 		danhSachNguoiDuyet: [
+		// 			// {
+		// 			// 	maNguoiDuyet: "US00001",
+		// 			// 	tenNguoiDuyet: "Thuận Hải",
+		// 			// },
+		// 			// {
+		// 			// 	maNguoiDuyet: "US00002",
+		// 			// 	tenNguoiDuyet: "Thanh Thế",
+		// 			// },
+		// 		],
+		// 	},
+		// 	{
+		// 		key: "nguoiduyetcap2",
+		// 		label: "Người duyệt cấp 2",
+		// 		danhSachNguoiDuyet: [
+		// 			// {
+		// 			// 	maNguoiDuyet: "US00003",
+		// 			// 	tenNguoiDuyet: "Minh Trí",
+		// 			// },
+		// 		],
+		// 	},
+		// ],
 	},
 };
