@@ -1,59 +1,46 @@
 import React, { useState } from "react";
 import { DATA_NghiPhep } from "./data";
+import FormInput from "../../Component/FormInput/FormInput";
+
+import { SyncOutlined, CheckCircleOutlined } from "@ant-design/icons";
+import FormNguoiDuyet from "../../Component/FormNguoiDuyet/FormNguoiDuyet";
 
 const PageFormChungTu = () => {
 	const { tenchungtu, form } = DATA_NghiPhep;
-	const { data, nguoiduyet } = form;
+	const [isNhapthongtin, setIsNhapthongtin] = useState(true);
 
-	const [test, setTest] = useState({});
-
-	const handlSubmit = (e) => {
+	const handleNextStep = (e) => {
 		e.preventDefault();
-		console.log(test);
+		setIsNhapthongtin(!isNhapthongtin);
 	};
+	const handleTaoChungTu = (e) => {
+		e.preventDefault();
+		setIsNhapthongtin(!isNhapthongtin);
+	};
+
 	return (
-		<div className="pageformchungtu" onSubmit={handlSubmit}>
+		<div className="pageformchungtu">
 			<h1 className="title">{tenchungtu}</h1>
-			<form className="forminput">
-				{data.map((item) => (
-					<div key={item.key} className="info">
-						<label className="label">{item.label}</label>
-						{item.tag == "input" ? (
-							<item.tag
-								type={item.dataType}
-								className={`tag-${item.tag}`}
-								placeholder={"Nhập " + item.label}
-								name={item.key}
-								onChange={(e) =>
-									setTest((prev) => {
-										return { ...prev, [e.target.name]: e.target.value };
-									})
-								}
-							/>
-						) : (
-							<item.tag className={`tag-${item.tag}`}> </item.tag>
-						)}
-					</div>
-				))}
-				{nguoiduyet.map((item, index) => (
-					<div key={index} className="nguoiduyet">
-						<label className="label">{item.label}</label>
-						<select className="list">
-							<option value="" className="item">
-								Trống
-							</option>
-							{item.danhSachNguoiDuyet.map((it, index) => (
-								<option value={it.maNguoiDuyet} key={index} className="item">
-									{it.tenNguoiDuyet}
-								</option>
-							))}
-						</select>
-					</div>
-				))}
-				<button className="button" type="submit">
-					Tạo Chứng Từ
-				</button>
-			</form>
+			<div className="steps">
+				<div className="checkpoint --active ">
+					{isNhapthongtin ? (
+						<SyncOutlined className="icon" />
+					) : (
+						<CheckCircleOutlined className="icon--success" />
+					)}
+					<span className="text">Nhập thông tin</span>
+				</div>
+				<div className={isNhapthongtin ? "line" : "line --active"}></div>
+				<div className={isNhapthongtin ? "checkpoint" : "checkpoint --active"}>
+					<SyncOutlined className="icon" />
+					<span className="text">Chọn người duyệt</span>
+				</div>
+			</div>
+			{isNhapthongtin ? (
+				<FormInput data={form.data} nextStep={handleNextStep} />
+			) : (
+				<FormNguoiDuyet handleTaoChungTu={handleTaoChungTu} />
+			)}
 		</div>
 	);
 };

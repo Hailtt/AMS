@@ -11,8 +11,8 @@ function Layout() {
 			<div className="content">
 				{/* <CreateChungTu /> */}
 				{/* <QuanLyChungTu /> */}
-				{/* <PageFormChungTu /> */}
-				<DetailChungTu />
+				<PageFormChungTu />
+				{/* <DetailChungTu /> */}
 			</div>
 		</div>
 	);
