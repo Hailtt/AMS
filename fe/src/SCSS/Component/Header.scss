@@ -21,7 +21,7 @@ header > .left-side > .home > h3 {
 	font-size: 25px;
 }
 
-header > .left-side > nav > .list{
+header > .left-side > nav > .list {
 	font-size: 18px;
 }
 
@@ -74,12 +74,14 @@ header > .right-side > .user {
 
 header > .right-side > .user > .list {
 	position: absolute;
+	background-color: white;
 	right: 0;
 	top: 120%;
 	width: 120px;
 	box-shadow: 0 0 10px gray;
 	border-radius: 8px;
 	display: none;
+	z-index: 10;
 
 	&::after {
 		content: "";

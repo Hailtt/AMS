@@ -1,93 +1,104 @@
+@import "../abstracts/mixins";
+
 .pageformchungtu {
 	padding: 0 5%;
 
 	.title {
 		text-align: center;
+		transition: all 0.5s ease;
+
+		@include breakpoint-down(smallphone) {
+			font-size: 24px;
+			margin-top: 40px;
+		}
 	}
 
-	.forminput {
-		width: 100%;
+	.steps {
+		display: flex;
+		gap: 12px;
+		justify-content: center;
+		align-items: center;
+		font-size: 20px;
+		margin-bottom: 20px;
+		transition: all 0.5s ease;
+
+		@include breakpoint-down(phone) {
+			font-size: 18px;
+		}
+
+		@include breakpoint-down(smallphone) {
+			font-size: 14px;
+			gap: 4px;
+		}
+	}
+
+	.steps > .checkpoint {
+		display: flex;
+		gap: 8px;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.steps > .checkpoint > .icon--success {
+		font-size: 26px;
+		transition: all 0.5s ease;
+		border-radius: 100%;
+		color: rgb(0, 250, 75);
+		box-shadow: 0px 0px 30px 10px rgba(0, 250, 75, 0.4);
+	}
+
+	.steps > .checkpoint > .icon {
+		font-size: 26px;
+		border-radius: 100%;
+		color: #ccc;
 		background-color: #eee;
-		border-radius: 12px;
-		padding: 50px 0px;
-		font-size: 22px;
-		display: grid;
-		grid-template-columns: auto auto;
-		position: relative;
-		padding-bottom: 120px;
+		box-shadow: 0px 0px 15px #eee;
+		transition: all 1s ease;
 
-		.info {
-			align-items: center;
-			margin-bottom: 15px;
-			display: flex;
-			margin-left: 120px;
-		}
-		.info > .label {
-			min-width: 200px;
-			text-align: left;
-		}
-		.info > .tag {
-			&-input {
-				font-size: inherit;
-				box-sizing: border-box;
-				padding: 0;
-				text-align: center;
-			}
-
-			&-p {
-				font-size: inherit;
-				box-sizing: border-box;
-				padding: 0;
-				text-align: center;
-				border-bottom: 1px solid gray;
-				margin: 0;
-			}
-		}
-
-		.nguoiduyet {
-			align-items: center;
-			margin-bottom: 15px;
-			display: flex;
-			margin-left: 120px;
-		}
-
-		.nguoiduyet > .label {
-			display: inline-block;
-			min-width: 200px;
-		}
-
-		.nguoiduyet > .list {
-			min-width: 150px;
+		@include breakpoint-down(smallphone) {
 			font-size: 20px;
-			padding: 2px;
-			padding-right: 8px;
+		}
+	}
+
+	.steps > .checkpoint > .text {
+		color: #ccc;
+		font-weight: 700;
+		transition: all 1s ease;
+	}
+
+	.steps > .checkpoint.--active > .icon {
+		color: rgb(0, 117, 250, 0.8);
+		background-color: rgb(221, 236, 252);
+		box-shadow: 0px 0px 30px 10px rgb(0, 117, 250, 0.4);
+	}
+
+	.steps > .checkpoint.--active > .text {
+		color: rgb(0, 117, 250, 0.8);
+		font-weight: 700;
+	}
+
+	.steps > .line {
+		width: 200px;
+		height: 2px;
+		background-color: #ccc;
+		transition: all 0.5s ease;
+
+		@include breakpoint-down(phone) {
+			width: 150px;
 		}
 
-		.nguoiduyet > .list > .item {
-			font-size: 16px;
-			padding: 29px;
-
-			text-align: center;
+		@include breakpoint-down(smallphone) {
+			width: 100px;
 		}
 
-		.button {
-			padding: 12px 20px;
-			font-size: 16px;
-			left: 50%;
-			position: absolute;
-			transform: translateX(-50%);
-			bottom: 20px;
-			font-weight: 600;
-			background-color: #1677ff;
-			color: white;
-			border: none;
-			border-radius: 6px;
-			opacity: 0.7;
-
-			&:hover {
-				opacity: 1;
-				cursor: pointer;
-			}
+		@include breakpoint-down(mediumphone) {
+			width: 50px;
 		}
+	}
+
+	.steps > .line.--active {
+		background-color: rgb(97, 170, 253);
+		box-shadow: 0px 0px 30px 2px rgb(0, 117, 250, 0.4);
 	}
 }

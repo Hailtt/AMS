@@ -1,0 +1,50 @@
+$breakpoints: (
+	"xlargedesktop": (
+		max-width: 1919.98px,
+	),
+	"largedesktop": (
+		max-width: 1535.98px,
+	),
+	"mediumdesktop": (
+		max-width: 1439.98px,
+	),
+	"desktop": (
+		max-width: 1199.98px,
+	),
+	"smalldesktop": (
+		max-width: 1023.98px,
+	),
+	"tablet": (
+		max-width: 991.98px,
+	),
+	"phone": (
+		max-width: 767.98px,
+	),
+	"smallphone": (
+		max-width: 575.98px,
+	),
+	"mediumphone": (
+		max-width: 413.98px,
+	),
+	"xsmallphone": (
+		max-width: 374.98px,
+	),
+);
+
+@mixin breakpoint-down($breakpoint) {
+	$raw-query: map-get($breakpoints, $breakpoint);
+
+	@if $raw-query {
+		$query: if(
+			type-of($raw-query) == "string",
+			unquote($raw-query),
+			inspect($raw-query)
+		);
+
+		@media #{$query} {
+			@content;
+		}
+	} @else {
+		@error 'No value found for `#{$breakpoint}`. ' + 'Please make sure it is defined in `$breakpoints` map.';
+	}
+}
