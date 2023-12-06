@@ -23,5 +23,9 @@ public class ChungTuServices {
     public List<TrangThaiModel> getNhatKiChungTu(String maCT) {
     	return chungTuDAO.getNhatKiChungTu(maCT);
     }
+    
+    public ChiTietCTModel getChiTietChungTu(String maCT) {
+    	return chungTuDAO.getChiTietChungTu(maCT);
+    }
 }
 

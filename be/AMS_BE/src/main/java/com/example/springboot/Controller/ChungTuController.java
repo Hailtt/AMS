@@ -32,4 +32,8 @@ public class ChungTuController {
     public List<TrangThaiModel> getNhatKiChungTu(@PathVariable(value="maCT") String maCT) {
     	return chungTuService.getNhatKiChungTu(maCT);
     }
+    @GetMapping("/noi-dung/{maCT}")
+    public ChiTietCTModel getChiTietChungTu(@PathVariable(value="maCT") String maCT) {
+    	return chungTuService.getChiTietChungTu(maCT);
+    }
 }
