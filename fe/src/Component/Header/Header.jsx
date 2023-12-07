@@ -1,20 +1,30 @@
 import { HomeFilled, BellOutlined, UserOutlined } from "@ant-design/icons";
-import { List } from "./List.js";
+import { NavList, UserList } from "./List.js";
+import { Link, useNavigate } from "react-router-dom";
 
 function Header() {
+	const usenavigate = useNavigate();
+
+	const handleLogout = (path) => {
+		usenavigate(path);
+		localStorage.removeItem("user");
+		window.location.reload();
+	};
 	return (
 		<header>
 			<div className="left-side">
-				<div className="home">
-					<HomeFilled style={{ fontSize: 19 }} />
+				<Link className="home" to="/">
+					<HomeFilled className="icon" />
 					<h3>AMS</h3>
-				</div>
+				</Link>
 
 				<nav>
 					<ul className="list">
-						{List.map((i) => (
+						{NavList.map((i) => (
 							<li className="item" key={i.key}>
-								{i.name}
+								<Link className="link" to={i.path}>
+									{i.name}
+								</Link>
 							</li>
 						))}
 					</ul>
@@ -27,9 +37,15 @@ function Header() {
 				<div className="user">
 					<UserOutlined style={{ fontSize: 27 }} className="icon" />
 					<ul className="list">
-						<li className="item">Đăng xuất</li>
-						<li className="item">Đăng xuất</li>
-						<li className="item">Đăng xuất</li>
+						{UserList.map((it, index) => (
+							<li
+								className="item"
+								key={index}
+								onClick={() => handleLogout(it.path)}
+							>
+								{it.name}
+							</li>
+						))}
 					</ul>
 				</div>
 			</div>
