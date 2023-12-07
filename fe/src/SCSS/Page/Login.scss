@@ -1,4 +1,5 @@
 @import "../abstracts/variables.scss";
+@import "../abstracts/mixins";
 
 .login {
 	display: flex;
@@ -11,12 +12,27 @@
 .login > .title {
 	color: $title-color;
 	font-size: 40px;
+	transition: all 0.5s ease;
+
+	@include breakpoint-down(smallphone) {
+		font-size: 38px;
+	}
 }
 
 .login > .form {
 	width: 500px;
 	height: 580px;
 	background-color: white;
+	box-shadow: 0 0 10px 2px #d6d6d662;
+	transition: all 0.5s ease;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	@include breakpoint-down(smallphone) {
+		width: 350px;
+		height: 550px;
+	}
 }
 
 .login > .form > .image {
@@ -29,25 +45,52 @@
 	text-align: center;
 	font-size: 30px;
 	margin: 20px 0;
+
+	@include breakpoint-down(smallphone) {
+		font-size: 26px;
+		margin: 24 px 0;
+	}
 }
 
 .login > .form > .input {
 	margin: 10px 0;
+	transition: all 0.5s ease;
+
+	@include breakpoint-down(phone) {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		padding-inline: 50px;
+	}
 }
 
 .login > .form > .input > .label {
-	margin: 15px 0 15px 30px;
 	font-size: 18px;
+	transition: all 0.5s ease;
+	margin-bottom: 10px;
 }
 
 .login > .form > .input > .input-area {
 	width: 350px;
-	margin-left: 75px;
+	transition: all 0.5s ease;
+}
+
+.login > .form > .input > .label,
+.login > .form > .input > .input-area {
+	@include breakpoint-down(phone) {
+		width: 100%;
+		text-align: center;
+	}
 }
 
 .login > .form > .button {
 	width: 350px;
-	margin-left: 75px;
-	margin-top: 10px;
+	margin-top: 20px;
 	background-image: linear-gradient(to right, #1363df, #2ea1fa);
+
+	@include breakpoint-down(phone) {
+		width: 50%;
+	}
 }

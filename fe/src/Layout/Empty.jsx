@@ -1,10 +1,6 @@
-import Login from "../Page/Login/Login"
+import Login from "../Page/Login/Login";
 
-function Empty() {
-    return(
-        <div>
-            <Login />
-        </div>
-    )
+function Empty({ children }) {
+	return <div>{children}</div>;
 }
-export default Empty
+export default Empty;
