@@ -1,0 +1,78 @@
+@import "../abstracts/variables.scss";
+
+.tracklog {
+    height: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: end;    
+
+    .chitiet {
+        border-left: 1px solid black;
+        margin: 10px;
+        padding-left: 20px;
+    }
+
+    .dongy {
+        color: #00FF00; 
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+
+        .green {
+            color: #00FF00;
+        }
+
+        .noidung {
+            margin-left: 10px;
+        }
+
+        &:not(:first-child) {
+            margin-left: 3px;
+        }
+    }
+
+    .tuchoi {
+        color: #FF0000;
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+
+        .noidung {
+            margin-left: 10px;
+        }
+
+
+        &:not(:first-child) {
+            margin-left: 3px;
+        }
+    }
+
+    .dahuy {
+        color: rgba($color: #000000, $alpha: 0.6);
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+
+        .noidung {
+            margin-left: 10px;
+        }
+
+        &:not(:first-child) {
+            margin-left: 3px;
+        }
+    }
+
+    .latest {
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+
+        .noidung {
+            margin-left: 10px;
+        }
+
+        &:not(:first-child) {
+            margin-left: 3px;
+        }
+    }
+}
