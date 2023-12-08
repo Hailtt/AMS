@@ -1,5 +1,5 @@
 import { FileAddFilled } from "@ant-design/icons";
-import React from "react";
+import React, { useEffect } from "react";
 
 function NoiDungChungTu({detail}) {
     const noiDungObj = JSON.parse(detail.noiDung);
@@ -12,7 +12,6 @@ function NoiDungChungTu({detail}) {
         }
     ))
 
-    console.log(labelValueArray);
 	return (
 		<div className="NDCT">
 			<div className="header">
@@ -31,39 +30,31 @@ function NoiDungChungTu({detail}) {
 				<table className="table">
 					<tr className="row">
 						<td className="label">Tên:</td>
-						<td>
+						<td className="info">
 							<b>{detail.tenNguoiTao}</b>
 						</td>
 					</tr>
 
 					<tr className="row">
 						<td className="label">Mã nhân viên:</td>
-						<td>
+						<td className="info">
 							<b>{detail.maNguoiTao}</b>
 						</td>
 					</tr>
 
 					<tr className="row">
 						<td className="label">Ngày tạo đơn:</td>
-						<td>
+						<td className="info">
 							<b>{detail.ngayTao}</b>
 						</td>
 					</tr>
 
-					<tr className="row">
-						<td className="label">Số ngày nghỉ:</td>
-						<td>
-							<b>2</b>
-						</td>
-					</tr>
-
 					{labelValueArray.map(i => {
-						console.log(i)
 						return (
 							<React.Fragment>
 								<tr className="row">
 									<td className="label">{i.label}:</td>
-									<td><b>{i.value}</b></td>
+									<td className="info"><b>{i.value}</b></td>
 								</tr>
 							</React.Fragment>
 						)

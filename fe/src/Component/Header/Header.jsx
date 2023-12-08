@@ -1,9 +1,14 @@
 import { HomeFilled, BellOutlined, UserOutlined } from "@ant-design/icons";
 import { NavList, UserList } from "./List.js";
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import {
+	MenuOutlined
+} from '@ant-design/icons';
 
 function Header() {
 	const usenavigate = useNavigate();
+	const [opeNav, setOpenNav] = useState(false);
 
 	const handleLogout = (path) => {
 		usenavigate(path);
@@ -13,6 +18,7 @@ function Header() {
 	return (
 		<header>
 			<div className="left-side">
+				<MenuOutlined className="menu-icon" style={{fontSize: "23px"}}/>
 				<Link className="home" to="/">
 					<HomeFilled className="icon" />
 					<h3>AMS</h3>

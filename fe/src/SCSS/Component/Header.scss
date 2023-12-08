@@ -9,6 +9,13 @@ header {
 	align-items: center;
 }
 
+header > .left-side {
+	.menu-icon {
+		margin-right: 20px;
+		display: none;
+	}
+}
+
 header > .left-side,
 header > .left-side > .home,
 header > .left-side > nav,
@@ -16,6 +23,10 @@ header > .left-side > nav > .list {
 	display: flex;
 	cursor: pointer;
 	text-decoration: none;
+}
+
+header > .left-side > nav {
+	min-width: 620px;
 }
 
 header > .left-side > .home > .icon {
@@ -119,4 +130,25 @@ header > .right-side > .user > .list > .item {
 header > .right-side > .user > .list > .item > .link {
 	text-decoration: none;
 	color: rgb(36, 36, 36);
+}
+
+
+@media screen and (max-width: $ipad-width) {
+	header {
+
+		.left-side {
+
+			.menu-icon {
+				display: inline-flex;
+			}
+
+			.home {
+				display: none;
+			}
+
+			nav {
+				display: none;
+			}
+		}
+	}
 }

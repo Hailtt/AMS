@@ -2,25 +2,34 @@ import { Input, Select, Button, Table, DatePicker, Checkbox } from "antd";
 import {
     SearchOutlined
 } from '@ant-design/icons';
-import {columntao, columnduyet, daTao, daDuyet, status} from "./Data"
+import {columntao, columnduyet, daDuyet, status} from "./Data"
 import { useEffect, useState } from "react";
+import axios from "axios"
 
 function QuanLyChungTu() {
-    const initialState = {
-        id: null,
-        type: null,
-        nguoigui: null,
-        ngaytao: null,
-        ngayduyet: null,
-        status: null,
-    }
-    
-    const [chungtu, getChungTu] = useState(initialState);
+
     const [box, setBox] = useState(1);
+    const [chungtu, getChungTu] = useState();
 
     useEffect(() => {
-        console.log(box);
-    },[box])
+        axios.get("http://192.168.137.160:8080/api/chungtu/all")
+        .then(res => {
+            res.data.map(i => {
+				const parts = i.thoiGianTao.split('T');
+	
+				const datePart = parts[0];
+				const timePart = parts[1];
+	
+				const formattedTime = datePart + ' - ' + timePart;
+	
+				return i.thoiGianTao = formattedTime;
+			})
+            getChungTu(res.data);
+        }) 
+        .catch(err => {
+            alert(err)
+        })
+    }, [chungtu])
 
     return(
         <div className="QLCT">
@@ -55,11 +64,11 @@ function QuanLyChungTu() {
                 <div className="right">
                     <div className="date">
                         <span>Từ:</span>
-                        <DatePicker size="large" className="input"/>
+                        <DatePicker size="large" className="input-date"/>
                     </div>
                     <div className="date">
                         <span>Đến:</span>
-                        <DatePicker size="large" className="input"/>
+                        <DatePicker size="large" className="input-date"/>
                     </div>
                     <Button size="large" className="button">Tìm Kiếm<SearchOutlined /></Button>
                 </div>
@@ -74,7 +83,7 @@ function QuanLyChungTu() {
                 <Table 
                     className="table"
                     columns={columntao}
-                    dataSource={daTao}
+                    dataSource={chungtu}
                     bordered={true}
                     pagination={{position: ["topCenter"], pageSize: 10}}
                 />

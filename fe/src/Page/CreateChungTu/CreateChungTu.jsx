@@ -16,6 +16,7 @@ const CreateChungTu = () => {
 			</div>
 			<div className="container">
 				<Table
+					className="table"
 					columns={Column}
 					dataSource={Value}
 					bordered
