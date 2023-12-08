@@ -15,22 +15,8 @@ function TrackLog({diary}) {
         })
     }
 
-    const formatTime = (arr) => {
-        arr.map(i => {
-            const parts = i.thoiGianCapNhat.split('T');
-
-            const datePart = parts[0];
-            const timePart = parts[1];
-
-            const formattedTime = datePart + ' ' + timePart;
-
-            return i.thoiGianCapNhat = formattedTime;
-        })
-    }
-
     useEffect(() => {
         findMax()
-        formatTime(diary)
     }, [diary])
 
     return(

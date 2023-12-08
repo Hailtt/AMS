@@ -2,9 +2,17 @@
 
 .DTCT {
     display: flex;
+    flex-direction: column;
     padding-top: 10px;
 
-    .right {
+    .top {
+        flex: 2;
+        display: flex;
+    }
+
+    .bottom {
         flex: 1;
+        margin-top: 15px;
+        display: flex;
     }
 }

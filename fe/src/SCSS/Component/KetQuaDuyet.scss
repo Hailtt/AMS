@@ -1,1 +1,43 @@
 @import "../abstracts/variables.scss";
+
+.ketquaduyet {
+    flex: 2;
+    padding: 0 15px 0 60px;
+
+    .content {
+        width: 100%;
+        margin: 20px 0 10px 20px;
+
+        table {
+            width: 100%;
+
+            tr {
+                display: flex;
+    
+                td {
+                    flex: 1;
+                    padding: 10px 0;
+                    min-width: 223px;
+                }
+    
+                .nhanvien {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+                
+                .ketqua {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+        
+                .thoigianduyet {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+            }
+        }
+    }
+}

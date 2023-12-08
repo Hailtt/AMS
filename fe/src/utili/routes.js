@@ -32,6 +32,11 @@ export const PrivateRoutes = [
 		component: QuanLyChungTu,
 		layout: Layout,
 	},
+	{
+		path: "/chitietchungtu",
+		component: DetailChungTu,
+		layout: Layout,
+	},
 ];
 
 export const PublicRoutes = [
