@@ -23,7 +23,7 @@ export const PrivateRoutes = [
 		layout: Layout,
 	},
 	{
-		path: "/fromchungtu",
+		path: "/createchungtu/formchungtu",
 		component: PageFormChungTu,
 		layout: Layout,
 	},
