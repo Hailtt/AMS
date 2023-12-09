@@ -54,7 +54,17 @@
 
 	.container {
 		min-width: 781px;
-		.table {
-		}
+	}
+
+	.ant-table-cell > .link {
+		color: white;
+		background-color: #1677ff;
+		box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
+		font-size: 14px;
+		height: 32px;
+		padding: 4px 15px;
+		border-radius: 6px;
+		text-decoration: none;
+		text-align: center;
 	}
 }
