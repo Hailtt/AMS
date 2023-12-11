@@ -1,6 +1,6 @@
 import React from "react";
 import { SearchOutlined } from "@ant-design/icons";
-import { Table, Input } from "antd";
+import { Table } from "antd";
 import { Column, Value } from "./Data";
 const CreateChungTu = () => {
 	return (
@@ -16,6 +16,7 @@ const CreateChungTu = () => {
 			</div>
 			<div className="container">
 				<Table
+					className="table"
 					columns={Column}
 					dataSource={Value}
 					bordered

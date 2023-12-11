@@ -2,9 +2,18 @@
 
 .QLCT {
 
+    overflow-x: scroll;
+    .title {
+        min-width: 322px;
+    }
+
     .filter-section {
         display: flex;
         justify-content: space-between;
+    }
+
+    .filter-section > .left {
+        min-width: 640px;
     }
     
     .filter-section > .left > .input,
@@ -18,15 +27,16 @@
     
     .filter-section > .right {
         display: flex;
+        min-width: 662px;
     }
     
     .filter-section > .right > .date {
         &:first-child {
-            margin-right: 20px;
+            margin-right: 1%;
         }
     }
     
-    .filter-section > .right > .date > .input {
+    .filter-section > .right > .date > .input-date {
         width: 200px;
     }
     
@@ -48,6 +58,7 @@
     }
     
     .switch > .checkbox {
+        
         &:last-child {
             margin-left: 88px;
         }
@@ -55,5 +66,129 @@
 
     .table {
         margin-top: 20px;
+        min-width: 818px;
     }
 }
+
+@media screen and (max-width: 1344px) {
+    .QLCT {
+
+        .filter-section {
+
+            display: block;
+
+            .left {
+                display: flex;
+                align-items: start;
+                margin-bottom: 20px;
+
+                .dropdown {
+                    margin-left: 61px;
+                }
+
+                .input {
+                    margin-left: 53px;
+                }
+            }
+
+            .right {
+                display: flex;
+
+                .date {
+
+                    margin-bottom: 10px;
+
+                    &:first-child {
+
+                        .input-date {
+                            margin-left: 9px;
+                        }
+                    }
+                }
+
+                .button {
+                    width: 200px;
+                    margin-left: 61px;
+                }
+            }
+        }
+
+        .switch {
+            margin-left: 53px;
+
+            .checkbox {
+                &:last-child {
+                    margin-left: 130px;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: $ipad-width) {
+    .QLCT {
+
+        .filter-section {
+
+            .left {
+                display: flex;
+                flex-direction: column;
+
+                .input {
+                    margin-left: 61px;
+                }
+
+                .dropdown {
+                    margin-top: 10px;
+                }
+            }
+
+            .right {
+                display: flex;
+                flex-direction: column;
+
+                .date {
+
+                    &:first-child {
+
+                        .input-date {
+                            margin-left: 18px;
+                        }
+                    }
+
+                    .input-date {
+                        margin-left: 9px;
+                    }
+                }
+            }
+        }
+
+        .switch {
+            margin-left: 61px;
+
+            .checkbox {
+
+                &:last-child {
+                    margin-left: 5%;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 345px) {
+    .QLCT {
+        
+        .switch {
+
+            .checkbox {
+
+                &:last-child {
+                    margin-top: 10px;
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+}
+

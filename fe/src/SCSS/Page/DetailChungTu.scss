@@ -2,52 +2,17 @@
 
 .DTCT {
     display: flex;
+    flex-direction: column;
     padding-top: 10px;
-    .NDCT{
-        background-color: red;
+
+    .top {
         flex: 2;
-
-        .title {
-
-            .name {
-                text-align: center;
-                margin: 20px 0 15px 0;
-            }
-    
-            .id-container {
-                width: 250px;
-                border-bottom: 1px solid rgba($color: #000000, $alpha: 0.7);
-                margin-left: auto;
-                margin-right: auto;
-                margin-bottom: 10px;
-                padding-bottom: 5px;
-                display: flex;
-                justify-content: center;
-            }
-    
-            .status {
-                text-align: center;
-                margin-top: 15px;
-            }
-        }
-
-        .form-content {
-            padding-left: 20px;
-            padding-bottom: 5px;
-            border-bottom: 1px solid rgba($color: #000000, $alpha: 0.7);
-        }
-
-        .duyet-info {
-            padding-left: 20px; 
-
-            .title {
-                margin-top: 15px;
-            }
-        }
+        display: flex;
     }
 
-    .track-log {
+    .bottom {
         flex: 1;
-        background-color: orange;
+        margin-top: 15px;
+        display: flex;
     }
 }

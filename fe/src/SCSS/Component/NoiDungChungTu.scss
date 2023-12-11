@@ -1,0 +1,53 @@
+@import "../abstracts/variables.scss";
+
+
+.NDCT{
+    flex: 2;
+    min-width: 820px;
+    .header {
+        .title {
+            text-align: center;
+            margin: 20px 0 15px 0;
+        }
+
+        .subtitle {
+            width: 250px;
+            border-bottom: 1px solid rgba($color: #000000, $alpha: 0.7);
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .status {
+            text-align: center;
+            margin-top: 15px;
+        }
+    }
+
+    .form-content {
+        padding-left: 50px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba($color: #000000, $alpha: 0.7);
+
+        .table {
+
+            .row {
+                
+                .label {
+                    float: right;
+                }
+
+                .info {
+                    padding-left: 10px;
+                }
+                
+                td {
+                    padding: 8px 5px
+                }
+            }
+        }
+    }
+}

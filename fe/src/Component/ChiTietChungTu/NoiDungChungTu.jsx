@@ -1,82 +1,65 @@
 import { FileAddFilled } from "@ant-design/icons";
+import React, { useEffect } from "react";
 
-function NoiDungChungTu({ data, tenchungtu }) {
+function NoiDungChungTu({detail}) {
+    const noiDungObj = JSON.parse(detail.noiDung);
+
+    const keyValuePairs = Object.entries(noiDungObj);
+    const labelValueArray = keyValuePairs.map(([key, value]) => (
+        {
+            label: key,
+            value: value
+        }
+    ))
+
 	return (
 		<div className="NDCT">
 			<div className="header">
-				<h1 className="title">{tenchungtu}</h1>
+				<h1 className="title">{detail.loaiCT}</h1>
 
 				<div className="subtitle">
 					<span className="span">
-						Mã chứng từ: <b>{`CT122300001`}</b>
+						Mã chứng từ: <b>{detail.maCT}</b>
 					</span>
 				</div>
 
-				<h4 className="status">{`ĐANG CHỜ`}</h4>
+				<h4 className="status">{detail.trangThai}</h4>
 			</div>
 
 			<div className="form-content">
 				<table className="table">
-					<tr>
-						<td>Tên</td>
-						<td>
-							<b>Duy Lân</b>
+					<tr className="row">
+						<td className="label">Tên:</td>
+						<td className="info">
+							<b>{detail.tenNguoiTao}</b>
 						</td>
 					</tr>
 
-					<tr>
-						<td>Mã nhân viên</td>
-						<td>
-							<b>227001</b>
+					<tr className="row">
+						<td className="label">Mã nhân viên:</td>
+						<td className="info">
+							<b>{detail.maNguoiTao}</b>
 						</td>
 					</tr>
 
-					<tr>
-						<td>Ngày tạo đơn</td>
-						<td>
-							<b>10/12/2023 - 8:30 AM</b>
+					<tr className="row">
+						<td className="label">Ngày tạo đơn:</td>
+						<td className="info">
+							<b>{detail.ngayTao}</b>
 						</td>
 					</tr>
 
-					<tr>
-						<td>Số ngày nghỉ</td>
-						<td>
-							<b>2</b>
-						</td>
-					</tr>
-
-					<tr>
-						<td>Ngày bắt đầu</td>
-						<td>
-							<b>11/12/2023</b>
-						</td>
-					</tr>
-
-					<tr>
-						<td>Ngày kết thúc</td>
-						<td>
-							<b>13/12/2023</b>
-						</td>
-					</tr>
-
-					<tr>
-						<td>Lý do</td>
-						<td>
-							<b>Khám bệnh</b>
-						</td>
-					</tr>
-
-					<tr>
-						<td>Tài liệu đi kèm</td>
-						<td>
-							<FileAddFilled />
-						</td>
-					</tr>
+					{labelValueArray.map(i => {
+						return (
+							<React.Fragment>
+								<tr className="row">
+									<td className="label">{i.label}:</td>
+									<td className="info"><b>{i.value}</b></td>
+								</tr>
+							</React.Fragment>
+						)
+					})}
 				</table>
-			</div>
-
-			<div className="duyet-info">
-				<h3 className="title">Người duyệt</h3>
 			</div>
 		</div>
 	);

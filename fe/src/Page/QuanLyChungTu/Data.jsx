@@ -1,42 +1,37 @@
 import { Button } from "antd"
+import { Link } from "react-router-dom";
 
 export const status = ["Đang chờ", "Đồng ý", "Từ chối", "Đã hủy"];
 
 export const columntao = [
     {
-        key: "id",
+        key: "maCT",
         title: "Mã chứng từ",
-        dataIndex: "id",
+        dataIndex: "maCT",
         align: "center"
     },
     {
-        key: "type",
+        key: "maLoaiCT",
         title: "Loại chứng từ",
-        dataIndex: "type",
+        dataIndex: "maLoaiCT",
         align: "center"
     },
     {
-        key: "nguoigui",
+        key: "nguoiTao",
         title: "Người gửi",
-        dataIndex: "nguoigui",
+        dataIndex: "nguoiTao",
         align: "center"
     },
     {
-        key: "ngaytao",
+        key: "thoiGianTao",
         title: "Thời gian tạo",
-        dataIndex: "ngaytao",
+        dataIndex: "thoiGianTao",
         align: "center"
     },
     {
-        key: "ngayduyet",
-        title: "Thời gian duyệt xong",
-        dataIndex: "ngayduyet",
-        align: "center"
-    },
-    {
-        key: "status",
+        key: "maTT",
         title: "Trạng thái",
-        dataIndex: "status",
+        dataIndex: "maTT",
         align: "center",
         render: (text) => {
             return text == "Đang chờ" ? <span style={{color: "#D1D100"}}>{text}</span>
@@ -51,45 +46,39 @@ export const columntao = [
         title: "Chi tiết",
         dataIndex: "detail",
         align: "center",
-        render: () => <Button style={{width: "70px"}}>Xem</Button>
+        render: () => <Link className="link" to="/chitietchungtu"><Button style={{width: "70px"}}>Xem</Button></Link>
     },
 ]
 
 export const columnduyet = [
     {
-        key: "id",
+        key: "maCT",
         title: "Mã chứng từ",
-        dataIndex: "id",
+        dataIndex: "maCT",
         align: "center"
     },
     {
-        key: "type",
+        key: "maLoaiCT",
         title: "Loại chứng từ",
-        dataIndex: "type",
+        dataIndex: "maLoaiCT",
         align: "center"
     },
     {
-        key: "nguoigui",
+        key: "nguoiTao",
         title: "Người gửi",
-        dataIndex: "nguoigui",
+        dataIndex: "nguoiTao",
         align: "center"
     },
     {
-        key: "ngaytao",
+        key: "thoiGianTao",
         title: "Thời gian tạo",
-        dataIndex: "ngaytao",
+        dataIndex: "thoiGianTao",
         align: "center"
     },
     {
-        key: "ngayduyet",
-        title: "Thời gian duyệt xong",
-        dataIndex: "ngayduyet",
-        align: "center"
-    },
-    {
-        key: "status",
+        key: "maTT",
         title: "Trạng thái",
-        dataIndex: "status",
+        dataIndex: "maTT",
         align: "center",
         render: (text) => {
             return text == "Đang chờ" ? <span style={{color: "#D1D100"}}>{text}</span>
@@ -108,33 +97,6 @@ export const columnduyet = [
             return record.status == "Đang chờ" ? <Button style={{width: "70px"}}>Duyệt</Button>
             : <Button style={{width: "70px"}}>Xem</Button>
         }
-    },
-]
-
-export const daTao = [
-    {
-        id: "CT12230001",
-        type: "Đơn xin nghỉ phép",
-        nguoigui: "Duy Lân - 227001",
-        ngaytao: "10/12/2023 - 8:30 AM",
-        ngayduyet: "N/A",
-        status: "Đang chờ",
-    },
-    {
-        id: "CT12230002",
-        type: "Đề xuất khuyến mãi",
-        nguoigui: "Duy Lân - 227001",
-        ngaytao: "10/12/2023 - 8:10 AM",
-        ngayduyet: "12/12/2023 - 12:00 PM",
-        status: "Đồng ý",
-    },
-    {
-        id: "CT12230003",
-        type: "Đề xuất bảo dưỡng",
-        nguoigui: "Duy Lân - 227001",
-        ngaytao: "8/12/2023 - 9:30 AM",
-        ngayduyet: "10/12/2023 - 12:00 PM",
-        status: "Từ chối",
     },
 ]
 

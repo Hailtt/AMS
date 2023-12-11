@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Link } from "react-router-dom";
 
 export const Column = [
 	{
@@ -16,7 +16,11 @@ export const Column = [
 		key: "action",
 		title: "Chi tiết",
 		dataIndex: "action",
-		render: () => <Button type="primary">xem</Button>,
+		render: () => (
+			<Link to={`/createchungtu/formchungtu`} className="link">
+				xem
+			</Link>
+		),
 		width: "5%",
 	},
 ];

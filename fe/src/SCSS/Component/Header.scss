@@ -9,16 +9,36 @@ header {
 	align-items: center;
 }
 
+header > .left-side {
+	.menu-icon {
+		margin-right: 20px;
+		display: none;
+	}
+}
+
 header > .left-side,
 header > .left-side > .home,
 header > .left-side > nav,
 header > .left-side > nav > .list {
 	display: flex;
 	cursor: pointer;
+	text-decoration: none;
+}
+
+header > .left-side > nav {
+	min-width: 620px;
+}
+
+header > .left-side > .home > .icon {
+	color: black;
+	font-size: 20px;
+	margin-right: 4px;
 }
 
 header > .left-side > .home > h3 {
 	font-size: 25px;
+	margin-left: 5px;
+	color: $title-color;
 }
 
 header > .left-side > nav > .list {
@@ -29,11 +49,6 @@ header > .left-side > .home {
 	align-items: center;
 }
 
-header > .left-side > .home > h3 {
-	margin-left: 5px;
-	color: $title-color;
-}
-
 header > .left-side > nav {
 	align-items: center;
 }
@@ -42,10 +57,12 @@ header > .left-side > nav > .list {
 	list-style-type: none;
 }
 
-header > .left-side > nav > .list > .item {
+header > .left-side > nav > .list > .item > .link {
 	margin-left: 20px;
 	padding-left: 20px;
+	color: rgb(36, 36, 36);
 	border-left: 1px solid rgba(0, 0, 0, 0.3);
+	text-decoration: none;
 }
 
 header > .right-side {
@@ -107,5 +124,30 @@ header > .right-side > .user > .list > .item {
 	&:hover {
 		cursor: pointer;
 		background-color: #eee;
+	}
+}
+header > .right-side > .user > .list > .item > .link {
+	text-decoration: none;
+	color: rgb(36, 36, 36);
+}
+
+
+@media screen and (max-width: $ipad-width) {
+	header {
+
+		.left-side {
+
+			.menu-icon {
+				display: inline-flex;
+			}
+
+			.home {
+				display: none;
+			}
+
+			nav {
+				display: none;
+			}
+		}
 	}
 }
