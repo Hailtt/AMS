@@ -1,5 +1,6 @@
 package com.example.springboot.Model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class TrangThaiModel {
@@ -7,11 +8,11 @@ public class TrangThaiModel {
 	private String maCT;
 	private String maTT;
 	private String nguoiCapNhat;
-	private Date thoiGianCapNhat;
+	private LocalDateTime thoiGianCapNhat;
 	public TrangThaiModel() {
 		
 	}
-	public TrangThaiModel(int maTrangThaiCT, String maCT, String maTT, String nguoiCapNhat, Date thoiGianCapNhat) {
+	public TrangThaiModel(int maTrangThaiCT, String maCT, String maTT, String nguoiCapNhat, LocalDateTime thoiGianCapNhat) {
 		this.maTrangThaiCT = maTrangThaiCT;
 		this.maCT = maCT;
 		this.maTT = maTT;
@@ -42,10 +43,10 @@ public class TrangThaiModel {
 	public void setNguoiCapNhat(String nguoiCapNhat) {
 		this.nguoiCapNhat = nguoiCapNhat;
 	}
-	public Date getThoiGianCapNhat() {
+	public LocalDateTime getThoiGianCapNhat() {
 		return thoiGianCapNhat;
 	}
-	public void setThoiGianCapNhat(Date thoiGianCapNhat) {
+	public void setThoiGianCapNhat(LocalDateTime thoiGianCapNhat) {
 		this.thoiGianCapNhat = thoiGianCapNhat;
 	}
 	

@@ -1,17 +1,18 @@
 package com.example.springboot.Model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class ChungTuModel {
 	private String maCT;
 	private String maLoaiCT;
 	private String nguoiTao;
-	private Date thoiGianTao;
+	private LocalDateTime thoiGianTao;
 	private String maTT;
 	public ChungTuModel() {
 		
 	}
-	public ChungTuModel(String maCT, String maLoaiCT, String nguoiTao, Date thoiGianTao, String maTT) {
+	public ChungTuModel(String maCT, String maLoaiCT, String nguoiTao, LocalDateTime thoiGianTao, String maTT) {
 		this.maCT=maCT;
 		this.maLoaiCT=maLoaiCT;
 		this.nguoiTao=nguoiTao;
@@ -36,10 +37,10 @@ public class ChungTuModel {
 	public void setNguoiTao(String nguoiTao) {
 		this.nguoiTao = nguoiTao;
 	}
-	public Date getThoiGianTao() {
+	public LocalDateTime getThoiGianTao() {
 		return thoiGianTao;
 	}
-	public void setThoiGianTao(Date thoiGianTao) {
+	public void setThoiGianTao(LocalDateTime thoiGianTao) {
 		this.thoiGianTao = thoiGianTao;
 	}
 	public String getMaTT() {

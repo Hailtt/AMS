@@ -1,21 +1,24 @@
 package com.example.springboot.Model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class KetQuaModel {
 	private int maKetQua;
 	private String maCT;
 	private int bac;
-	private int ketQua;
+	private int batBuoc;
+	private Integer ketQua;
 	private String nguoiDuyet;
-	private Date thoiGianDuyet;
+	private LocalDateTime thoiGianDuyet;
 	public KetQuaModel() {
 		
 	}
-	public KetQuaModel(int maKetQua, String maCT, int bac, int ketQua, String nguoiDuyet, Date thoiGianDuyet) {
+	public KetQuaModel(int maKetQua, String maCT, int bac,int batBuoc, Integer ketQua, String nguoiDuyet, LocalDateTime thoiGianDuyet) {
 		this.maKetQua=maKetQua;
 		this.maCT=maCT;
 		this.bac=bac;
+		this.batBuoc=batBuoc;
 		this.ketQua=ketQua;
 		this.nguoiDuyet=nguoiDuyet;
 		this.thoiGianDuyet=thoiGianDuyet;
@@ -38,10 +41,16 @@ public class KetQuaModel {
 	public void setBac(int bac) {
 		this.bac = bac;
 	}
-	public int getKetQua() {
+	public int getBatBuoc() {
+		return batBuoc;
+	}
+	public void setBatBuoc(int batBuoc) {
+		this.batBuoc = batBuoc;
+	}
+	public Integer getKetQua() {
 		return ketQua;
 	}
-	public void setKetQua(int ketQua) {
+	public void setKetQua(Integer ketQua) {
 		this.ketQua = ketQua;
 	}
 	public String getNguoiDuyet() {
@@ -50,10 +59,10 @@ public class KetQuaModel {
 	public void setNguoiDuyet(String nguoiDuyet) {
 		this.nguoiDuyet = nguoiDuyet;
 	}
-	public Date getThoiGianDuyet() {
+	public LocalDateTime getThoiGianDuyet() {
 		return thoiGianDuyet;
 	}
-	public void setThoiGianDuyet(Date thoiGianDuyet) {
+	public void setThoiGianDuyet(LocalDateTime thoiGianDuyet) {
 		this.thoiGianDuyet = thoiGianDuyet;
 	}
 	

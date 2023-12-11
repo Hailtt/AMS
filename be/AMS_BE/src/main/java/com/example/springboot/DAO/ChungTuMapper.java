@@ -13,7 +13,7 @@ public class ChungTuMapper implements RowMapper<ChungTuModel> {
         chungTu.setMaCT(resultSet.getString("doc_id"));
         chungTu.setMaLoaiCT(resultSet.getString("approval_type"));
         chungTu.setNguoiTao(resultSet.getString("user_create"));
-        chungTu.setThoiGianTao(resultSet.getDate("time_create"));
+        chungTu.setThoiGianTao(resultSet.getTimestamp("time_create").toLocalDateTime());
         chungTu.setMaTT(resultSet.getString("status_id"));
         return chungTu;
     }

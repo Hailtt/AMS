@@ -1,5 +1,7 @@
 package com.example.springboot.Model;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class ChiTietCTModel {
@@ -8,13 +10,12 @@ public class ChiTietCTModel {
 	private String trangThai;
 	private String tenNguoiTao;
 	private String maNguoiTao;
-	private Date ngayTao;
+	private LocalDateTime ngayTao;
 	private String noiDung;
-	private String taiLieu;
 	public ChiTietCTModel() {
 		
 	}
-	public ChiTietCTModel(String loaiCT, String maCT, String trangThai, String tenNguoiTao, String maNguoiTao, Date ngayTao, String noiDung, String taiLieu) {
+	public ChiTietCTModel(String loaiCT, String maCT, String trangThai, String tenNguoiTao, String maNguoiTao, LocalDateTime ngayTao, String noiDung) {
 		this.loaiCT=loaiCT;
 		this.maCT=maCT;
 		this.trangThai=trangThai;
@@ -22,7 +23,6 @@ public class ChiTietCTModel {
 		this.maNguoiTao=maNguoiTao;
 		this.ngayTao=ngayTao;
 		this.noiDung=noiDung;
-		this.taiLieu=taiLieu;
 	}
 	public String getLoaiCT() {
 		return loaiCT;
@@ -54,23 +54,19 @@ public class ChiTietCTModel {
 	public void setMaNguoiTao(String maNguoiTao) {
 		this.maNguoiTao = maNguoiTao;
 	}
-	public Date getNgayTao() {
+	public LocalDateTime getNgayTao() {
 		return ngayTao;
 	}
-	public void setNgayTao(Date ngayTao) {
+	public void setNgayTao(LocalDateTime ngayTao) {
 		this.ngayTao = ngayTao;
 	}
+
 	public String getNoiDung() {
 		return noiDung;
 	}
 	public void setNoiDung(String noiDung) {
 		this.noiDung = noiDung;
 	}
-	public String getTaiLieu() {
-		return taiLieu;
-	}
-	public void setTaiLieu(String taiLieu) {
-		this.taiLieu = taiLieu;
-	}
+
 	
 }
