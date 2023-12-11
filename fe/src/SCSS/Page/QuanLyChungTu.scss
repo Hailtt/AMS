@@ -3,6 +3,9 @@
 .QLCT {
 
     overflow-x: scroll;
+    .title {
+        min-width: 322px;
+    }
 
     .filter-section {
         display: flex;
@@ -55,6 +58,7 @@
     }
     
     .switch > .checkbox {
+        
         &:last-child {
             margin-left: 88px;
         }
@@ -158,5 +162,33 @@
                 }
             }
         }
+
+        .switch {
+            margin-left: 61px;
+
+            .checkbox {
+
+                &:last-child {
+                    margin-left: 5%;
+                }
+            }
+        }
     }
 }
+
+@media screen and (max-width: 345px) {
+    .QLCT {
+        
+        .switch {
+
+            .checkbox {
+
+                &:last-child {
+                    margin-top: 10px;
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+}
+
