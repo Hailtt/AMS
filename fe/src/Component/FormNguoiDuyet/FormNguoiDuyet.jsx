@@ -1,12 +1,22 @@
 import React from "react";
 import { DATA_NguoiDuyet } from "./data.js";
-const FormNguoiDuyet = ({ handleTaoChungTu }) => {
+const FormNguoiDuyet = ({ data, handleChangeNguoiDuyet }) => {
 	return (
 		<form className="AMS-formnguoiduyet">
 			{DATA_NguoiDuyet.map((item, index) => (
 				<div key={index} className="nguoiduyet">
 					<label className="label">{item.label}</label>
-					<select className="list">
+					<select
+						className="list"
+						name={item.label}
+						onChange={(e) =>
+							handleChangeNguoiDuyet(
+								item.key,
+								Array.from(e.target.selectedOptions, (option) => option.value),
+								index
+							)
+						}
+					>
 						<option value="" className="item">
 							Trống
 						</option>
@@ -18,9 +28,6 @@ const FormNguoiDuyet = ({ handleTaoChungTu }) => {
 					</select>
 				</div>
 			))}
-			<button className="button" type="submit" onClick={handleTaoChungTu}>
-				Tạo chứng từ
-			</button>
 		</form>
 	);
 };
