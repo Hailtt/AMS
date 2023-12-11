@@ -1,39 +1,26 @@
 import React, { useState } from "react";
+import _ from "lodash";
 
-const FormInput = ({ data, nextStep }) => {
-	const [test, setTest] = useState({});
-
-	const handlSubmit = (e) => {
-		e.preventDefault();
-		console.log(test);
-	};
-
+const FormInput = ({ data, currentStep, handleChangeInput }) => {
 	return (
-		<form className="AMS-forminput">
-			{data.map((item) => (
+		<div className="AMS-forminput">
+			{_.map(data, (item) => (
 				<div key={item.key} className="info">
 					<label className="label">{item.label}</label>
 					{item.tag == "input" ? (
 						<item.tag
 							type={item.dataType}
-							className={`tag-${item.tag}`}
+							className={`tag-${item.tag} `}
 							placeholder={"Nhập " + item.label}
-							name={item.key}
-							onChange={(e) =>
-								setTest((prev) => {
-									return { ...prev, [e.target.name]: e.target.value };
-								})
-							}
+							onChange={(e) => handleChangeInput(item.key, e.target.value)}
+							readOnly={currentStep == "nhapthongtin" ? false : true}
 						/>
 					) : (
 						<item.tag className={`tag-${item.tag}`}> </item.tag>
 					)}
 				</div>
 			))}
-			<button className="button" type="submit" onClick={nextStep}>
-				Tiếp tục
-			</button>
-		</form>
+		</div>
 	);
 };
 
