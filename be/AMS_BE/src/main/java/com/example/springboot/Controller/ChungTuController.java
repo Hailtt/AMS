@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.springboot.DAO.*;
 import com.example.springboot.BusinessLogic.*;
 import com.example.springboot.Model.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/chung-tu")
@@ -44,15 +46,21 @@ public class ChungTuController {
     public List<KetQuaModel> getKetQuaChungTu(@PathVariable(value="maCT") String maCT){
     	return chungTuService.getKetQuaChungTu(maCT);
     }
+    @PostMapping("/chon-nguoi-duyet")
+    public ResponseEntity<String> postChonNguoiDuyet(@RequestBody YeuCauChungTu yeuCau) throws JsonProcessingException{
+    	return chungTuService.postChonNguoiDuyet(yeuCau);
+    }
     @PostMapping("/tao-moi-chung-tu")
     public ResponseEntity<String> postYeuCauChungTu(@RequestBody YeuCauChungTu yeuCau) {
+    	List<Map<String, Object>> nguoiDuyetList = yeuCau.getNguoiDuyet();
     	if(yeuCau.getMaForm().equals(null) 
-    			|| yeuCau.getNoiDung().equals(null)
-    			|| yeuCau.getMaLoai().equals(null)
-    			|| yeuCau.getNguoiTao().equals(null)
-    			|| yeuCau.getNguoiDuyet().equals(null))
+    			|| yeuCau.getNoiDung().size()== 0
+    			|| yeuCau.getMaForm().isEmpty()
+    			|| yeuCau.getMaLoai().isEmpty()
+    			|| yeuCau.getNguoiTao().isEmpty()
+    			|| nguoiDuyetList.size() == 0)
     	{
-    		return ResponseEntity.status(404).body("Vui lòng nhập đủ thông tin");
+    		return ResponseEntity.status(404).body("Vui lòng nhập đủ thông tin: "+ yeuCau.getMaLoai()+ yeuCau.getMaForm()+yeuCau.getNguoiTao()+yeuCau.getNoiDung()+yeuCau.getNguoiDuyet()+yeuCau.getThoiGianTao() );
     	}
     	return chungTuService.postYeuCauChungTu(yeuCau);
     }

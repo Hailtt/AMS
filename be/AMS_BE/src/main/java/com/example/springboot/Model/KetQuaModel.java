@@ -7,14 +7,14 @@ public class KetQuaModel {
 	private int maKetQua;
 	private String maCT;
 	private int bac;
-	private int batBuoc;
+	private String batBuoc;
 	private Integer ketQua;
 	private String nguoiDuyet;
 	private LocalDateTime thoiGianDuyet;
 	public KetQuaModel() {
 		
 	}
-	public KetQuaModel(int maKetQua, String maCT, int bac,int batBuoc, Integer ketQua, String nguoiDuyet, LocalDateTime thoiGianDuyet) {
+	public KetQuaModel(int maKetQua, String maCT, int bac,String batBuoc, Integer ketQua, String nguoiDuyet, LocalDateTime thoiGianDuyet) {
 		this.maKetQua=maKetQua;
 		this.maCT=maCT;
 		this.bac=bac;
@@ -41,10 +41,10 @@ public class KetQuaModel {
 	public void setBac(int bac) {
 		this.bac = bac;
 	}
-	public int getBatBuoc() {
+	public String getBatBuoc() {
 		return batBuoc;
 	}
-	public void setBatBuoc(int batBuoc) {
+	public void setBatBuoc(String batBuoc) {
 		this.batBuoc = batBuoc;
 	}
 	public Integer getKetQua() {

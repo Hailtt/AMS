@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,14 +15,11 @@ import com.example.springboot.Model.*;
 
 @Repository
 public class ChungTuDAO {
-//	@Autowired
-//	private JdbcTemplate jdbcTemplate;
 	private final JdbcTemplate jdbcTemplate;
-
+	
 	@Autowired
 	public ChungTuDAO(JdbcTemplate jdbcTemplate) {
-	      this.jdbcTemplate = jdbcTemplate;
-	}	
+	      this.jdbcTemplate = jdbcTemplate;	}	
 	public List<ChungTuModel> getAllChungTus() {
 		 String sql = "SELECT c.doc_id as doc_id, lct.form_type_name as approval_type, ams_u.full_name as user_create, c.time_create as time_create, ams_s.status_name as status_id "
 		 		+ "FROM chungtu c "
@@ -53,8 +51,9 @@ public class ChungTuDAO {
 	}
 	
 	public List<KetQuaModel> getKetQuaChungTu(String maCT) {
-		String sql= "select ck.doc_result_id as doc_result_id, ck.doc_id as doc_id, ck.lvl as lvl, ck.required as required, ck.result as result, ck.user_update || ' - ' || ua.full_name  as user_update, ck.time_update as time_update "
+		String sql= "select ck.doc_result_id as doc_result_id, ck.doc_id as doc_id, ck.lvl as lvl, aak.name as required, ck.result as result, ck.user_update || ' - ' || ua.full_name  as user_update, ck.time_update as time_update "
 				+ "from chungtu_ketqua ck "
+				+ "join ams_approve_kind aak on aak.code = ck.approve_kind_code "
 				+ "join ams_user ua on ua.id = ck.user_update "
 				+ "where ck.doc_id = ? "
 				+ "order by ck.lvl ";
@@ -100,8 +99,7 @@ public class ChungTuDAO {
 		}
 	}
 	public Boolean postChungTuKetQua(YeuCauChungTu yeuCau) {
-
-        String sql = "INSERT INTO chungtu_ketqua (doc_id, lvl, result, required, user_update, time_update) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO chungtu_ketqua (doc_id, lvl, result, approve_kind_code, user_update, time_update) VALUES (?, ?, ?, ?, ?, ?)";
         List<Map<String, Object>> nguoiDuyetList = yeuCau.getNguoiDuyet();
         try {
         	for (Map<String, Object> nguoiDuyet : nguoiDuyetList) {
@@ -109,7 +107,7 @@ public class ChungTuDAO {
         			yeuCau.getMaCT(),
         			(int) nguoiDuyet.get("lvl"),
         			nguoiDuyet.get("result"),
-        			(int) nguoiDuyet.get("required"),
+        			(String) nguoiDuyet.get("approve_kind_code"),
         			(String) nguoiDuyet.get("user_update"),
         			nguoiDuyet.get("time_update")
         	    );
@@ -120,5 +118,47 @@ public class ChungTuDAO {
         	System.out.println(e);
         	return false;
         }
+	}
+	public Map<String, String> getFormLabel(YeuCauChungTu yeuCau) {
+		String sqlSelect = "select label, key from form_field ff "
+				+ "where ff.form_id = ? and ff.important = true ";
+		return jdbcTemplate.queryForObject(sqlSelect, (rs, rowNum) -> {
+	        Map<String, String> formInfo = new HashMap<>();
+	        formInfo.put("label", rs.getString("label"));
+	        formInfo.put("key", rs.getString("key"));
+	        return formInfo;
+	    }, yeuCau.getMaForm());
+	}
+	public List<Map<String,String>> getCondition(String key, String maForm){
+	    String sql = "select match, compared_value from ams_form_type_condition where form_id = ? and form_key = ?";
+	    return jdbcTemplate.query(sql, (rs, rowNum) -> {
+	        Map<String, String> conditionInfo = new HashMap<>();
+	        conditionInfo.put("match", rs.getString("match"));
+	        conditionInfo.put("compared_value", rs.getString("compared_value"));
+	        return conditionInfo;
+	    }, maForm, key);
+	}
+	public List<Map<String, String>> getApprover(String key, String match, String comparedValue, String maForm){
+		String sql = "select afta.lvl ,afta.frequence ,au.id || ' - ' || au.full_name as user "
+				+ "from "
+				+ "	ams_form_type_approver afta "
+				+ "join "
+				+ "	ams_form_type_condition aftc on afta.condition_id =aftc.id "
+				+ "join "
+				+ "	form_field ff on ff.form_id = aftc.form_id and ff.\"key\" = aftc.form_key "
+				+ "join "
+				+ "	ams_team_user atu  on afta.user_team_id = atu.id "
+				+ "join "
+				+ "	ams_user au on au.id = atu.user_id "
+				+ "where "
+				+ "	ff.\"key\" = ? and aftc.\"match\" = ? and aftc.compared_value = ? and aftc.form_id = ? "
+				+ "order by afta.lvl asc;";
+		return jdbcTemplate.query(sql, (rs, rowNum) -> {
+	        Map<String, String> approver = new HashMap<>();
+	        approver.put("lvl", rs.getString("lvl"));
+	        approver.put("frequence", rs.getString("frequence"));
+	        approver.put("user", rs.getString("user"));
+	        return approver;
+	    }, key,match,comparedValue,maForm);
 	}
 }

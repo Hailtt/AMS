@@ -13,7 +13,7 @@ public class YeuCauChungTu {
 	private LocalDateTime thoiGianTao;
 	private String maTT;
 	private String maForm;
-		private Map<String, Object> noiDung;
+	private Map<String, Object> noiDung;
 	private ArrayList<Map<String, Object>> nguoiDuyet;
 	public YeuCauChungTu() {
 		

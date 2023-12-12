@@ -14,7 +14,7 @@ public class KetQuaMapper implements RowMapper<KetQuaModel>{
 		ketQua.setMaKetQua(resultSet.getInt("doc_result_id"));
 		ketQua.setMaCT(resultSet.getString("doc_id"));
 		ketQua.setBac(resultSet.getInt("lvl"));
-		ketQua.setBatBuoc(resultSet.getInt("required"));
+		ketQua.setBatBuoc(resultSet.getString("required"));;
 		if(resultSet.getString("result") != null) {
 			ketQua.setKetQua(resultSet.getInt("result"));
 		}else {
