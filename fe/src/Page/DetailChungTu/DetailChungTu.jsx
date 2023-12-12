@@ -14,7 +14,7 @@ function DetailChungTu() {
 	useEffect(() => {
 		setLoading(true);
 		axios
-			.get(`${process.env.REACT_APP_BE_URL}/api/chungtu/noi-dung/CT12230001`)
+			.get(`${process.env.REACT_APP_BE_URL}/chung-tu/noi-dung/CT12230003`)
 			.then((res) => {
 				const parts = res.data.ngayTao.split("T");
 
@@ -30,7 +30,7 @@ function DetailChungTu() {
 			});
 
 		axios
-			.get(`${process.env.REACT_APP_BE_URL}/api/chungtu/nhat-ki/CT12230001`)
+			.get(`${process.env.REACT_APP_BE_URL}/chung-tu/nhat-ki/CT12230003`)
 			.then((res) => {
 				res.data.map((i) => {
 					const parts = i.thoiGianCapNhat.split("T");
@@ -49,9 +49,7 @@ function DetailChungTu() {
 			});
 
 		axios
-			.get(
-				`${process.env.REACT_APP_BE_URL}/api/chungtu/ket-qua-duyet/CT12230001`
-			)
+			.get(`${process.env.REACT_APP_BE_URL}/chung-tu/ket-qua-duyet/CT12230003`)
 			.then((res) => {
 				res.data.map((i) => {
 					if (i.thoiGianDuyet !== null) {

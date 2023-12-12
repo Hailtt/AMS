@@ -9,5 +9,14 @@ export const getCurrentDate = () => {
 	const minutes = currentDate.getMinutes().toString().padStart(2, "0");
 	const seconds = currentDate.getSeconds().toString().padStart(2, "0");
 
-	return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+	return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+};
+
+export const getDataType = (data) => {
+	if (data) {
+		const { user_update, ...newDataType } = data;
+		const newType = newDataType;
+
+		return newType;
+	}
 };
