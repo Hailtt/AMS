@@ -1,16 +1,14 @@
 import { FileAddFilled } from "@ant-design/icons";
 import React, { useEffect } from "react";
 
-function NoiDungChungTu({detail}) {
-    const noiDungObj = JSON.parse(detail.noiDung);
+function NoiDungChungTu({ detail }) {
+	const noiDungObj = JSON.parse(detail.noiDung);
 
-    const keyValuePairs = Object.entries(noiDungObj);
-    const labelValueArray = keyValuePairs.map(([key, value]) => (
-        {
-            label: key,
-            value: value
-        }
-    ))
+	const keyValuePairs = Object.entries(noiDungObj);
+	const labelValueArray = keyValuePairs.map(([key, value]) => ({
+		label: key,
+		value: value,
+	}));
 
 	return (
 		<div className="NDCT">
@@ -49,15 +47,17 @@ function NoiDungChungTu({detail}) {
 						</td>
 					</tr>
 
-					{labelValueArray.map(i => {
+					{labelValueArray.map((i) => {
 						return (
 							<React.Fragment>
 								<tr className="row">
 									<td className="label">{i.label}:</td>
-									<td className="info"><b>{i.value}</b></td>
+									<td className="info">
+										<b>{i.value}</b>
+									</td>
 								</tr>
 							</React.Fragment>
-						)
+						);
 					})}
 				</table>
 			</div>
