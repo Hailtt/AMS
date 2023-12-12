@@ -10,7 +10,7 @@ function QuanLyChungTu() {
 
 	useEffect(() => {
 		axios
-			.get(`${process.env.REACT_APP_BE_URL}/api/chungtu/all`)
+			.get(`${process.env.REACT_APP_BE_URL}/chung-tu/all`)
 			.then((res) => {
 				res.data.map((i) => {
 					const parts = i.thoiGianTao.split("T");
@@ -27,7 +27,7 @@ function QuanLyChungTu() {
 			.catch((err) => {
 				alert(err);
 			});
-	}, [chungtu]);
+	}, []);
 
 	return (
 		<div className="QLCT">

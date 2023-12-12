@@ -1,6 +1,6 @@
 export const DATA_NghiPhep = {
-	loaiCT: "Đơn xin nghỉ phép",
-	maCT: "CT12230001",
+	maLoai: "LCT001",
+	maForm: "8ca04426-cb08-483c-b464-f902c303d393",
 	form: {
 		id: "formNP1",
 		name: "form nghỉ phép 1",
@@ -73,33 +73,44 @@ export const DATA_NghiPhep = {
 };
 
 export const DATA_Nhap = {
-	loaiCT: "",
-	maCT: "",
-	trangThai: "",
-	tenNguoiTao: "",
-	maNguoiTao: "",
-	ngayTao: "",
+	maLoai: "",
+	maForm: "",
+	nguoiTao: "",
+	thoiGianTao: "",
 	noiDung: {},
 	nguoiDuyet: [{}],
 };
 
 // {
-// 	"maLoai": "ABC123",
-// 	"nguoiTao": "John Doe",
-// 	"thoiGianTao": "2023-12-31",
-// 	"noiDung": {
-// 	  "key1": "value1",
-// 	  "key2": "value2"
-// 	},
-// 	"nguoiDuyet": [
-// 	  {
-// 		"duyet1": "value1"
-// 	  },
-// 	  {
-// 		"duyet1": "value1"
-// 	  },
-// 	  {
-// 		"duyet2": "value2"
-// 	  }
-// 	]
-//   }
+//     "maLoai": "LCT001",
+//     "maForm":"FORM001",
+//     "nguoiTao":"227001",
+//     "thoiGianTao":"{{currentDate}}",
+//     "noiDung":{
+//         "content 1":"Nội dung nè",
+//         "content 2":"Nội dung 2 nè"
+//     },
+//     "nguoiDuyet":[
+//         {
+//             "lvl":1,
+//             "result": null,
+//             "required":0,
+//             "user_update":"227002",
+//             "time_update":null
+//         },
+//         {
+//             "lvl":1,
+//             "result": null,
+//             "required":0,
+//             "user_update":"227020",
+//             "time_update":null
+//         },
+//         {
+//             "lvl":2,
+//             "result": null,
+//             "required":1,
+//             "user_update":"227003",
+//             "time_update":null
+//         }
+//     ]
+// }

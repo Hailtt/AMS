@@ -1,39 +1,34 @@
 export const DATA_NguoiDuyet = [
 	{
-		key: "nguoiduyetcap1",
-		label: "Người duyệt cấp 1",
-		danhSachNguoiDuyet: [
+		lvl: 1,
+		result: null,
+		approve_kind_code: "OR",
+		time_update: null,
+		user_update: [
 			{
-				maNguoiDuyet: "US00001",
+				maNguoiDuyet: "227020",
 				tenNguoiDuyet: "Thuận Hải",
 			},
 			{
-				maNguoiDuyet: "US00002",
+				maNguoiDuyet: "227003",
 				tenNguoiDuyet: "Thanh Thế",
 			},
 		],
 	},
+
 	{
-		key: "nguoiduyetcap1",
-		label: "Người duyệt cấp 1",
-		danhSachNguoiDuyet: [
+		lvl: 2,
+		result: null,
+		approve_kind_code: "OR",
+		time_update: null,
+		user_update: [
 			{
-				maNguoiDuyet: "US00001",
+				maNguoiDuyet: "227020",
 				tenNguoiDuyet: "Thuận Hải",
 			},
 			{
-				maNguoiDuyet: "US00002",
+				maNguoiDuyet: "227003",
 				tenNguoiDuyet: "Thanh Thế",
-			},
-		],
-	},
-	{
-		key: "nguoiduyetcap2",
-		label: "Người duyệt cấp 2",
-		danhSachNguoiDuyet: [
-			{
-				maNguoiDuyet: "US00003",
-				tenNguoiDuyet: "Minh Trí",
 			},
 		],
 	},

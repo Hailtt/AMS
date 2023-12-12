@@ -4,80 +4,106 @@ import FormInput from "../../Component/FormInput/FormInput";
 import { SyncOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import FormNguoiDuyet from "../../Component/FormNguoiDuyet/FormNguoiDuyet";
 import { getCurrentDate } from "./functions";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const PageFormChungTu = () => {
-	const { form, loaiCT } = DATA_NghiPhep;
+	const navigate = useNavigate();
+
 	const [currentStep, setCurrentStep] = useState("nhapthongtin");
-	const [dataChungtu, setDataChungtu] = useState(DATA_NghiPhep);
-	const [dataSubmit, setDataSubmit] = useState(DATA_Nhap);
-	const [nguoiDuyet1, setNguoiduye1] = useState("");
-	const [nguoiDuyet2, setNguoiduye2] = useState("");
+	const [nhapNguoiDuyet, setNhapNguoiduyet] = useState([]);
+	const [nhapThongTin, setNhapThongTin] = useState({
+		nguoitao: "",
+		noidung: {},
+	});
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+
 		if (currentStep === "nhapthongtin") {
 			setCurrentStep("chonnguoiduyet");
 			console.log("currentStep >>>", currentStep);
 		} else {
-			setDataSubmit((prev) => ({
-				...prev,
-				loaiCT: DATA_NghiPhep.loaiCT,
-				maCT: DATA_NghiPhep.maCT,
-				trangThai: "Đang chờ",
-				tenNguoiTao: dataChungtu.form.data.map((item) => {
-					if (item.key === "name") {
-						return item.value;
-					}
-				}),
-				maNguoiTao: dataChungtu.form.data.map((item) => {
-					if (item.key === "name") return item.value;
-				}),
-				ngayTao: getCurrentDate(),
-				noiDung: dataChungtu.form.data.filter(
-					(item) => !item.key.includes("name", "userid")
-				),
-			}));
+			const dataSubmit = {
+				maLoai: DATA_NghiPhep.maLoai,
+				maForm: DATA_NghiPhep.maForm,
+				nguoiTao: nhapThongTin.nguoitao,
+				thoiGianTao: getCurrentDate(),
+				noiDung: nhapThongTin.noidung,
+				nguoiDuyet: nhapNguoiDuyet,
+			};
 
-			console.log(">>>>>>>>>> dataSubmit", dataSubmit);
+			console.log("ABCCCC >>>>>>", dataSubmit);
+
+			if (dataSubmit) {
+				axios
+					.post(
+						`${process.env.REACT_APP_BE_URL}/chung-tu/tao-moi-chung-tu`,
+						dataSubmit
+					)
+					.then((res) => {
+						console.log(res.data);
+						navigate("/quanlychungtu");
+					})
+					.catch((err) => {
+						console.log(err.response);
+					});
+			}
 		}
 	};
 
-	const handleChangeInput = (key, newValue) => {
-		const updatedData = dataChungtu.form.data.map((item) => {
-			if (item.key === key) {
-				return { ...item, value: newValue };
-			}
-			return item;
-		});
-
-		dataChungtu.form.data = updatedData;
-		console.log(dataChungtu);
+	const handleChangeInput = (key, value) => {
+		// lấy ra người id người dùng
+		if (key === "userid") {
+			setNhapThongTin((prev) => ({ ...prev, nguoitao: value }));
+		} else {
+			//những key còn lại không phải id người tạo thì sẽ được đưa vào thuộc tính nội dung
+			const { noidung } = nhapThongTin;
+			const newNoiDung = { ...noidung, [key]: value };
+			setNhapThongTin((prev) => ({ ...prev, noidung: newNoiDung }));
+		}
 	};
-	const handleChangeNguoiDuyet = (keynguoiduyet, newValue, index) => {
-		const updatedData = dataChungtu.form.nguoiduyet.map((item) => {
-			if (item.key === keynguoiduyet) {
-				console.log("index: " + index);
-				console.log("index item: " + item.userId);
-				// const checkNguoiduyet = Array.from(
-				// 	new Set([...item.danhSachNguoiDuyet, ...newValue])
-				// );
 
-				// return { ...item, danhSachNguoiDuyet: checkNguoiduyet };
-				return { ...item, userId: newValue };
+	const handleChangeNguoiDuyet = (dataType, newValue, index) => {
+		//check nếu chọn option trống
+		if (newValue === "") {
+			const newArray = [...nhapNguoiDuyet];
+			newArray[index] = {};
+			setNhapNguoiduyet(newArray);
+
+			// console.log("newArray >>>>", newArray);
+			return;
+		}
+
+		//check nếu mảng nhập người duyệt thấp hơn index (index ở đây đang trỏ tới cái slection trên giao diện mà người dùng dang thao tác)
+		if (nhapNguoiDuyet.length - 1 < index) {
+			const newArray = [...nhapNguoiDuyet];
+
+			// Dùng vòng lặp để thêm các item có giá trị là object rỗng
+			for (let i = newArray.length; i <= index; i++) {
+				newArray.push({});
 			}
-			return item;
-		});
+			// Khi length của mảng bằng với giá trị index, gán bằng newValue
+			if (newArray.length - 1 === index) {
+				newArray[index] = { ...dataType, user_update: newValue };
+			}
 
-		dataChungtu.form.nguoiduyet = updatedData;
-		console.log(dataChungtu);
+			setNhapNguoiduyet(newArray);
+		} else {
+			//khi chạy code ở chỗ này tức là đã chọn người duyệt rồi hoặc thay đổi giá trị của option
+			const newArray = [...nhapNguoiDuyet];
+			newArray[index] = { ...dataType, user_update: newValue };
+
+			setNhapNguoiduyet(newArray);
+		}
 	};
 
 	return (
 		<div className="pageformchungtu">
-			<h1 className="title">{loaiCT}</h1>
+			<h1 className="title">ashgdfsahg</h1>
 			<div className="steps">
 				<div className="checkpoint --active ">
-					{setCurrentStep == "nhapthongtin" ? (
+					{currentStep == "nhapthongtin" ? (
 						<SyncOutlined className="icon" />
 					) : (
 						<CheckCircleOutlined className="icon--success" />
@@ -85,15 +111,11 @@ const PageFormChungTu = () => {
 					<span className="text">Nhập thông tin</span>
 				</div>
 				<div
-					className={
-						setCurrentStep == "nhapthongtin" ? "line" : "line --active"
-					}
+					className={currentStep == "nhapthongtin" ? "line" : "line --active"}
 				></div>
 				<div
 					className={
-						setCurrentStep == "nhapthongtin"
-							? "checkpoint"
-							: "checkpoint --active"
+						currentStep == "nhapthongtin" ? "checkpoint" : "checkpoint --active"
 					}
 				>
 					<SyncOutlined className="icon" />
@@ -102,24 +124,20 @@ const PageFormChungTu = () => {
 			</div>
 			<div className="container">
 				<FormInput
-					data={form.data}
 					currentStep={currentStep}
 					handleChangeInput={handleChangeInput}
 				/>
-				<FormNguoiDuyet
-					data={form.nguoiduyet}
-					handleChangeNguoiDuyet={handleChangeNguoiDuyet}
-				/>
+				{currentStep === "chonnguoiduyet" && (
+					<FormNguoiDuyet handleChangeNguoiDuyet={handleChangeNguoiDuyet} />
+				)}
 			</div>
 			<div className="btn-box">
-				{currentStep == "chonnguoiduyet" && (
-					<button
-						className="button"
-						onClick={() => setCurrentStep("nhapthongtin")}
-					>
-						Lùi lại
-					</button>
-				)}
+				<button
+					className={currentStep == "nhapthongtin" ? "button hidden" : "button"}
+					onClick={() => setCurrentStep("nhapthongtin")}
+				>
+					Lùi lại
+				</button>
 				<button className="button" onClick={handleSubmit}>
 					{currentStep == "nhapthongtin" ? "Tiếp theo" : "Tạo chứng từ"}
 				</button>

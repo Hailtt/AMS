@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import _ from "lodash";
+import { DATA_FORM } from "./dataForm";
+const FormInput = ({ currentStep, handleChangeInput }) => {
+	const [resData, setResData] = useState(
+		DATA_FORM.sort((a, b) => a.sort_order - b.sort_order)
+	);
 
-const FormInput = ({ data, currentStep, handleChangeInput }) => {
 	return (
 		<div className="AMS-forminput">
-			{_.map(data, (item) => (
+			{_.map(resData, (item) => (
 				<div key={item.key} className="info">
 					<label className="label">{item.label}</label>
 					{item.tag == "input" ? (
