@@ -4,6 +4,7 @@ import FormInput from "../../Component/FormInput/FormInput";
 
 import { SyncOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import FormNguoiDuyet from "../../Component/FormNguoiDuyet/FormNguoiDuyet";
+import { useParams } from "react-router";
 
 const PageFormChungTu = () => {
 	const { tenchungtu, form } = DATA_NghiPhep;

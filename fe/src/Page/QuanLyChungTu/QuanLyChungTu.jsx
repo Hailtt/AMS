@@ -23,7 +23,7 @@ function QuanLyChungTu() {
 				const formattedTime = datePart + ' - ' + timePart;
 	
 				return i.thoiGianTao = formattedTime;
-			})
+			});
             getChungTu(res.data);
         }) 
         .catch(err => {

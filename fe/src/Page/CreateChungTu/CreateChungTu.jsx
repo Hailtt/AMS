@@ -2,6 +2,12 @@ import React from "react";
 import { SearchOutlined } from "@ant-design/icons";
 import { Table } from "antd";
 import { Column, Value } from "./Data";
+import { Link } from "react-router-dom";
+
+	for (let obj of Value) {
+		obj[`action`] = <Link to={`/createchungtu/formchungtu/${obj.id}`} className="link">Xem</Link>
+	}
+
 const CreateChungTu = () => {
 	return (
 		<div className="createchungtu">

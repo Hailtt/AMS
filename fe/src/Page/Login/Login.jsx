@@ -2,11 +2,12 @@ import { Button, Input } from "antd";
 import logo from "../../img/Logo-MWG.jpg";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import axios from "axios";
 
 function Login() {
 	const initialState = {
-		id: null,
-		pw: null,
+		username: null,
+		password: null,
 	};
 
 	const [user, setUser] = useState(initialState);
@@ -23,10 +24,17 @@ function Login() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		localStorage.setItem("user", user);
-		navigate("/");
-		window.location.reload();
+		axios.post("http://192.168.137.160:8080/user/login", {username: user.username, password: user.password},{withCredentials:true})
+		.then(result=>{
+
+			navigate("/")
+		})
+		.catch(err => {
+			console.log(err)
+			navigate("/")
+		})
 	};
+
 	return (
 		<div className="login">
 			<h1 className="title">
@@ -44,8 +52,9 @@ function Login() {
 					<Input
 						className="input-area"
 						size="large"
-						key="id"
-						name="id"
+						key="username"
+						name="username"
+						value={user.username}
 						placeholder="Tên đăng nhập"
 						onChange={(e) => handleInput(e)}
 					/>
@@ -57,8 +66,9 @@ function Login() {
 						className="input-area"
 						type="password"
 						size="large"
-						key="pw"
-						name="pw"
+						key="password"
+						name="password"
+						value={user.password}
 						placeholder="Mật khẩu"
 						onChange={(e) => handleInput(e)}
 					/>

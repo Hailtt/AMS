@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-
 export const Column = [
 	{
 		key: "id",
@@ -16,11 +14,6 @@ export const Column = [
 		key: "action",
 		title: "Chi tiết",
 		dataIndex: "action",
-		render: () => (
-			<Link to={`/createchungtu/formchungtu`} className="link">
-				xem
-			</Link>
-		),
 		width: "5%",
 	},
 ];
