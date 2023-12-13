@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 
 export const status = ["Đang chờ", "Đồng ý", "Từ chối", "Đã hủy"];
 
+export const type = ["Đơn xin nghỉ phép" , "Khuyến mãi"];
+
 export const columntao = [
 	{
 		key: "maCT",
@@ -52,8 +54,8 @@ export const columntao = [
 		title: "Chi tiết",
 		dataIndex: "detail",
 		align: "center",
-		render: () => (
-			<Link className="link" to="/chitietchungtu">
+		render: (text, record) => (
+			<Link className="link" to={`/chitietchungtu/${record.maCT}`}>
 				<Button style={{ width: "70px" }}>Xem</Button>
 			</Link>
 		),
@@ -121,27 +123,101 @@ export const columnduyet = [
 
 export const daDuyet = [
 	{
-		id: "CT12230001",
-		type: "Đơn xin nghỉ phép",
-		nguoigui: "Duy Lân - 227001",
-		ngaytao: "10/12/2023 - 8:30 AM",
-		ngayduyet: "N/A",
-		status: "Đang chờ",
+		maCT: "CT12230001",
+		maLoaiCT: "Đơn xin nghỉ phép",
+		nguoiTao: "Duy Lân - 227001",
+		thoiGianTao: "10/12/2023 - 8:30 AM",
+		maTT: "Đang chờ",
 	},
 	{
-		id: "CT12230002",
-		type: "Đề xuất khuyến mãi",
-		nguoigui: "Duy Lân - 227001",
-		ngaytao: "10/12/2023 - 8:10 AM",
-		ngayduyet: "12/12/2023 - 12:00 PM",
-		status: "Đồng ý",
+		maCT: "CT12230002",
+		maLoaiCT: "Đề xuất khuyến mãi",
+		nguoiTao: "Duy Lân - 227001",
+		thoiGianTao: "10/12/2023 - 8:10 AM",
+		maTT: "Đồng ý",
 	},
 	{
-		id: "CT12230003",
-		type: "Đề xuất bảo dưỡng",
-		nguoigui: "Duy Lân - 227001",
-		ngaytao: "8/12/2023 - 9:30 AM",
-		ngayduyet: "10/12/2023 - 12:00 PM",
-		status: "Từ chối",
+		maCT: "CT12230003",
+		maLoaiCT: "Đề xuất bảo dưỡng",
+		nguoiTao: "Duy Lân - 227001",
+		thoiGianTao: "8/12/2023 - 9:30 AM",
+		maTT: "Từ chối",
+	},
+	{
+		maCT: "CT12230003",
+		maLoaiCT: "Đề xuất bảo dưỡng",
+		nguoiTao: "Duy Lân - 227001",
+		thoiGianTao: "8/12/2023 - 9:30 AM",
+		maTT: "Từ chối",
+	},
+	{
+		maCT: "CT12230003",
+		maLoaiCT: "Đề xuất bảo dưỡng",
+		nguoiTao: "Duy Lân - 227001",
+		thoiGianTao: "8/12/2023 - 9:30 AM",
+		maTT: "Từ chối",
+	},
+	{
+		maCT: "CT12230003",
+		maLoaiCT: "Đề xuất bảo dưỡng",
+		nguoiTao: "Duy Lân - 227001",
+		thoiGianTao: "8/12/2023 - 9:30 AM",
+		maTT: "Từ chối",
+	},
+	{
+		maCT: "CT12230003",
+		maLoaiCT: "Đề xuất bảo dưỡng",
+		nguoiTao: "Duy Lân - 227001",
+		thoiGianTao: "8/12/2023 - 9:30 AM",
+		maTT: "Từ chối",
+	},
+	{
+		maCT: "CT12230003",
+		maLoaiCT: "Đề xuất bảo dưỡng",
+		nguoiTao: "Duy Lân - 227001",
+		thoiGianTao: "8/12/2023 - 9:30 AM",
+		maTT: "Từ chối",
+	},
+	{
+		maCT: "CT12230003",
+		maLoaiCT: "Đề xuất bảo dưỡng",
+		nguoiTao: "Duy Lân - 227001",
+		thoiGianTao: "8/12/2023 - 9:30 AM",
+		maTT: "Từ chối",
+	},
+	{
+		maCT: "CT12230003",
+		maLoaiCT: "Đề xuất bảo dưỡng",
+		nguoiTao: "Duy Lân - 227001",
+		thoiGianTao: "8/12/2023 - 9:30 AM",
+		maTT: "Từ chối",
+	},
+	{
+		maCT: "CT12230003",
+		maLoaiCT: "Đề xuất bảo dưỡng",
+		nguoiTao: "Duy Lân - 227001",
+		thoiGianTao: "8/12/2023 - 9:30 AM",
+		maTT: "Từ chối",
+	},
+	{
+		maCT: "CT12230003",
+		maLoaiCT: "Đề xuất bảo dưỡng",
+		nguoiTao: "Duy Lân - 227001",
+		thoiGianTao: "8/12/2023 - 9:30 AM",
+		maTT: "Từ chối",
+	},
+	{
+		maCT: "CT12230003",
+		maLoaiCT: "Đề xuất bảo dưỡng",
+		nguoiTao: "Duy Lân - 227001",
+		thoiGianTao: "8/12/2023 - 9:30 AM",
+		maTT: "Từ chối",
+	},
+	{
+		maCT: "CT12230003",
+		maLoaiCT: "Đề xuất bảo dưỡng",
+		nguoiTao: "Duy Lân - 227001",
+		thoiGianTao: "8/12/2023 - 9:30 AM",
+		maTT: "Từ chối",
 	},
 ];

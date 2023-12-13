@@ -33,7 +33,7 @@ export const PrivateRoutes = [
 		layout: Layout,
 	},
 	{
-		path: "/chitietchungtu",
+		path: "/chitietchungtu/:id",
 		component: DetailChungTu,
 		layout: Layout,
 	},

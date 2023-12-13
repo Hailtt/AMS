@@ -1,4 +1,3 @@
-import { FileAddFilled } from "@ant-design/icons";
 import React, { useEffect } from "react";
 
 function NoiDungChungTu({ detail }) {
