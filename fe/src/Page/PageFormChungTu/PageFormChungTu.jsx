@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { DATA_NghiPhep, DATA_Nhap } from "./data";
+import { DATA_NghiPhep } from "./data";
 import FormInput from "../../Component/FormInput/FormInput";
 import { SyncOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import FormNguoiDuyet from "../../Component/FormNguoiDuyet/FormNguoiDuyet";
 import { getCurrentDate } from "./functions";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import { nameChungTu } from "../CreateChungTu/TableDesign";
 const PageFormChungTu = () => {
 	const navigate = useNavigate();
-
+	const [listNguoiDuyets, setListNguoiDuyets] = useState(null);
 	const [currentStep, setCurrentStep] = useState("nhapthongtin");
 	const [nhapNguoiDuyet, setNhapNguoiduyet] = useState([]);
 	const [nhapThongTin, setNhapThongTin] = useState({
@@ -22,7 +22,6 @@ const PageFormChungTu = () => {
 
 		if (currentStep === "nhapthongtin") {
 			setCurrentStep("chonnguoiduyet");
-			console.log("currentStep >>>", currentStep);
 		} else {
 			const dataSubmit = {
 				maLoai: DATA_NghiPhep.maLoai,
@@ -32,8 +31,6 @@ const PageFormChungTu = () => {
 				noiDung: nhapThongTin.noidung,
 				nguoiDuyet: nhapNguoiDuyet,
 			};
-
-			console.log("ABCCCC >>>>>>", dataSubmit);
 
 			if (dataSubmit) {
 				axios
@@ -52,14 +49,38 @@ const PageFormChungTu = () => {
 		}
 	};
 
-	const handleChangeInput = (key, value) => {
+	const handleNextStep = () => {
+		setCurrentStep("chonnguoiduyet");
+
+		const dataSubmit = {
+			maLoai: DATA_NghiPhep.maLoai,
+			maForm: DATA_NghiPhep.maForm,
+			nguoiTao: nhapThongTin.nguoitao,
+			thoiGianTao: getCurrentDate(),
+			noiDung: nhapThongTin.noidung,
+		};
+
+		axios
+			.post(
+				`${process.env.REACT_APP_BE_URL}/chung-tu/chon-nguoi-duyet`,
+				dataSubmit
+			)
+			.then((res) => {
+				setListNguoiDuyets(res.data);
+			})
+			.catch((err) => {
+				console.log(err.response);
+			});
+	};
+
+	const handleChangeInput = (key, label, value) => {
 		// lấy ra người id người dùng
-		if (key === "userid") {
+		if (key === "userId") {
 			setNhapThongTin((prev) => ({ ...prev, nguoitao: value }));
 		} else {
-			//những key còn lại không phải id người tạo thì sẽ được đưa vào thuộc tính nội dung
+			//những label còn lại không phải id người tạo thì sẽ được đưa vào thuộc tính nội dung
 			const { noidung } = nhapThongTin;
-			const newNoiDung = { ...noidung, [key]: value };
+			const newNoiDung = { ...noidung, [label]: value };
 			setNhapThongTin((prev) => ({ ...prev, noidung: newNoiDung }));
 		}
 	};
@@ -100,7 +121,7 @@ const PageFormChungTu = () => {
 
 	return (
 		<div className="pageformchungtu">
-			<h1 className="title">ashgdfsahg</h1>
+			<h1 className="title">Tạo Chứng Từ</h1>
 			<div className="steps">
 				<div className="checkpoint --active ">
 					{currentStep == "nhapthongtin" ? (
@@ -127,8 +148,11 @@ const PageFormChungTu = () => {
 					currentStep={currentStep}
 					handleChangeInput={handleChangeInput}
 				/>
-				{currentStep === "chonnguoiduyet" && (
-					<FormNguoiDuyet handleChangeNguoiDuyet={handleChangeNguoiDuyet} />
+				{currentStep === "chonnguoiduyet" && listNguoiDuyets && (
+					<FormNguoiDuyet
+						listNguoiDuyets={listNguoiDuyets}
+						handleChangeNguoiDuyet={handleChangeNguoiDuyet}
+					/>
 				)}
 			</div>
 			<div className="btn-box">
@@ -138,9 +162,15 @@ const PageFormChungTu = () => {
 				>
 					Lùi lại
 				</button>
-				<button className="button" onClick={handleSubmit}>
-					{currentStep == "nhapthongtin" ? "Tiếp theo" : "Tạo chứng từ"}
-				</button>
+				{currentStep == "nhapthongtin" ? (
+					<button className="button" onClick={handleNextStep}>
+						Tiếp theo
+					</button>
+				) : (
+					<button className="button" onClick={handleSubmit}>
+						Tạo chứng từ
+					</button>
+				)}
 			</div>
 		</div>
 	);

@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import _ from "lodash";
 import { DATA_FORM } from "./dataForm";
 const FormInput = ({ currentStep, handleChangeInput }) => {
-	const [resData, setResData] = useState(
-		DATA_FORM.sort((a, b) => a.sort_order - b.sort_order)
-	);
+	const resData = DATA_FORM.sort((a, b) => a.sort_order - b.sort_order);
+
+	const urlParts = window.location.href.split("/");
+	useEffect(() => {
+		const formChungTuParam = urlParts[urlParts.indexOf("formchungtu") + 1];
+
+		console.log(urlParts);
+		console.log(formChungTuParam);
+	}, [urlParts]);
 
 	return (
 		<div className="AMS-forminput">
@@ -16,7 +22,9 @@ const FormInput = ({ currentStep, handleChangeInput }) => {
 							type={item.dataType}
 							className={`tag-${item.tag} `}
 							placeholder={"Nhập " + item.label}
-							onChange={(e) => handleChangeInput(item.key, e.target.value)}
+							onChange={(e) =>
+								handleChangeInput(item.key, item.label, e.target.value)
+							}
 							readOnly={currentStep == "nhapthongtin" ? false : true}
 						/>
 					) : (
