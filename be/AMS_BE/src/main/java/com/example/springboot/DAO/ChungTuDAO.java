@@ -1,14 +1,18 @@
 package com.example.springboot.DAO;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.example.springboot.Model.*;
@@ -86,11 +90,23 @@ public class ChungTuDAO {
 			return false;
 		}
 	}
+	@Transactional
 	public Boolean postChungTuTrangThai(YeuCauChungTu yeuCau) {
 		try {
 			String sql= "insert into chungtu_trangthai (doc_id,status_id,user_update,time_update) "
 					+ "values (?,?,?,?)";
 			jdbcTemplate.update(sql,yeuCau.getMaCT(),yeuCau.getMaTT(),yeuCau.getNguoiTao(),yeuCau.getThoiGianTao());
+			String sql2 = "insert into chungtu_trangthai (doc_id, status_id, user_update,time_update) "
+					+"values (?,?,?,?) ";
+			List<Map<String, Object>> listNguoiduyet = yeuCau.getNguoiDuyet();
+			for(Map<String,Object> nguoiDuyet : listNguoiduyet) {
+				int lvl = Integer.parseInt(nguoiDuyet.get("lvl").toString());
+				if(lvl == 1) {
+					jdbcTemplate.update(sql2,yeuCau.getMaCT(),"TT002",nguoiDuyet.get("user_update"),yeuCau.getThoiGianTao());
+				}
+			}
+			String sqlUpdate = "update chungtu set status_id = ? where doc_id = ? ";
+			jdbcTemplate.update(sqlUpdate,"TT002",yeuCau.getMaCT());
 			System.out.println("Them trang thai thanh cong");
 			return true;
 		}catch(Exception e) {
@@ -139,7 +155,7 @@ public class ChungTuDAO {
 	    }, maForm, key);
 	}
 	public List<Map<String, String>> getApprover(String key, String match, String comparedValue, String maForm){
-		String sql = "select afta.lvl ,afta.frequence ,au.id || ' - ' || au.full_name as user "
+		String sql = "select afta.lvl ,afta.frequence ,au.id as user, au.full_name as name "
 				+ "from "
 				+ "	ams_form_type_approver afta "
 				+ "join "
@@ -158,7 +174,55 @@ public class ChungTuDAO {
 	        approver.put("lvl", rs.getString("lvl"));
 	        approver.put("frequence", rs.getString("frequence"));
 	        approver.put("user", rs.getString("user"));
+	        approver.put("name", rs.getString("name"));
 	        return approver;
 	    }, key,match,comparedValue,maForm);
+	}
+	public Boolean checkCT(String maCT) {
+		String sql = "select user_create from chungtu where doc_id = ?";
+	    try {
+	        String userFound = jdbcTemplate.queryForObject(sql, String.class, maCT);
+	        return userFound != null;
+	    } catch (EmptyResultDataAccessException e) {
+	        return false;
+	    }
+	}
+	public Boolean checkKetQua(String maCT) {
+		String sql = "select user_update from chungtu_ketqua where doc_id = ? and result is not null";
+	    
+	    List<String> results = jdbcTemplate.queryForList(sql, String.class, maCT);
+	    if (results.size() > 0) {
+	        return false; // Nếu có kết quả, trả về false
+	    } else {
+	        return true; // Nếu không có kết quả hoặc nhiều hơn 1, trả về true
+	    }
+	}
+	public String getNguoiTao(String maCT) {
+		String sql = "select user_create from chungtu where doc_id = ?";
+		return jdbcTemplate.queryForObject(sql,String.class, maCT);
+	}
+	@Transactional
+	public Boolean updateStatus(String maCT, String nguoiCapNhat) {
+		LocalDateTime currentDateTime = LocalDateTime.now();
+		try {
+			String sql = "update chungtu set status_id = 'TT005' where doc_id = ? ";
+			jdbcTemplate.update(sql,maCT);
+			String sql2= "insert into chungtu_trangthai (doc_id,status_id,user_update,time_update) "
+					+ "values (?,?,?,?) ";
+			jdbcTemplate.update(sql2,maCT,"TT005",nguoiCapNhat,currentDateTime);
+			return true;
+		}catch(Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public List<LoaiChungTuModel> getAllLoaiCT(){
+		String sql="select * from ams_form_type";
+		return jdbcTemplate.query(sql, new LoaiCTMapper());
+	}
+	public List<FormFieldModel> getAllFormFields(String formId) {
+		String sql = "SELECT * FROM form_field "
+				+ "where form_id = ?";
+	    return jdbcTemplate.query(sql,new Object[] {formId}, new FormFieldRowMapper());
 	}
 }

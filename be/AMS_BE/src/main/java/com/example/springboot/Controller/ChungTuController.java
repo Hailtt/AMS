@@ -29,8 +29,8 @@ public class ChungTuController {
         this.chungTuService = chungTuService;
     }
 
-    @GetMapping("/all")
-    public List<ChungTuModel> getAllChungTus() {
+    @GetMapping("/all/{current}")
+    public List<ChungTuModel> getAllChungTus(@PathVariable(value="current") int page) {
         return chungTuService.getAllChungTus();
     }
 
@@ -64,4 +64,17 @@ public class ChungTuController {
     	}
     	return chungTuService.postYeuCauChungTu(yeuCau);
     }
+    @GetMapping("/huy-chung-tu/{maCT}")
+    public ResponseEntity<String> cancelChungTu(@PathVariable(value="maCT") String maCT){
+    	return chungTuService.cancelChungTu(maCT);
+    }
+    @GetMapping("/get-loai-chung-tu/{page}")
+    public List<LoaiChungTuModel> getAllLoaiCT(@PathVariable(value="page") int page){
+    	return chungTuService.getAllLoaiCT();
+    }
+    @GetMapping("/get-form-field/{formId}")
+    public List<FormFieldModel> getAllFormFields(@PathVariable(value="formId") String formId){
+    	return chungTuService.getAllFormFields(formId);
+    }
+    
 }

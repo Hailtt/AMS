@@ -43,6 +43,7 @@ public class ChungTuServices {
     @Transactional
     public ResponseEntity<String> postYeuCauChungTu (YeuCauChungTu yeuCau) {
     	 try {
+//    		System.out.println(yeuCau.getNguoiDuyet());
     	  	Jsonb jsonb = JsonbBuilder.create();
     	  	String jsonString = jsonb.toJson(yeuCau.getNoiDung());
     	  	yeuCau.setMaTT("TT001");
@@ -108,7 +109,7 @@ public class ChungTuServices {
                          List<Map<String,String>> approver = chungTuDAO.getApprover(key, match, comparedValueStr, yeuCau.getMaForm());
                          ObjectMapper objectMapper = new ObjectMapper();
                          String approverJson = objectMapper.writeValueAsString(approver);
-                         System.out.println(approver);
+//                         System.out.println(approver);
                      	 return ResponseEntity.status(200).body(approverJson);
                      }
                      break;
@@ -118,7 +119,7 @@ public class ChungTuServices {
                          List<Map<String,String>> approver = chungTuDAO.getApprover(key, match, comparedValueStr, yeuCau.getMaForm());
                          ObjectMapper objectMapper = new ObjectMapper();
                          String approverJson = objectMapper.writeValueAsString(approver);
-                         System.out.println(approver);
+//                         System.out.println(approver);
                      	 return ResponseEntity.status(200).body(approverJson);
                      }
                      break;
@@ -128,7 +129,7 @@ public class ChungTuServices {
                          List<Map<String,String>> approver = chungTuDAO.getApprover(key, match, comparedValueStr, yeuCau.getMaForm());
                          ObjectMapper objectMapper = new ObjectMapper();
                          String approverJson = objectMapper.writeValueAsString(approver);
-                         System.out.println(approver);
+//                         System.out.println(approver);
                      	 return ResponseEntity.status(200).body(approverJson);
                      }
                      break;
@@ -137,6 +138,28 @@ public class ChungTuServices {
              }
          }
      	 return ResponseEntity.status(400).body("Có lỗi");
+    }
+    public ResponseEntity<String> cancelChungTu(String maCT){
+    	Boolean check = chungTuDAO.checkCT(maCT);
+    	if(check.equals(false))
+    	{
+    		return ResponseEntity.status(404).body("Không thấy chứng từ");
+    	}
+    	Boolean checkKetQua = chungTuDAO.checkKetQua(maCT);
+    	if(checkKetQua.equals(false)) {
+    		return ResponseEntity.status(401).body("Chứng từ đã có người duyệt");
+    	}
+    	String nguoiCapNhat = chungTuDAO.getNguoiTao(maCT);
+//    	System.out.println(nguoiCapNhat);
+    	Boolean capNhatTrangThai = chungTuDAO.updateStatus(maCT,nguoiCapNhat);
+//    	System.out.println(capNhatTrangThai);
+    	return ResponseEntity.status(200).body("Đã hủy");
+    }
+    public List<LoaiChungTuModel> getAllLoaiCT(){
+    	return chungTuDAO.getAllLoaiCT();
+    }
+    public List<FormFieldModel> getAllFormFields(String formId){
+    	return chungTuDAO.getAllFormFields(formId);
     }
 }
 
