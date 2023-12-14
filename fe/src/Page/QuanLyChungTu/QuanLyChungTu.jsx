@@ -1,3 +1,4 @@
+import Loading from "../Loading/Loading";
 import { Input, Select, Button, Table, DatePicker, Checkbox } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { columntao, columnduyet, daDuyet, status } from "./Data";
@@ -5,7 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import moment from 'moment';
 
-function QuanLyChungTu() {
+function QuanLyChungTu({ loading, setLoading }) {
 	
 	const [box, setBox] = useState(1);
 	const [current, setCurrent] = useState(1);
@@ -13,7 +14,7 @@ function QuanLyChungTu() {
 	const [tempList, setTempList] = useState();
 	const [startDate, setStartDate] = useState(null);
 	const [endDate, setEndDate] = useState(null);
-	const [type, setType] = useState(null);
+	const [type, setType] = useState();
 
 	const initFilter = {
 		maCT: null,
@@ -41,6 +42,7 @@ function QuanLyChungTu() {
 	}
 
 	const getLoaiChungTu = async() => {
+		setLoading(true);
 		let data = await new Promise((resolve, reject) => {
 			axios.get(`${process.env.REACT_APP_BE_URL}/chung-tu/get-loai-chung-tu/1`)
 				.then(data => {
@@ -49,6 +51,7 @@ function QuanLyChungTu() {
 				})
 				.catch(err => reject(err))
 		})
+        
 	}
 
 	const getAllChungTu = async() => {
@@ -61,7 +64,9 @@ function QuanLyChungTu() {
 						const parts = i.thoiGianTao.split("T");
 	
 						const datePart = parts[0];
-						const timePart = parts[1];
+						const complexTimePart = parts[1];
+
+						const timePart = complexTimePart.split('.')[0];
 	
 						const formattedTime = datePart + " - " + timePart;
 	
@@ -72,18 +77,19 @@ function QuanLyChungTu() {
 				})
 				.catch(err => reject(err));
 		})
+		setLoading(false);
 	}
 
 	const handleLoaiCTChange = (value) => {
-		setFilter((prevFilter) => ({
-			...prevFilter,
+		setFilter((prev) => ({
+			...prev,
 			maLoaiCT: value,
 		}));
 	};
 	
 	const handleStatChange = (value) => {
-		setFilter((prevFilter) => ({
-			...prevFilter,
+		setFilter((prev) => ({
+			...prev,
 			maTT: value,
 		}));
 	};
@@ -94,19 +100,19 @@ function QuanLyChungTu() {
 			getChungTu(temp);
 			return;
 		} else {
-			if (filter.maCT !== null) {
+			if (filter.maCT) {
 				temp = temp.filter(i => {
 					return i.maCT === filter.maCT;
 				})
 			} 
 			
-			if (filter.maLoaiCT !== null) {
+			if (filter.maLoaiCT) {
 				temp = temp.filter(i => {
 					return i.maLoaiCT === filter.maLoaiCT;
 				})
 			}
 
-			if (filter.maTT !== null) {
+			if (filter.maTT) {
 				temp = temp.filter(i => {
 					return i.maTT === filter.maTT;
 				})
@@ -116,13 +122,36 @@ function QuanLyChungTu() {
 		console.log("filter: ", filter)
 	}
 
+	// const handleGetDateRange = () => {
+	// 	if (startDate && endDate) {
+	// 		const range = {
+	// 		start: startDate.format('YYYY-MM-DD'),
+	// 		end: endDate.format('YYYY-MM-DD'),
+	// 	};
+	// 		console.log('Range:', range);
+	// 	} else {
+	// 		console.log('Vui lòng chọn cả hai ngày.');
+	// 	}
+	// };
+
+	const disabledStartDate = (current) => {
+		return endDate && current && current >= endDate;
+	};
+	
+	const disabledEndDate = (current) => {
+		return startDate && current && current <= startDate;
+	};
+
 	useEffect(() => {
 		getLoaiChungTu();
 		getAllChungTu();
-	}, []);
+	}, [])
 
 	return (
 		<div className="QLCT">
+			{loading && (
+				<Loading />
+			)}
 			<h1 className="title">Quản Lý Chứng Từ</h1>
 
 			<div className="filter-section">
@@ -138,12 +167,12 @@ function QuanLyChungTu() {
 						size="large"
 						className="dropdown"
 						allowClear={true}
-						// options={type.map((obj) => {
-						// 	return {
-						// 		label: `${obj.name}`,
-						// 		value: obj.name
-						// 	};
-						// })}
+						options={type?.map((obj) => {
+							return {
+								label: `${obj.name}`,
+								value: obj.name
+							};
+						})}
 						onChange={handleLoaiCTChange}
 						placeholder="Chọn loại chứng từ"
 					/>
@@ -169,9 +198,7 @@ function QuanLyChungTu() {
 							size="large" 
 							className="input-date" 
 							onChange={date => setStartDate(date)}
-							disabledDate={current => {
-								return current && current > moment(endDate)
-							}}
+							disabledDate={disabledStartDate}
 						/>
 					</div>
 					<div className="date">
@@ -180,9 +207,7 @@ function QuanLyChungTu() {
 							size="large" 
 							className="input-date" 
 							onChange={date => setEndDate(date)}
-							disabledDate={current => {
-								return current && current < moment(startDate)
-							}}
+							disabledDate={disabledEndDate}
 						/>
 					</div>
 					<Button onClick={() => search()} size="large" className="button">

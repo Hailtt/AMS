@@ -1,7 +1,5 @@
-import { useState } from "react";
+import { Button } from "antd";
 import { Link } from "react-router-dom";
-import axios from "axios";
-// axios.get(`${process.env.REACT_APP_URL_BE}//chung-tu/get-loai-chung-tu/1`)
 
 export const getListChungTu = () => {
 	const Value = [
@@ -37,9 +35,10 @@ export const Column = [
 		dataIndex: "action",
 		render: (text, item) => (
 			<Link to={`/createchungtu/formchungtu/${item.formId}`} className="link">
-				xem
+				<Button style={{width: 80}}>Xem</Button>
 			</Link>
 		),
-		width: "5%",
+		width: "10%",
+		align: "center"
 	},
 ];
