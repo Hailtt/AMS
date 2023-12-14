@@ -1,5 +1,8 @@
+@import "../abstracts/variables.scss";
+
 .createchungtu {
 	width: 100%;
+
 	.title {
 		font-size: 40px;
 		font-weight: 700;
@@ -8,63 +11,28 @@
 
 	.search {
 		display: flex;
-		align-items: center;
-		gap: 8px;
-		height: 40px;
-		margin-bottom: 15px;
-	}
 
-	.search > .input {
-		height: 100%;
-		border-radius: 16px;
-		padding-left: 8px;
-		text-align: center;
-		font-weight: 600;
-		border: 1px solid #525252;
+		.input {
+			width: 200px;
 
-		&:focus {
-			border: 1px solid #ff7070;
+			&:first-child {
+				margin-right: 10px;
+			}
 		}
-	}
 
-	.search > .button {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		height: 100%;
-		border-radius: 16px;
-		padding-inline: 12px;
-		font-size: 18px;
-		gap: 4px;
-		border: none;
-		color: white;
-		background-color: #1677ff;
-		opacity: 0.7;
-		min-width: 124px;
+		.button {
+			margin-left: 15px;
+			color: $title-color;
+			background-color: #f6ded8;
 
-		&:hover {
-			cursor: pointer;
-			opacity: 1;
+			&:hover {
+				border-color: $title-color;
+				color: $title-color;
+			}
 		}
-	}
-
-	.search > .button > .icon {
-		font-size: 22px;
 	}
 
 	.container {
-		min-width: 781px;
-	}
-
-	.ant-table-cell > .link {
-		color: white;
-		background-color: #1677ff;
-		box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
-		font-size: 14px;
-		height: 32px;
-		padding: 4px 15px;
-		border-radius: 6px;
-		text-decoration: none;
-		text-align: center;
+		margin-top: 20px;
 	}
 }

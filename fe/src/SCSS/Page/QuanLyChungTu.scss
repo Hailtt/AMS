@@ -51,6 +51,11 @@
         margin-left: 25px;
         color: $title-color;
         background-color: #f6ded8;
+
+        &:hover {
+            border-color: $title-color;
+            color: $title-color;
+        }
     }
 
     .switch {
