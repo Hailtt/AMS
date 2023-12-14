@@ -46,6 +46,10 @@ public class ChungTuController {
     public List<KetQuaModel> getKetQuaChungTu(@PathVariable(value="maCT") String maCT){
     	return chungTuService.getKetQuaChungTu(maCT);
     }
+    @GetMapping("/lay-ten-nguoi-duyet/{id}")
+    public String getTenNguoiDuyet(@PathVariable(value="id") String id) {
+    	return chungTuService.getTenNguoiDuyet(id);
+    }
     @PostMapping("/chon-nguoi-duyet")
     public ResponseEntity<String> postChonNguoiDuyet(@RequestBody YeuCauChungTu yeuCau) throws JsonProcessingException{
     	return chungTuService.postChonNguoiDuyet(yeuCau);

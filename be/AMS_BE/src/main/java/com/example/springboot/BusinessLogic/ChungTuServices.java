@@ -6,11 +6,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
+
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,8 +46,28 @@ public class ChungTuServices {
     public List<KetQuaModel> getKetQuaChungTu(String maCT){
     	return chungTuDAO.getKetQuaChungTu(maCT);
     }
+    public String getTenNguoiDuyet (String id) {
+    	return chungTuDAO.getTenNguoiDuyet(id);
+    }
     @Transactional
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "UTC")
     public ResponseEntity<String> postYeuCauChungTu (YeuCauChungTu yeuCau) {
+    	System.out.println(yeuCau.getThoiGianTao());
+    	
+    	List<Map<String,String>> nguoiDuyetCheckList = chungTuDAO.listCheckNguoiDuyet(yeuCau.getMaForm());
+    	for(Map<String,Object> nguoiDuyetInput : yeuCau.getNguoiDuyet()) {
+        	Boolean flag = false;
+    		for(Map<String,String> nguoiDuyetCheck : nguoiDuyetCheckList) {
+    			if(nguoiDuyetInput.get("user_update").toString().equals(nguoiDuyetCheck.get("id").toString())) {
+    				flag = true;
+    				break;
+    			}
+//    			System.out.println(nguoiDuyetInput.get("user_update") + " " + nguoiDuyetCheck.get("id"));
+    		}
+    		if(flag == false) {
+    	   	     return ResponseEntity.status(400).body("Người duyệt không hợp lệ: "+ nguoiDuyetInput.get("user_update"));
+    	    }
+    	}
     	 try {
 //    		System.out.println(yeuCau.getNguoiDuyet());
     	  	Jsonb jsonb = JsonbBuilder.create();
@@ -76,9 +102,9 @@ public class ChungTuServices {
     }
     public ResponseEntity<String> postChonNguoiDuyet(YeuCauChungTu yeuCau) throws JsonProcessingException{
     	Map<String, String> keyLabel = chungTuDAO.getFormLabel(yeuCau);
-//    	System.out.println(keyLabel);
     	String key = keyLabel.get("key");
     	String label = keyLabel.get("label");
+//    	System.out.println(key + label);
     	//Form label de get value
     	String value = "";
     	Map<String, Object> noiDungMap = yeuCau.getNoiDung();
@@ -97,53 +123,133 @@ public class ChungTuServices {
     	 for (Map<String, String> condition : conditions) {
              String match = condition.get("match");
              String comparedValueStr = condition.get("compared_value");
-
+             String logic = condition.get("logic");
+             String pair = condition.get("pair");
+//             System.out.println(logic);
+//             System.out.println(condition);
+             
              // Chuyển đổi giá trị so sánh từ String sang số
              int comparedValue = Integer.parseInt(comparedValueStr);
              
              // Thực hiện so sánh dựa trên toán tử
              switch (match) {
-                 case ">":
+                 case "gt":
                      if (valueToCompare > comparedValue) {
                          System.out.println("Giá trị " + valueToCompare + " lớn hơn " + comparedValue);
                          List<Map<String,String>> approver = chungTuDAO.getApprover(key, match, comparedValueStr, yeuCau.getMaForm());
                          ObjectMapper objectMapper = new ObjectMapper();
                          String approverJson = objectMapper.writeValueAsString(approver);
-//                         System.out.println(approver);
-                     	 return ResponseEntity.status(200).body(approverJson);
+                             System.out.println("Đa co nguoi duyet");
+                             return ResponseEntity.status(200).body(approverJson);        	
                      }
                      break;
-                 case "<":
+                 case "lt":
                      if (valueToCompare < comparedValue) {
                          System.out.println("Giá trị " + valueToCompare + " nhỏ hơn " + comparedValue);
                          List<Map<String,String>> approver = chungTuDAO.getApprover(key, match, comparedValueStr, yeuCau.getMaForm());
                          ObjectMapper objectMapper = new ObjectMapper();
                          String approverJson = objectMapper.writeValueAsString(approver);
 //                         System.out.println(approver);
-                     	 return ResponseEntity.status(200).body(approverJson);
+                             System.out.println("Đa co nguoi duyet");
+                             return ResponseEntity.status(200).body(approverJson);
                      }
                      break;
-                 case "==":
+                 case "eql":
                      if (valueToCompare == comparedValue) {
                          System.out.println("Giá trị " + valueToCompare + " bằng " + comparedValue);
                          List<Map<String,String>> approver = chungTuDAO.getApprover(key, match, comparedValueStr, yeuCau.getMaForm());
                          ObjectMapper objectMapper = new ObjectMapper();
                          String approverJson = objectMapper.writeValueAsString(approver);
 //                         System.out.println(approver);
-                     	 return ResponseEntity.status(200).body(approverJson);
+                         System.out.println("Đa co nguoi duyet");
+                             return ResponseEntity.status(200).body(approverJson);
                      }
                      break;
+                 case "gte":
+                	 if (valueToCompare > comparedValue || valueToCompare == comparedValue) {
+                         System.out.println("Giá trị " + valueToCompare + " lớn hơn/bằng " + comparedValue);
+                         List<Map<String,String>> approver = chungTuDAO.getApprover(key, match, comparedValueStr, yeuCau.getMaForm());
+                         ObjectMapper objectMapper = new ObjectMapper();
+                         String approverJson = objectMapper.writeValueAsString(approver);
+//                         System.out.println(approver);
+                         System.out.println("Đa co nguoi duyet");
+                             return ResponseEntity.status(200).body(approverJson);
+                     }
+                     break;
+                 case "lte":
+                	 if (valueToCompare < comparedValue || valueToCompare == comparedValue) {
+                         System.out.println("Giá trị " + valueToCompare + " lớn hơn/bằng " + comparedValue);
+                         List<Map<String,String>> approver = chungTuDAO.getApprover(key, match, comparedValueStr, yeuCau.getMaForm());
+                         ObjectMapper objectMapper = new ObjectMapper();
+                         String approverJson = objectMapper.writeValueAsString(approver);
+//                         System.out.println(approver);
+                         System.out.println("Đa co nguoi duyet");
+                             return ResponseEntity.status(200).body(approverJson);
+                     }
+                     break;
+                 case "in":
+                	 List<String> listComparedValue = chungTuDAO.pairValue(key, yeuCau.getMaForm() , pair,  match);
+                	 System.out.println(listComparedValue);
+                	 int value1 = Integer.parseInt(listComparedValue.get(0));
+                	 int value2 = Integer.parseInt(listComparedValue.get(1));
+                	 System.out.println(value1+" "+value2);
+                	 System.out.println(valueToCompare);
+                	
+                	 if (value1 > value2) {
+                         System.out.println("2 bé hơn 1");
+                		 if (valueToCompare > value2 && valueToCompare < value1) {
+                             System.out.println("Giá trị nằm trong khoảng: " + value2 + " tới " + value1);
+                             List<Map<String,String>> approver1 = chungTuDAO.getApprover(key, match, listComparedValue.get(0), yeuCau.getMaForm());
+                             List<Map<String,String>> approver2 = chungTuDAO.getApprover(key, match, listComparedValue.get(1), yeuCau.getMaForm());
+                             if(approver1.size() == 0) {
+                            	 ObjectMapper objectMapper = new ObjectMapper();
+                                 String approverJson = objectMapper.writeValueAsString(approver2);
+                                 System.out.println(approver2);
+                                 System.out.println("Đa co nguoi duyet");
+                                 return ResponseEntity.status(200).body(approverJson);
+                             }else {
+                            	 ObjectMapper objectMapper = new ObjectMapper();
+                                 String approverJson = objectMapper.writeValueAsString(approver1);
+                                 System.out.println(approver1);
+                                 System.out.println("Đa co nguoi duyet");
+                                 return ResponseEntity.status(200).body(approverJson);
+                             }
+                         }
+                     } else if (value1 < value2) {
+                         System.out.println("1 bé hơn 2");
+                         if (valueToCompare > value1 && valueToCompare < value2) {
+                             System.out.println("Giá trị nằm trong khoảng: " + value1 + " tới " + value2);
+                             List<Map<String,String>> approver1 = chungTuDAO.getApprover(key, match, listComparedValue.get(0), yeuCau.getMaForm());
+                             List<Map<String,String>> approver2 = chungTuDAO.getApprover(key, match, listComparedValue.get(1), yeuCau.getMaForm());
+                             if(approver1.size() == 0) {
+                            	 ObjectMapper objectMapper = new ObjectMapper();
+                                 String approverJson = objectMapper.writeValueAsString(approver2);
+                                 System.out.println(approver2);
+                                 System.out.println("Đa co nguoi duyet");
+                                 return ResponseEntity.status(200).body(approverJson);
+                             }else {
+                            	 ObjectMapper objectMapper = new ObjectMapper();
+                                 String approverJson = objectMapper.writeValueAsString(approver1);
+                                 System.out.println(approver1);
+                                 System.out.println("Đa co nguoi duyet");
+                                 return ResponseEntity.status(200).body(approverJson);
+                             }
+                         }
+                     }
+                	 System.out.println("2 bé hơn 1");
+                     
+                	 break;
                  default:
                      System.out.println("Toán tử không hợp lệ: " + match);
              }
          }
-     	 return ResponseEntity.status(400).body("Có lỗi");
+   	 return ResponseEntity.status(400).body("Có lỗi");
     }
     public ResponseEntity<String> cancelChungTu(String maCT){
     	Boolean check = chungTuDAO.checkCT(maCT);
     	if(check.equals(false))
     	{
-    		return ResponseEntity.status(404).body("Không thấy chứng từ");
+    		return ResponseEntity.status(404).body("Không hợp lệ");
     	}
     	Boolean checkKetQua = chungTuDAO.checkKetQua(maCT);
     	if(checkKetQua.equals(false)) {
