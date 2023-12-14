@@ -2,7 +2,7 @@ import { Button } from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
 
-function ButtonContainer({ diary, ketqua, id }) {
+function ButtonContainer({ avail, id }) {
 
     const navigate = useNavigate();
 
@@ -18,12 +18,9 @@ function ButtonContainer({ diary, ketqua, id }) {
         }
     }
 
-    console.log("diary: ", diary)
-    console.log("ketqua: ", ketqua)
-
     return (
         <div className='button-container'>
-            <Button onClick={huyChungTu} className='button'>Hủy chứng từ</Button>
+            {avail ? <Button onClick={huyChungTu} className='button' danger>Hủy chứng từ</Button> : <Button onClick={huyChungTu} className='button' danger disabled>Hủy chứng từ</Button>}
         </div>
     )
 }

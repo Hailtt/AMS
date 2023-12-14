@@ -5,6 +5,7 @@ import { PrivateRoutes, PublicRoutes } from "./utili/routes";
 
 function App() {
 	const [isLogin, setIsLogin] = useState(true);
+	const [loading, setLoading] = useState(true);
 	useEffect(() => {
 		setIsLogin(localStorage.getItem("user"));
 	}, []);
@@ -22,7 +23,7 @@ function App() {
 						path={route.path}
 						element={
 							<DefaultLayout>
-								<Page key={index} />
+								<Page key={index} loading={loading} setLoading={setLoading}/>
 							</DefaultLayout>
 						}
 					/>

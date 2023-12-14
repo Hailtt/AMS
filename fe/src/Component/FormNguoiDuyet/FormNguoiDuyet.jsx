@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import _ from "lodash";
 
 const FormNguoiDuyet = ({ listNguoiDuyets, handleChangeNguoiDuyet }) => {
+	const [nguoiDuyetSelected, setNguoiDuyetSelected] = useState([""]);
+	console.log("Data nahn ve:", listNguoiDuyets);
 	//max lever cấp duyệt
 	let maxLevel = 0;
 	// 1 level xuất hiện mấy lần
@@ -10,10 +12,27 @@ const FormNguoiDuyet = ({ listNguoiDuyets, handleChangeNguoiDuyet }) => {
 	// resData lưu trữ dữ liệu List người duyệt sau khi tiền xử lý để render
 	const [resData, setResData] = useState([]);
 
+	const getType = (data) => {
+		//data nhap vao la 1 object
+		if (data) {
+			const { user, name, ...newDataType } = data;
+			const newType = newDataType;
+			return newType;
+		}
+
+		return null;
+	};
+	const newList3 = getType(listNguoiDuyets[0]);
+
+	// lấy cấu trúc thuộc tính của object
+
+	const handleDeleteNguoiduyet = (userId, index) => {};
 	useEffect(() => {
 		// tạo 2 list fake
 		const newList1 = [];
 		const newList2 = [];
+
+		//lấy cấu trúc thuộc tính của dữ liệu khi nhận về
 
 		// lấy max level
 		listNguoiDuyets.map((item) => {
@@ -56,42 +75,43 @@ const FormNguoiDuyet = ({ listNguoiDuyets, handleChangeNguoiDuyet }) => {
 
 				// thêm 1  lần xuất hiện vào list 2
 				newList2.push({
-					socap: item.soCap,
+					lvl: item.soCap,
+					frequence: item.soLan,
 					danhsachnguoiduyet: nguoiduyets,
 				});
 			}
 		});
 
+		console.log("resData", resData);
+		console.log("newList3", newList3);
+		console.log("newlis2", newList2);
+		console.log("newlis2", newList2);
+		console.log("newlis2", newList2);
 		setResData(newList2);
 	}, [listNguoiDuyets]);
-
-	const getType = (data) => {
-		if (data) {
-			const { user_update, ...newDataType } = data;
-			const newType = newDataType;
-			return newType;
-		}
-	};
 
 	return (
 		<form className="AMS-formnguoiduyet">
 			{_.map(resData, (item, index) => (
 				<div key={index} className="nguoiduyet">
-					<label className="label">Duyet cap {item.socap}</label>
+					<label className="label">Duyet cap {item.lvl}</label>
 					<select
 						className="list"
-						onChange={(e) =>
-							handleChangeNguoiDuyet(getType(item), e.target.value, index)
-						}
+						onChange={(e) => {
+							handleChangeNguoiDuyet(newList3, item, e.target.value, index);
+							handleDeleteNguoiduyet(e.target.value, index);
+						}}
 					>
 						<option value="" className="item">
 							Trống
 						</option>
-						{_.map(item.danhsachnguoiduyet, (item, index) => (
-							<option value={item.user} className="item" key={index}>
-								{item.name}
-							</option>
-						))}
+						{_.map(item.danhsachnguoiduyet, (item, index) => {
+							return (
+								<option value={item.user} className="item" key={index}>
+									{item.name}
+								</option>
+							);
+						})}
 					</select>
 				</div>
 			))}
