@@ -32,6 +32,7 @@ const PageFormChungTu = () => {
 				nguoiDuyet: nhapNguoiDuyet,
 			};
 
+			console.log("DATA Submitttttt", dataSubmit);
 			if (dataSubmit) {
 				axios
 					.post(
@@ -85,7 +86,8 @@ const PageFormChungTu = () => {
 		}
 	};
 
-	const handleChangeNguoiDuyet = (dataType, newValue, index) => {
+	const handleChangeNguoiDuyet = (strucData, info, newValue, index) => {
+		const { danhsachnguoiduyet, ...data } = info;
 		//check nếu chọn option trống
 		if (newValue === "") {
 			const newArray = [...nhapNguoiDuyet];
@@ -99,6 +101,8 @@ const PageFormChungTu = () => {
 		//check nếu mảng nhập người duyệt thấp hơn index (index ở đây đang trỏ tới cái slection trên giao diện mà người dùng dang thao tác)
 		if (nhapNguoiDuyet.length - 1 < index) {
 			const newArray = [...nhapNguoiDuyet];
+			const newStrucData = Object.assign({}, strucData, data);
+			// console.log("newStrucData", newStrucData);
 
 			// Dùng vòng lặp để thêm các item có giá trị là object rỗng
 			for (let i = newArray.length; i <= index; i++) {
@@ -106,14 +110,26 @@ const PageFormChungTu = () => {
 			}
 			// Khi length của mảng bằng với giá trị index, gán bằng newValue
 			if (newArray.length - 1 === index) {
-				newArray[index] = { ...dataType, user_update: newValue };
+				newArray[index] = {
+					...newStrucData,
+					result: null,
+					user_update: newValue,
+				};
 			}
-
+			console.log("newStrucData: ", newStrucData);
 			setNhapNguoiduyet(newArray);
 		} else {
 			//khi chạy code ở chỗ này tức là đã chọn người duyệt rồi hoặc thay đổi giá trị của option
 			const newArray = [...nhapNguoiDuyet];
-			newArray[index] = { ...dataType, user_update: newValue };
+			const newStrucData = Object.assign({}, strucData, data);
+			// console.log("newStrucData", newStrucData);
+
+			newArray[index] = {
+				...newStrucData,
+				result: null,
+				user_update: newValue,
+			};
+			console.log("newStrucData: ", newStrucData);
 
 			setNhapNguoiduyet(newArray);
 		}

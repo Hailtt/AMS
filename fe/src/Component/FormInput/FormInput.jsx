@@ -7,9 +7,6 @@ const FormInput = ({ currentStep, handleChangeInput }) => {
 	const urlParts = window.location.href.split("/");
 	useEffect(() => {
 		const formChungTuParam = urlParts[urlParts.indexOf("formchungtu") + 1];
-
-		console.log(urlParts);
-		console.log(formChungTuParam);
 	}, [urlParts]);
 
 	return (
