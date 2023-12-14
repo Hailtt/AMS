@@ -1,24 +1,30 @@
 import { Input, Select, Button, Table, DatePicker, Checkbox } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import { columntao, columnduyet, daDuyet, status, type } from "./Data";
+import { columntao, columnduyet, daDuyet, status } from "./Data";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import moment from 'moment';
 
 function QuanLyChungTu() {
-	const initFilter = {
-		maCT: null,
-		loaiCT: null,
-		stat: null,
-	}
 	
 	const [box, setBox] = useState(1);
 	const [current, setCurrent] = useState(1);
 	const [chungtu, getChungTu] = useState();
-
-	const [filter, setFilter] = useState(initFilter);
+	const [tempList, setTempList] = useState();
 	const [startDate, setStartDate] = useState(null);
 	const [endDate, setEndDate] = useState(null);
+	const [type, setType] = useState(null);
+
+	const initFilter = {
+		maCT: null,
+		maLoaiCT: null,
+		maTT: null,
+		date: {
+			start: startDate?.format('YYYY-MM-DD'),
+			end: endDate?.format('YYYY-MM-DD'),
+		}
+	}
+	const [filter, setFilter] = useState(initFilter);
 
 	const handleTableChange = (pagination) => {
 		setCurrent(pagination.current);
@@ -34,39 +40,85 @@ function QuanLyChungTu() {
 		})
 	}
 
+	const getLoaiChungTu = async() => {
+		let data = await new Promise((resolve, reject) => {
+			axios.get(`${process.env.REACT_APP_BE_URL}/chung-tu/get-loai-chung-tu/1`)
+				.then(data => {
+					resolve(data);
+					setType(data.data);
+				})
+				.catch(err => reject(err))
+		})
+	}
+
+	const getAllChungTu = async() => {
+		let data = await new Promise((resolve, reject) => {
+			axios.get(`${process.env.REACT_APP_BE_URL}/chung-tu/all/${current}`)
+				.then(data => {
+					resolve(data);
+					data.data.map((i) => {
+
+						const parts = i.thoiGianTao.split("T");
+	
+						const datePart = parts[0];
+						const timePart = parts[1];
+	
+						const formattedTime = datePart + " - " + timePart;
+	
+						return (i.thoiGianTao = formattedTime);
+					});
+					setTempList(data.data);
+					getChungTu(data.data);
+				})
+				.catch(err => reject(err));
+		})
+	}
+
 	const handleLoaiCTChange = (value) => {
 		setFilter((prevFilter) => ({
 			...prevFilter,
-			loaiCT: value,
+			maLoaiCT: value,
 		}));
 	};
 	
 	const handleStatChange = (value) => {
 		setFilter((prevFilter) => ({
 			...prevFilter,
-			stat: value,
+			maTT: value,
 		}));
 	};
 
+	const search = () => {
+		let temp = tempList;
+		if (!filter.maCT && !filter.maLoaiCT && !filter.maTT) {
+			getChungTu(temp);
+			return;
+		} else {
+			if (filter.maCT !== null) {
+				temp = temp.filter(i => {
+					return i.maCT === filter.maCT;
+				})
+			} 
+			
+			if (filter.maLoaiCT !== null) {
+				temp = temp.filter(i => {
+					return i.maLoaiCT === filter.maLoaiCT;
+				})
+			}
+
+			if (filter.maTT !== null) {
+				temp = temp.filter(i => {
+					return i.maTT === filter.maTT;
+				})
+			}
+			getChungTu(temp);
+		}
+		console.log("filter: ", filter)
+	}
+
 	useEffect(() => {
-		axios
-			.get(`${process.env.REACT_APP_BE_URL}/chung-tu/all/${current}`)
-			.then((res) => {
-				res.data.map((i) => {
-					const parts = i.thoiGianTao.split("T");
-
-					const datePart = parts[0];
-					const timePart = parts[1];
-
-					const formattedTime = datePart + " - " + timePart;
-
-					return (i.thoiGianTao = formattedTime);
-				});
-				getChungTu(res.data);
-			})
-			.catch((err) => {
-				alert(err);
-			});
+		getLoaiChungTu();
+		getAllChungTu();
 	}, []);
 
 	return (
@@ -85,12 +137,13 @@ function QuanLyChungTu() {
 					<Select
 						size="large"
 						className="dropdown"
-						options={type.map((obj) => {
-							return {
-								label: `${obj}`,
-								value: obj
-							};
-						})}
+						allowClear={true}
+						// options={type.map((obj) => {
+						// 	return {
+						// 		label: `${obj.name}`,
+						// 		value: obj.name
+						// 	};
+						// })}
 						onChange={handleLoaiCTChange}
 						placeholder="Chọn loại chứng từ"
 					/>
@@ -132,7 +185,7 @@ function QuanLyChungTu() {
 							}}
 						/>
 					</div>
-					<Button size="large" className="button">
+					<Button onClick={() => search()} size="large" className="button">
 						Tìm Kiếm
 						<SearchOutlined />
 					</Button>
