@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,7 @@ public class ChungTuDAO {
 	public ChungTuDAO(JdbcTemplate jdbcTemplate) {
 	      this.jdbcTemplate = jdbcTemplate;	}	
 	public List<ChungTuModel> getAllChungTus() {
-		 String sql = "SELECT c.doc_id as doc_id, lct.form_type_name as approval_type, ams_u.full_name as user_create, c.time_create as time_create, ams_s.status_name as status_id "
+		 String sql = "SELECT c.doc_id as doc_id, lct.form_type_name as form_type_name, ams_u.full_name as user_create, c.time_create as time_create, ams_s.status_name as status_id "
 		 		+ "FROM chungtu c "
 		 		+ "JOIN ams_user as ams_u ON ams_u.id = c.user_create "
 		 		+ "JOIN ams_status as ams_s ON ams_s.id = c.status_id "
@@ -63,6 +64,11 @@ public class ChungTuDAO {
 				+ "order by ck.lvl ";
 		return jdbcTemplate.query(sql,new Object[] {maCT}, new KetQuaMapper());
 	}
+	public String getTenNguoiDuyet (String id) {
+		String sql = "Select full_name from ams_user "
+				+ "where id = ?";
+		return jdbcTemplate.queryForObject(sql,new Object[] {id}, String.class);
+	}
 	public String postNewChungTu(YeuCauChungTu yeuCau) {
 		try {
 		String sql = "insert into chungtu (approval_type,user_create,time_create,status_id) "
@@ -83,7 +89,7 @@ public class ChungTuDAO {
 			String sql = "insert into chungtu_noidung (doc_id,form_id,content) "
 					+ "values (?,?,?::jsonb) ";
 			jdbcTemplate.update(sql, yeuCau.getMaCT(), yeuCau.getMaForm(),jsonString);
-			System.out.println("Them noi dung thanh cong");
+//			System.out.println("Them noi dung thanh cong");
 			return true;
 		}catch(Exception e) {
 			System.out.println(e);
@@ -107,7 +113,7 @@ public class ChungTuDAO {
 			}
 			String sqlUpdate = "update chungtu set status_id = ? where doc_id = ? ";
 			jdbcTemplate.update(sqlUpdate,"TT002",yeuCau.getMaCT());
-			System.out.println("Them trang thai thanh cong");
+//			System.out.println("Them trang thai thanh cong");
 			return true;
 		}catch(Exception e) {
 			System.out.println(e);
@@ -127,8 +133,9 @@ public class ChungTuDAO {
         			(String) nguoiDuyet.get("user_update"),
         			nguoiDuyet.get("time_update")
         	    );
+        		System.out.println(nguoiDuyet.get("approve_kind_code").toString());
         	}
-        	System.out.println("Them ket qua thanh cong");
+//        	System.out.println("Them ket qua thanh cong");
        		return true;
         }catch(Exception e) {
         	System.out.println(e);
@@ -146,16 +153,24 @@ public class ChungTuDAO {
 	    }, yeuCau.getMaForm());
 	}
 	public List<Map<String,String>> getCondition(String key, String maForm){
-	    String sql = "select match, compared_value from ams_form_type_condition where form_id = ? and form_key = ?";
+	    String sql = "select operator, compared_value, pair, logic from ams_form_type_condition where form_id = ? and form_key = ?";
 	    return jdbcTemplate.query(sql, (rs, rowNum) -> {
 	        Map<String, String> conditionInfo = new HashMap<>();
-	        conditionInfo.put("match", rs.getString("match"));
+	        conditionInfo.put("match", rs.getString("operator"));
 	        conditionInfo.put("compared_value", rs.getString("compared_value"));
+	        conditionInfo.put("logic", rs.getString("logic"));
+	        conditionInfo.put("pair",rs.getString("pair"));
 	        return conditionInfo;
 	    }, maForm, key);
 	}
+	public List<String> pairValue(String key, String formId, String pair, String operator) {
+        String sql = "SELECT compared_value FROM ams_form_type_condition aftc "
+                + "WHERE form_id = ? AND pair = ? AND operator = ? AND form_key = ?";
+
+        return jdbcTemplate.queryForList(sql, String.class, formId, pair, operator, key);
+    }
 	public List<Map<String, String>> getApprover(String key, String match, String comparedValue, String maForm){
-		String sql = "select afta.lvl ,afta.frequence ,au.id as user, au.full_name as name "
+		String sql = "select afta.lvl ,afta.frequence, afta.approve_kind_code ,au.id as user, au.full_name as name "
 				+ "from "
 				+ "	ams_form_type_approver afta "
 				+ "join "
@@ -167,19 +182,20 @@ public class ChungTuDAO {
 				+ "join "
 				+ "	ams_user au on au.id = atu.user_id "
 				+ "where "
-				+ "	ff.\"key\" = ? and aftc.\"match\" = ? and aftc.compared_value = ? and aftc.form_id = ? "
+				+ "	ff.\"key\" = ? and aftc.\"operator\" = ? and aftc.compared_value = ? and aftc.form_id = ? "
 				+ "order by afta.lvl asc;";
 		return jdbcTemplate.query(sql, (rs, rowNum) -> {
 	        Map<String, String> approver = new HashMap<>();
 	        approver.put("lvl", rs.getString("lvl"));
 	        approver.put("frequence", rs.getString("frequence"));
+	        approver.put("approve_kind_code",rs.getString("approve_kind_code"));
 	        approver.put("user", rs.getString("user"));
 	        approver.put("name", rs.getString("name"));
 	        return approver;
 	    }, key,match,comparedValue,maForm);
 	}
 	public Boolean checkCT(String maCT) {
-		String sql = "select user_create from chungtu where doc_id = ?";
+		String sql = "select user_create from chungtu where doc_id = ? and status_id != 'TT005'";
 	    try {
 	        String userFound = jdbcTemplate.queryForObject(sql, String.class, maCT);
 	        return userFound != null;
@@ -224,5 +240,19 @@ public class ChungTuDAO {
 		String sql = "SELECT * FROM form_field "
 				+ "where form_id = ?";
 	    return jdbcTemplate.query(sql,new Object[] {formId}, new FormFieldRowMapper());
+	}
+	public List<Map<String, String>> listCheckNguoiDuyet(String maForm){
+		String sql = "select distinct on (au.id) au.id , aftc.form_id "
+				+ "from ams_form_type_approver afta "
+				+ "join ams_form_type_condition aftc on afta.condition_id  =aftc.id "
+				+ "join ams_form af on af.id = aftc.form_id "
+				+ "join ams_team_user atu on atu.id  = afta.user_team_id "
+				+ "join ams_user au on au.id  = atu.user_id "
+				+ "where af.id = ? ";
+		return jdbcTemplate.query(sql, (rs, rowNum)->{
+				Map<String,String> nguoiDuyet = new HashMap<>();
+				nguoiDuyet.put("id",rs.getString("id"));
+				return nguoiDuyet;
+		},maForm);
 	}
 }
