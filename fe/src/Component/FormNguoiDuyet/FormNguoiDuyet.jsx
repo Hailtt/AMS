@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import _ from "lodash";
 
 const FormNguoiDuyet = ({ listNguoiDuyets, handleChangeNguoiDuyet }) => {
-	const [nguoiDuyetSelected, setNguoiDuyetSelected] = useState([""]);
-	console.log("Data nahn ve:", listNguoiDuyets);
 	//max lever cấp duyệt
 	let maxLevel = 0;
 	// 1 level xuất hiện mấy lần
@@ -22,7 +20,7 @@ const FormNguoiDuyet = ({ listNguoiDuyets, handleChangeNguoiDuyet }) => {
 
 		return null;
 	};
-	const newList3 = getType(listNguoiDuyets[0]);
+	const strucData = getType(listNguoiDuyets[0]);
 
 	// lấy cấu trúc thuộc tính của object
 
@@ -65,16 +63,22 @@ const FormNguoiDuyet = ({ listNguoiDuyets, handleChangeNguoiDuyet }) => {
 			// tương ứng mỗi cấp sẽ có số lần xuất hiện
 			for (let i = 0; i < item.soLan; i++) {
 				const nguoiduyets = [];
-
-				// mỗi lần xuất hiện sẽ có 1 lits người duyệt tương ứng
+				let approve = ""; // mỗi lần xuất hiện sẽ có 1 lits người duyệt tương ứng
 				listNguoiDuyets.map((it) => {
 					if (it.lvl == item.soCap) {
 						nguoiduyets.push({ name: it.name, user: it.user });
 					}
 				});
 
+				listNguoiDuyets.map((it) => {
+					if (it.lvl == item.soCap) {
+						approve = it.approve_kind_code;
+					}
+				});
+
 				// thêm 1  lần xuất hiện vào list 2
 				newList2.push({
+					approve_kind_code: approve,
 					lvl: item.soCap,
 					frequence: item.soLan,
 					danhsachnguoiduyet: nguoiduyets,
@@ -82,11 +86,6 @@ const FormNguoiDuyet = ({ listNguoiDuyets, handleChangeNguoiDuyet }) => {
 			}
 		});
 
-		console.log("resData", resData);
-		console.log("newList3", newList3);
-		console.log("newlis2", newList2);
-		console.log("newlis2", newList2);
-		console.log("newlis2", newList2);
 		setResData(newList2);
 	}, [listNguoiDuyets]);
 
@@ -98,7 +97,12 @@ const FormNguoiDuyet = ({ listNguoiDuyets, handleChangeNguoiDuyet }) => {
 					<select
 						className="list"
 						onChange={(e) => {
-							handleChangeNguoiDuyet(newList3, item, e.target.value, index);
+							handleChangeNguoiDuyet(
+								getType(strucData),
+								item,
+								e.target.value,
+								index
+							);
 							handleDeleteNguoiduyet(e.target.value, index);
 						}}
 					>
@@ -108,7 +112,7 @@ const FormNguoiDuyet = ({ listNguoiDuyets, handleChangeNguoiDuyet }) => {
 						{_.map(item.danhsachnguoiduyet, (item, index) => {
 							return (
 								<option value={item.user} className="item" key={index}>
-									{item.name}
+									{item.user} - {item.name}
 								</option>
 							);
 						})}

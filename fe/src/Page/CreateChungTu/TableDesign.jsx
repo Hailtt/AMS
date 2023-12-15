@@ -34,11 +34,14 @@ export const Column = [
 		title: "Chi tiết",
 		dataIndex: "action",
 		render: (text, item) => (
-			<Link to={`/createchungtu/formchungtu/${item.formId}`} className="link">
-				<Button style={{width: 80}}>Xem</Button>
+			<Link
+				to={`/createchungtu/formchungtu/${item.id}/${item.formId}`}
+				className="link"
+			>
+				<Button style={{ width: 80 }}>Xem</Button>
 			</Link>
 		),
 		width: "10%",
-		align: "center"
+		align: "center",
 	},
 ];

@@ -10,11 +10,11 @@ function DetailChungTu({ loading, setLoading }) {
 	const [detail, setDetail] = useState(null);
 	const [diary, getDiary] = useState(null);
 	const [ketqua, getKetqua] = useState(null);
-    const [avail, setAvail] = useState(true);
+	const [avail, setAvail] = useState(true);
 
-	const {id} = useParams();
+	const { id } = useParams();
 
-	const getNhatKy = async() => {
+	const getNhatKy = async () => {
 		setLoading(true);
 		let data = await new Promise((resolve, reject) => {
 			axios.get(`${process.env.REACT_APP_BE_URL}/chung-tu/nhat-ki/${id}`)
@@ -23,14 +23,14 @@ function DetailChungTu({ loading, setLoading }) {
 					data.data.map((i) => {
 						if (i.maTT === "Đã hủy") setAvail(false);
 						const parts = i.thoiGianCapNhat.split("T");
-	
+
 						const datePart = parts[0];
 						const complexTimePart = parts[1];
 
 						const timePart = complexTimePart.split('.')[0];
-	
+
 						const formattedTime = datePart + " - " + timePart;
-	
+
 						return (i.thoiGianCapNhat = formattedTime);
 					});
 					getDiary(data.data);
@@ -38,8 +38,36 @@ function DetailChungTu({ loading, setLoading }) {
 				.catch(err => reject(err))
 		})
 	}
+	const getRes = async () => {
+		let data = await new Promise((resolve, reject) => {
+			axios.get(`${process.env.REACT_APP_BE_URL}/chung-tu/ket-qua-duyet/${id}`)
+				.then(data => {
+					resolve(data);
+					data.data.map((i) => {
+						if (i.ketQua !== null) setAvail(false)
+						if (i.thoiGianDuyet !== null) {
+							const parts = i.thoiGianDuyet.split("T");
 
-	const getNoiDung = async() => {
+							const datePart = parts[0];
+							const complexTimePart = parts[1];
+
+							const timePart = complexTimePart.split('.')[0];
+
+							const formattedTime = datePart + " - " + timePart;
+
+							return (i.thoiGianDuyet = formattedTime);
+						} else {
+							return;
+						}
+					});
+					getKetqua(data.data);
+				})
+				.catch(err => reject(err));
+		})
+		setLoading(false);
+	}
+
+	const getNoiDung = async () => {
 		let data = await new Promise((resolve, reject) => {
 			axios.get(`${process.env.REACT_APP_BE_URL}/chung-tu/noi-dung/${id}`)
 				.then(data => {
@@ -59,34 +87,6 @@ function DetailChungTu({ loading, setLoading }) {
 		})
 	}
 
-	const getRes = async() => {
-		let data = await new Promise((resolve, reject) => {
-			axios.get(`${process.env.REACT_APP_BE_URL}/chung-tu/ket-qua-duyet/${id}`)
-				.then(data => {
-					resolve(data);
-					data.data.map((i) => {
-						if (i.ketQua !== null) setAvail(false)
-						if (i.thoiGianDuyet !== null) {
-							const parts = i.thoiGianDuyet.split("T");
-	
-							const datePart = parts[0];
-							const complexTimePart = parts[1];
-	
-							const timePart = complexTimePart.split('.')[0];
-	
-							const formattedTime = datePart + " - " + timePart;
-	
-							return (i.thoiGianDuyet = formattedTime);
-						} else {
-							return;
-						}
-					});
-					getKetqua(data.data);
-				})
-				.catch(err => reject(err));
-		})
-		setLoading(false);
-	}
 
 	useEffect(() => {
 		getNhatKy();
@@ -103,10 +103,10 @@ function DetailChungTu({ loading, setLoading }) {
 				{detail && <NoiDungChungTu detail={detail} />}
 				{diary && <TrackLog diary={diary} />}
 			</div>
-			
+
 			<div className="bottom">
 				{ketqua && <KetQuaDuyet ketqua={ketqua} />}
-				{!loading && <ButtonContainer id={id} avail={avail}/>}
+				{!loading && <ButtonContainer id={id} avail={avail} />}
 			</div>
 		</div>
 	);

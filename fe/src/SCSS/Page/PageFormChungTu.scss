@@ -105,9 +105,10 @@
 
 	.container {
 		display: flex;
-		gap: 100px;
+		flex-direction: column;
 		background-color: #eee;
 		padding-inline: 200px;
+		padding-bottom: 100px;
 	}
 
 	.btn-box {
