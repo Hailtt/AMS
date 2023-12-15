@@ -12,6 +12,12 @@ function KetQuaDuyet({ketqua}) {
                         return (
                             <React.Fragment>
                                 <tr>
+
+                                    <td className="nhanvien">
+                                        <span>Bậc</span>
+                                        <b><span>{i.bac}</span></b>
+                                    </td>
+
                                     <td className="nhanvien">
                                         <span>Nhân viên</span>
                                         <b><span>{i.nguoiDuyet}</span></b>
