@@ -28,19 +28,19 @@ public class UserDAO {
 	        }
 	}
 
-	public UserModel getUser(String userName, String passWord) {
-		UserModel user = new UserModel();
+	public UserModel getUser(String user, String passWord) {
+		UserModel userLogin = new UserModel();
 		try {
-		String sql="SELECT * FROM ams_user au WHERE au.username = ? ";
-		return jdbcTemplate.queryForObject(sql,new Object[] {userName},(rs, rowNum) -> {
-            user.setId(rs.getString("id"));
-            user.setUserName(rs.getString("username"));
-            user.setFullName(rs.getString("full_name"));
-            user.setPassWord(rs.getString("password"));
-            return user;
+		String sql="SELECT * FROM ams_user au WHERE au.id = ? ";
+		return jdbcTemplate.queryForObject(sql,new Object[] {user},(rs, rowNum) -> {
+			userLogin.setId(rs.getString("id"));
+			userLogin.setUserName(rs.getString("username"));
+			userLogin.setFullName(rs.getString("full_name"));
+			userLogin.setPassWord(rs.getString("password"));
+            return userLogin;
 		});
 		}catch(Exception e) {
-			return user;
+			return userLogin;
 		}
 	}
 	public List<ActionModel> getAction(String userName) {

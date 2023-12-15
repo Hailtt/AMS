@@ -133,6 +133,7 @@ public class ChungTuDAO {
         			(String) nguoiDuyet.get("user_update"),
         			nguoiDuyet.get("time_update")
         	    );
+        		System.out.print(nguoiDuyet.get("lvl").toString());
         		System.out.println(nguoiDuyet.get("approve_kind_code").toString());
         	}
 //        	System.out.println("Them ket qua thanh cong");
@@ -152,8 +153,8 @@ public class ChungTuDAO {
 	        return formInfo;
 	    }, yeuCau.getMaForm());
 	}
-	public List<Map<String,String>> getCondition(String key, String maForm){
-	    String sql = "select operator, compared_value, pair, logic from ams_form_type_condition where form_id = ? and form_key = ?";
+	public List<Map<String,String>> getCondition(String key, String maForm,String maLoai){
+	    String sql = "select operator, compared_value, pair, logic from ams_form_type_condition where form_id = ? and form_key = ? and form_type_id = ?";
 	    return jdbcTemplate.query(sql, (rs, rowNum) -> {
 	        Map<String, String> conditionInfo = new HashMap<>();
 	        conditionInfo.put("match", rs.getString("operator"));
@@ -161,7 +162,7 @@ public class ChungTuDAO {
 	        conditionInfo.put("logic", rs.getString("logic"));
 	        conditionInfo.put("pair",rs.getString("pair"));
 	        return conditionInfo;
-	    }, maForm, key);
+	    }, maForm, key, maLoai);
 	}
 	public List<String> pairValue(String key, String formId, String pair, String operator) {
         String sql = "SELECT compared_value FROM ams_form_type_condition aftc "
@@ -242,7 +243,7 @@ public class ChungTuDAO {
 	    return jdbcTemplate.query(sql,new Object[] {formId}, new FormFieldRowMapper());
 	}
 	public List<Map<String, String>> listCheckNguoiDuyet(String maForm){
-		String sql = "select distinct on (au.id) au.id , aftc.form_id "
+		String sql = "select distinct on (au.id) au.id ,afta.lvl, aftc.form_id "
 				+ "from ams_form_type_approver afta "
 				+ "join ams_form_type_condition aftc on afta.condition_id  =aftc.id "
 				+ "join ams_form af on af.id = aftc.form_id "
@@ -252,6 +253,7 @@ public class ChungTuDAO {
 		return jdbcTemplate.query(sql, (rs, rowNum)->{
 				Map<String,String> nguoiDuyet = new HashMap<>();
 				nguoiDuyet.put("id",rs.getString("id"));
+				nguoiDuyet.put("lvl",rs.getString("lvl"));
 				return nguoiDuyet;
 		},maForm);
 	}

@@ -15,9 +15,9 @@ import javax.crypto.SecretKey;
 public class JWTGenerator {
 	private static final SecretKey secretKey = Keys.secretKeyFor(io.jsonwebtoken.SignatureAlgorithm.HS256);
 	private long validityInMilliseconds = 3600000; //ms
-	 public String createToken(String username, String fullname) {
-	        Claims claims = Jwts.claims().setSubject(username);
-	        claims.put("username",username);
+	 public String createToken(String user, String fullname) {
+	        Claims claims = Jwts.claims().setSubject(user);
+	        claims.put("user",user);
 
 	        Date now = new Date();
 	        Date validity = new Date(now.getTime() + validityInMilliseconds);

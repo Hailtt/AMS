@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import com.example.springboot.DAO.UserDAO;
 import com.example.springboot.Model.UserModel;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+
 @Service
 public class UserServices {
 	private final UserDAO userDAO;
@@ -28,17 +31,21 @@ public class UserServices {
 			return ResponseEntity.status(400).body("Có người dùng username rồi bro");
 		}
 	}	
-	public ResponseEntity<String> userLogin(String userName, String passWord){
-		UserModel user = userDAO.getUser(userName, passWord);
-		if(user.getUserName() == null) {
-			return ResponseEntity.status(404).body("Username/Password không đúng");
+	public ResponseEntity<String> userLogin(String user, String passWord, HttpServletResponse response){
+		UserModel userLogin = userDAO.getUser(user, passWord);
+		if(userLogin.getId() == null) {
+			return ResponseEntity.status(404).body("User/Password không đúng");
 		}else {
-			boolean passWordValidate = passwordEncoder.matches(passWord, user.getPassWord());
+			boolean passWordValidate = passwordEncoder.matches(passWord, userLogin.getPassWord());
 			if(passWordValidate == true) {
-				String jwtForU = jwtGen.createToken(userName, passWord);
+				String jwtForU = jwtGen.createToken(user, passWord);
+				Cookie tokenCookie = new Cookie("utoken", jwtForU);
+				tokenCookie.setMaxAge(3600); // Thời gian sống của cookie (đơn vị là giây)
+				tokenCookie.setPath("/");     // Đường dẫn cho cookie (có thể là "/" để toàn bộ ứng dụng)
+				response.addCookie(tokenCookie);
 				return ResponseEntity.status(200).body(jwtForU);
 			}else {
-				return ResponseEntity.status(404).body("Username/Password không đúng");
+				return ResponseEntity.status(404).body("User/Password không đúng");
 			}
 		}
 	}

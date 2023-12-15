@@ -56,6 +56,7 @@ public class ChungTuController {
     }
     @PostMapping("/tao-moi-chung-tu")
     public ResponseEntity<String> postYeuCauChungTu(@RequestBody YeuCauChungTu yeuCau) {
+    	System.out.println(yeuCau.getMaLoai());
     	List<Map<String, Object>> nguoiDuyetList = yeuCau.getNguoiDuyet();
     	if(yeuCau.getMaForm().equals(null) 
     			|| yeuCau.getNoiDung().size()== 0
