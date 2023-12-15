@@ -25,13 +25,24 @@ public class ChungTuDAO {
 	@Autowired
 	public ChungTuDAO(JdbcTemplate jdbcTemplate) {
 	      this.jdbcTemplate = jdbcTemplate;	}	
-	public List<ChungTuModel> getAllChungTus() {
+	public List<ChungTuModel> getAllChungTus(String user) {
 		 String sql = "SELECT c.doc_id as doc_id, lct.form_type_name as form_type_name, ams_u.full_name as user_create, c.time_create as time_create, ams_s.status_name as status_id "
 		 		+ "FROM chungtu c "
 		 		+ "JOIN ams_user as ams_u ON ams_u.id = c.user_create "
 		 		+ "JOIN ams_status as ams_s ON ams_s.id = c.status_id "
-		 		+ "JOIN ams_form_type lct ON lct.id = c.approval_type ";
-	       return jdbcTemplate.query(sql, new ChungTuMapper());
+		 		+ "JOIN ams_form_type lct ON lct.id = c.approval_type "
+		 		+ "where c.user_create = ?";
+	    return jdbcTemplate.query(sql, new ChungTuMapper(),user);
+	}
+	public List<ChungTuModel> getAllChungTuDuyet(String user){
+		String sql = "SELECT c.doc_id as doc_id, lct.form_type_name as form_type_name, ams_u.full_name as user_create, c.time_create as time_create, ams_s.status_name as status_id "
+		 		+ "FROM chungtu c "
+		 		+ "JOIN ams_user as ams_u ON ams_u.id = c.user_create "
+		 		+ "JOIN ams_status as ams_s ON ams_s.id = c.status_id "
+		 		+ "JOIN ams_form_type lct ON lct.id = c.approval_type "
+		 		+ "JOIN chungtu_ketqua ck on ck.doc_id = c.doc_id "
+		 		+ "where ck.user_update = ?";
+	    return jdbcTemplate.query(sql, new ChungTuMapper(),user);
 	}
 	public List<TrangThaiModel> getNhatKiChungTu(String maCT) {
 		String sql="select ct.doc_status_id as doc_status_id, c.doc_id as doc_id, as2.status_name as status, ua.full_name as user_update, ct.time_update as time_update "
