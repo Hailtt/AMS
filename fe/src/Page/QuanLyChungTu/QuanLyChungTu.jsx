@@ -4,10 +4,9 @@ import { SearchOutlined } from "@ant-design/icons";
 import { columntao, columnduyet, daDuyet, status } from "./Data";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import moment from 'moment';
+import moment from "moment";
 
 function QuanLyChungTu({ loading, setLoading }) {
-	
 	const [box, setBox] = useState(1);
 	const [current, setCurrent] = useState(1);
 	const [chungtu, getChungTu] = useState();
@@ -21,10 +20,10 @@ function QuanLyChungTu({ loading, setLoading }) {
 		maLoaiCT: null,
 		maTT: null,
 		date: {
-			start: startDate?.format('YYYY-MM-DD'),
-			end: endDate?.format('YYYY-MM-DD'),
-		}
-	}
+			start: startDate?.format("YYYY-MM-DD"),
+			end: endDate?.format("YYYY-MM-DD"),
+		},
+	};
 	const [filter, setFilter] = useState(initFilter);
 
 	const handleTableChange = (pagination) => {
@@ -32,53 +31,53 @@ function QuanLyChungTu({ loading, setLoading }) {
 	};
 
 	const handleInput = (e) => {
-		const {name, value} = e.target;
-		setFilter(prev => {
+		const { name, value } = e.target;
+		setFilter((prev) => {
 			return {
 				...prev,
-				[name]: value
-			}
-		})
-	}
+				[name]: value,
+			};
+		});
+	};
 
-	const getLoaiChungTu = async() => {
+	const getLoaiChungTu = async () => {
 		setLoading(true);
 		let data = await new Promise((resolve, reject) => {
-			axios.get(`${process.env.REACT_APP_BE_URL}/chung-tu/get-loai-chung-tu/1`)
-				.then(data => {
+			axios
+				.get(`${process.env.REACT_APP_BE_URL}/chung-tu/get-loai-chung-tu/1`)
+				.then((data) => {
 					resolve(data);
 					setType(data.data);
 				})
-				.catch(err => reject(err))
-		})
-        
-	}
+				.catch((err) => reject(err));
+		});
+	};
 
-	const getAllChungTu = async() => {
+	const getAllChungTu = async () => {
 		let data = await new Promise((resolve, reject) => {
-			axios.get(`${process.env.REACT_APP_BE_URL}/chung-tu/all/${current}`)
-				.then(data => {
+			axios
+				.get(`${process.env.REACT_APP_BE_URL}/chung-tu/all/${current}`)
+				.then((data) => {
 					resolve(data);
 					data.data.map((i) => {
-
 						const parts = i.thoiGianTao.split("T");
-	
+
 						const datePart = parts[0];
 						const complexTimePart = parts[1];
 
-						const timePart = complexTimePart.split('.')[0];
-	
+						const timePart = complexTimePart.split(".")[0];
+
 						const formattedTime = datePart + " - " + timePart;
-	
+
 						return (i.thoiGianTao = formattedTime);
 					});
 					setTempList(data.data);
 					getChungTu(data.data);
 				})
-				.catch(err => reject(err));
-		})
+				.catch((err) => reject(err));
+		});
 		setLoading(false);
-	}
+	};
 
 	const handleLoaiCTChange = (value) => {
 		setFilter((prev) => ({
@@ -86,7 +85,7 @@ function QuanLyChungTu({ loading, setLoading }) {
 			maLoaiCT: value,
 		}));
 	};
-	
+
 	const handleStatChange = (value) => {
 		setFilter((prev) => ({
 			...prev,
@@ -101,26 +100,26 @@ function QuanLyChungTu({ loading, setLoading }) {
 			return;
 		} else {
 			if (filter.maCT) {
-				temp = temp.filter(i => {
+				temp = temp.filter((i) => {
 					return i.maCT === filter.maCT;
-				})
-			} 
-			
+				});
+			}
+
 			if (filter.maLoaiCT) {
-				temp = temp.filter(i => {
+				temp = temp.filter((i) => {
 					return i.maLoaiCT === filter.maLoaiCT;
-				})
+				});
 			}
 
 			if (filter.maTT) {
-				temp = temp.filter(i => {
+				temp = temp.filter((i) => {
 					return i.maTT === filter.maTT;
-				})
+				});
 			}
 			getChungTu(temp);
 		}
-		console.log("filter: ", filter)
-	}
+		console.log("filter: ", filter);
+	};
 
 	// const handleGetDateRange = () => {
 	// 	if (startDate && endDate) {
@@ -137,7 +136,7 @@ function QuanLyChungTu({ loading, setLoading }) {
 	const disabledStartDate = (current) => {
 		return endDate && current && current >= endDate;
 	};
-	
+
 	const disabledEndDate = (current) => {
 		return startDate && current && current <= startDate;
 	};
@@ -145,13 +144,11 @@ function QuanLyChungTu({ loading, setLoading }) {
 	useEffect(() => {
 		getLoaiChungTu();
 		getAllChungTu();
-	}, [])
+	}, []);
 
 	return (
 		<div className="QLCT">
-			{loading && (
-				<Loading />
-			)}
+			{loading && <Loading />}
 			<h1 className="title">Quản Lý Chứng Từ</h1>
 
 			<div className="filter-section">
@@ -170,7 +167,7 @@ function QuanLyChungTu({ loading, setLoading }) {
 						options={type?.map((obj) => {
 							return {
 								label: `${obj.name}`,
-								value: obj.name
+								value: obj.name,
 							};
 						})}
 						onChange={handleLoaiCTChange}
@@ -194,19 +191,19 @@ function QuanLyChungTu({ loading, setLoading }) {
 				<div className="right">
 					<div className="date">
 						<span>Từ:</span>
-						<DatePicker 
-							size="large" 
-							className="input-date" 
-							onChange={date => setStartDate(date)}
+						<DatePicker
+							size="large"
+							className="input-date"
+							onChange={(date) => setStartDate(date)}
 							disabledDate={disabledStartDate}
 						/>
 					</div>
 					<div className="date">
 						<span>Đến:</span>
-						<DatePicker 
-							size="large" 
-							className="input-date" 
-							onChange={date => setEndDate(date)}
+						<DatePicker
+							size="large"
+							className="input-date"
+							onChange={(date) => setEndDate(date)}
 							disabledDate={disabledEndDate}
 						/>
 					</div>

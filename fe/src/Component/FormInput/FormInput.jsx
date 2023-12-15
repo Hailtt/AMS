@@ -3,14 +3,10 @@ import _ from "lodash";
 import axios from "axios";
 const FormInput = ({ DATA_FORM, currentStep, handleChangeInput }) => {
 	const resData = DATA_FORM.sort((a, b) => a.sortOrder - b.sortOrder);
-	console.log("resData", resData);
 
 	const [tenNhanVien, setTenNhanVien] = useState("");
 
 	const handleChangeUserID = (key, label, value) => {
-		console.log("key", key);
-		console.log("label", label);
-		console.log("value", value);
 		axios
 			.get(
 				`${process.env.REACT_APP_BE_URL}/chung-tu/lay-ten-nguoi-duyet/${value}`
@@ -19,7 +15,10 @@ const FormInput = ({ DATA_FORM, currentStep, handleChangeInput }) => {
 				setTenNhanVien(res.data);
 				handleChangeInput(key, label, value);
 			})
-			.catch((err) => console.error(err));
+			.catch((err) => {
+				console.error(err);
+				setTenNhanVien("");
+			});
 	};
 	return (
 		<div className="AMS-forminput">

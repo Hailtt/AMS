@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export const status = ["Đang chờ", "Đồng ý", "Từ chối", "Đã hủy"];
 
-export const type = ["Đơn xin nghỉ phép" , "Khuyến mãi"];
+export const type = ["Đơn xin nghỉ phép", "Khuyến mãi"];
 
 export const columntao = [
 	{
@@ -54,11 +54,16 @@ export const columntao = [
 		title: "Chi tiết",
 		dataIndex: "detail",
 		align: "center",
-		render: (text, record) => (
-			<Link className="link" to={`/chitietchungtu/${record.maCT}`}>
-				<Button style={{ width: "70px" }}>Xem</Button>
-			</Link>
-		),
+		render: (text, record) =>
+			record.maTT === "Đang chờ" ? (
+				<Link className="link" to={`/chitietchungtu/${record.maCT}/duyetCT`}>
+					<Button style={{ width: "70px" }}>Duyệt</Button>
+				</Link>
+			) : (
+				<Link className="link" to={`/chitietchungtu/${record.maCT}/xemCT`}>
+					<Button style={{ width: "70px" }}>Xem</Button>
+				</Link>
+			),
 	},
 ];
 
