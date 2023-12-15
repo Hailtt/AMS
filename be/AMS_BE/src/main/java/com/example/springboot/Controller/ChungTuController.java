@@ -23,17 +23,29 @@ import java.util.Map;
 public class ChungTuController {
 
     private final ChungTuServices chungTuService;
-
+    private final UserServices userService;
+    private final JWTGenerator jwtGen;
     @Autowired
-    public ChungTuController(ChungTuServices chungTuService) {
+    public ChungTuController(ChungTuServices chungTuService, UserServices userService, JWTGenerator jwtGen) {
         this.chungTuService = chungTuService;
+        this.userService= userService;
+        this.jwtGen = jwtGen;
     }
 
-    @GetMapping("/all/{current}")
-    public List<ChungTuModel> getAllChungTus(@PathVariable(value="current") int page) {
-        return chungTuService.getAllChungTus();
+    @GetMapping("/all/{current}/{token}")
+    public List<ChungTuModel> getAllChungTus(@PathVariable(value="current") int page, @PathVariable(value="token") String token) {
+    	Map<String, Object>deCrypted = jwtGen.tokenDecrypt(token);
+    	System.out.println(deCrypted.get("user"));
+    	String user = deCrypted.get("user").toString();
+    	return chungTuService.getAllChungTus(user);
     }
-
+    @GetMapping("/all-to-approve/{current}/{token}")
+    public List<ChungTuModel> getAllChungTuDuyet(@PathVariable(value="current") int page, @PathVariable(value="token") String token) {
+    	Map<String, Object>deCrypted = jwtGen.tokenDecrypt(token);
+    	System.out.println(deCrypted.get("user"));
+    	String user = deCrypted.get("user").toString();
+    	return chungTuService.getAllChungTuDuyet(user);
+    }
     @GetMapping("/nhat-ki/{maCT}")
     public List<TrangThaiModel> getNhatKiChungTu(@PathVariable(value="maCT") String maCT) {
     	return chungTuService.getNhatKiChungTu(maCT);

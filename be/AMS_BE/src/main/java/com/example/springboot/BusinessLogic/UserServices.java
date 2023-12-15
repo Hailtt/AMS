@@ -39,9 +39,9 @@ public class UserServices {
 			boolean passWordValidate = passwordEncoder.matches(passWord, userLogin.getPassWord());
 			if(passWordValidate == true) {
 				String jwtForU = jwtGen.createToken(user, passWord);
-				Cookie tokenCookie = new Cookie("utoken", jwtForU);
-				tokenCookie.setMaxAge(3600); // Thời gian sống của cookie (đơn vị là giây)
-				tokenCookie.setPath("/");     // Đường dẫn cho cookie (có thể là "/" để toàn bộ ứng dụng)
+				Cookie tokenCookie = new Cookie("springToken", jwtForU);
+				tokenCookie.setMaxAge(3600);
+				tokenCookie.setPath("/");
 				response.addCookie(tokenCookie);
 				return ResponseEntity.status(200).body(jwtForU);
 			}else {

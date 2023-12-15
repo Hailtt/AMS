@@ -32,10 +32,12 @@ public class ChungTuServices {
         this.chungTuDAO = chungTuDAO;
     }
 
-    public List<ChungTuModel> getAllChungTus() {
-        return chungTuDAO.getAllChungTus();
+    public List<ChungTuModel> getAllChungTus(String user) {
+        return chungTuDAO.getAllChungTus(user);
     }
-    
+    public List<ChungTuModel> getAllChungTuDuyet(String user){
+    	return chungTuDAO.getAllChungTuDuyet(user);
+    }
     public List<TrangThaiModel> getNhatKiChungTu(String maCT) {
     	return chungTuDAO.getNhatKiChungTu(maCT);
     }
