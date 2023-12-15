@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DATA_NghiPhep } from "./data";
 import FormInput from "../../Component/FormInput/FormInput";
 import { SyncOutlined, CheckCircleOutlined } from "@ant-design/icons";
@@ -6,16 +6,33 @@ import FormNguoiDuyet from "../../Component/FormNguoiDuyet/FormNguoiDuyet";
 import { getCurrentDate } from "./functions";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { nameChungTu } from "../CreateChungTu/TableDesign";
 const PageFormChungTu = () => {
 	const navigate = useNavigate();
 	const [listNguoiDuyets, setListNguoiDuyets] = useState(null);
 	const [currentStep, setCurrentStep] = useState("nhapthongtin");
 	const [nhapNguoiDuyet, setNhapNguoiduyet] = useState([]);
+	const [formField, setformField] = useState([]);
 	const [nhapThongTin, setNhapThongTin] = useState({
 		nguoitao: "",
 		noidung: {},
 	});
+
+	useEffect(() => {
+		const urlParts = window.location.href.split("/");
+		const formChungTuParam = urlParts[urlParts.indexOf("formchungtu") + 1];
+
+		axios
+			.get(
+				`http://192.168.137.160:8080/chung-tu/get-form-field/${formChungTuParam}`
+			)
+			.then((res) => {
+				setformField(res.data);
+				console.log(res.data);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}, []);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -161,6 +178,7 @@ const PageFormChungTu = () => {
 			</div>
 			<div className="container">
 				<FormInput
+					DATA_FORM={formField}
 					currentStep={currentStep}
 					handleChangeInput={handleChangeInput}
 				/>
