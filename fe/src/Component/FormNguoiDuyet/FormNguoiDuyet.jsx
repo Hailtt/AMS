@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import _ from "lodash";
 
 const FormNguoiDuyet = ({ listNguoiDuyets, handleChangeNguoiDuyet }) => {
-	const [nguoiDuyetSelected, setNguoiDuyetSelected] = useState([""]);
-	console.log("Data nahn ve:", listNguoiDuyets);
 	//max lever cấp duyệt
 	let maxLevel = 0;
 	// 1 level xuất hiện mấy lần

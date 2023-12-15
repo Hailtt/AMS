@@ -2,11 +2,12 @@ import { Button, Input } from "antd";
 import logo from "../../img/Logo-MWG.jpg";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import axios from "axios";
 
 function Login() {
 	const initialState = {
 		id: null,
-		pw: null,
+		passWord: null,
 	};
 
 	const [user, setUser] = useState(initialState);
@@ -23,9 +24,17 @@ function Login() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		localStorage.setItem("user", user);
-		navigate("/");
-		window.location.reload();
+		console.log(user);
+
+		axios
+			.post(`${process.env.REACT_APP_BE_URL}/user/login`, user)
+			.then((res) => {
+				console.log(res.data);
+			})
+			.catch((err) => console.log(err));
+		// localStorage.setItem("user", user);
+		// navigate("/");
+		// window.location.reload();
 	};
 	return (
 		<div className="login">
@@ -57,8 +66,8 @@ function Login() {
 						className="input-area"
 						type="password"
 						size="large"
-						key="pw"
-						name="pw"
+						key="passWord"
+						name="passWord"
 						placeholder="Mật khẩu"
 						onChange={(e) => handleInput(e)}
 					/>
