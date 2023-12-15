@@ -30,6 +30,9 @@ function Login() {
 			.post(`${process.env.REACT_APP_BE_URL}/user/login`, user)
 			.then((res) => {
 				console.log(res.data);
+				navigate("/");
+				window.location.reload();
+				localStorage.setItem("myToken", res.data);
 			})
 			.catch((err) => console.log(err));
 		// localStorage.setItem("user", user);

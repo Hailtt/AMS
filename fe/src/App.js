@@ -7,7 +7,7 @@ function App() {
 	const [isLogin, setIsLogin] = useState(true);
 	const [loading, setLoading] = useState(true);
 	useEffect(() => {
-		setIsLogin(localStorage.getItem("user"));
+		setIsLogin(localStorage.getItem("myToken"));
 	}, []);
 	return isLogin ? (
 		<Routes>
@@ -23,7 +23,7 @@ function App() {
 						path={route.path}
 						element={
 							<DefaultLayout>
-								<Page key={index} loading={loading} setLoading={setLoading}/>
+								<Page key={index} loading={loading} setLoading={setLoading} />
 							</DefaultLayout>
 						}
 					/>
