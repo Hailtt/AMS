@@ -35,14 +35,14 @@ public class ChungTuController {
     @GetMapping("/all/{current}/{token}")
     public List<ChungTuModel> getAllChungTus(@PathVariable(value="current") int page, @PathVariable(value="token") String token) {
     	Map<String, Object>deCrypted = jwtGen.tokenDecrypt(token);
-    	System.out.println(deCrypted.get("user"));
+//    	System.out.println(deCrypted.get("user"));
     	String user = deCrypted.get("user").toString();
     	return chungTuService.getAllChungTus(user);
     }
     @GetMapping("/all-to-approve/{current}/{token}")
     public List<ChungTuModel> getAllChungTuDuyet(@PathVariable(value="current") int page, @PathVariable(value="token") String token) {
     	Map<String, Object>deCrypted = jwtGen.tokenDecrypt(token);
-    	System.out.println(deCrypted.get("user"));
+//    	System.out.println(deCrypted.get("user"));
     	String user = deCrypted.get("user").toString();
     	return chungTuService.getAllChungTuDuyet(user);
     }

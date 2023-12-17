@@ -195,7 +195,7 @@ public class ChungTuServices {
                      }
                      break;
                  case "in":
-                	 List<String> listComparedValue = chungTuDAO.pairValue(key, yeuCau.getMaForm() , pair,  operator);
+                	 List<String> listComparedValue = chungTuDAO.pairValue(key, yeuCau.getMaLoai() , pair,  operator);
                 	 System.out.println(listComparedValue);
                 	 int value1 = Integer.parseInt(listComparedValue.get(0));
                 	 int value2 = Integer.parseInt(listComparedValue.get(1));

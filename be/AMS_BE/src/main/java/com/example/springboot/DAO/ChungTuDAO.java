@@ -165,7 +165,7 @@ public class ChungTuDAO {
 	    }, yeuCau.getMaForm());
 	}
 	public List<Map<String,String>> getCondition(String key, String maForm,String maLoai){
-	    String sql = "select operator, compared_value, pair, logic from ams_form_type_condition where form_id = ? and form_key = ? and form_type_id = ?";
+	    String sql = "select operator, compared_value, pair, logic from ams_form_type_condition aftc join ams_form_type aft on aft.id = aftc.form_type_id  where form_key = ? and form_type_id = ? and aft.form_id = ?";
 	    return jdbcTemplate.query(sql, (rs, rowNum) -> {
 	        Map<String, String> conditionInfo = new HashMap<>();
 	        conditionInfo.put("match", rs.getString("operator"));
@@ -173,13 +173,13 @@ public class ChungTuDAO {
 	        conditionInfo.put("logic", rs.getString("logic"));
 	        conditionInfo.put("pair",rs.getString("pair"));
 	        return conditionInfo;
-	    }, maForm, key, maLoai);
+	    }, key, maLoai, maForm);
 	}
-	public List<String> pairValue(String key, String formId, String pair, String operator) {
+	public List<String> pairValue(String key, String typeId, String pair, String operator) {
         String sql = "SELECT compared_value FROM ams_form_type_condition aftc "
-                + "WHERE form_id = ? AND pair = ? AND operator = ? AND form_key = ?";
+                + "WHERE form_type_id = ? AND pair = ? AND operator = ? AND form_key = ?";
 
-        return jdbcTemplate.queryForList(sql, String.class, formId, pair, operator, key);
+        return jdbcTemplate.queryForList(sql, String.class, typeId, pair, operator, key);
     }
 	public List<Map<String, String>> getApprover(String key, String match, String comparedValue, String maForm){
 		String sql = "select afta.lvl ,afta.frequence, afta.approve_kind_code ,au.id as user, au.full_name as name "
@@ -188,13 +188,15 @@ public class ChungTuDAO {
 				+ "join "
 				+ "	ams_form_type_condition aftc on afta.condition_id =aftc.id "
 				+ "join "
-				+ "	form_field ff on ff.form_id = aftc.form_id and ff.\"key\" = aftc.form_key "
+				+ "	ams_form_type aft on aftc.form_type_id = aft.id "
+				+ "join "
+				+ "	form_field ff on ff.form_id = aft.form_id and ff.\"key\" = aftc.form_key "
 				+ "join "
 				+ "	ams_team_user atu  on afta.user_team_id = atu.id "
 				+ "join "
 				+ "	ams_user au on au.id = atu.user_id "
 				+ "where "
-				+ "	ff.\"key\" = ? and aftc.\"operator\" = ? and aftc.compared_value = ? and aftc.form_id = ? "
+				+ "	ff.\"key\" = ? and aftc.\"operator\" = ? and aftc.compared_value = ? and aft.form_id = ? "
 				+ "order by afta.lvl asc;";
 		return jdbcTemplate.query(sql, (rs, rowNum) -> {
 	        Map<String, String> approver = new HashMap<>();
@@ -254,10 +256,11 @@ public class ChungTuDAO {
 	    return jdbcTemplate.query(sql,new Object[] {formId}, new FormFieldRowMapper());
 	}
 	public List<Map<String, String>> listCheckNguoiDuyet(String maForm){
-		String sql = "select distinct on (au.id) au.id ,afta.lvl, aftc.form_id "
+		String sql = "select distinct on (au.id) au.id ,afta.lvl, aft.form_id "
 				+ "from ams_form_type_approver afta "
 				+ "join ams_form_type_condition aftc on afta.condition_id  =aftc.id "
-				+ "join ams_form af on af.id = aftc.form_id "
+				+ "join ams_form_type aft on aft.id = aftc.form_type_id "
+				+ "join ams_form af on af.id = aft.form_id "
 				+ "join ams_team_user atu on atu.id  = afta.user_team_id "
 				+ "join ams_user au on au.id  = atu.user_id "
 				+ "where af.id = ? ";
