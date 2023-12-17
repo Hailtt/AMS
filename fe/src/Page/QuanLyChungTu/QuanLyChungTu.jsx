@@ -10,6 +10,7 @@ function QuanLyChungTu({ loading, setLoading }) {
 	const [box, setBox] = useState(1);
 	const [current, setCurrent] = useState(1);
 	const [chungtu, getChungTu] = useState();
+	const [chungTuDuyet, setChungTuDuyet] = useState();
 	const [tempList, setTempList] = useState();
 	const [startDate, setStartDate] = useState(null);
 	const [endDate, setEndDate] = useState(null);
@@ -54,9 +55,11 @@ function QuanLyChungTu({ loading, setLoading }) {
 	};
 
 	const getAllChungTu = async () => {
+		const token = localStorage.getItem("myToken");
+		// console.log(token);
 		let data = await new Promise((resolve, reject) => {
 			axios
-				.get(`${process.env.REACT_APP_BE_URL}/chung-tu/all/${current}`)
+				.get(`${process.env.REACT_APP_BE_URL}/chung-tu/all/${current}/${token}`)
 				.then((data) => {
 					resolve(data);
 					data.data.map((i) => {
@@ -78,7 +81,32 @@ function QuanLyChungTu({ loading, setLoading }) {
 		});
 		setLoading(false);
 	};
+	const getAllChungTuDuyet = async () => {
+		const token = localStorage.getItem("myToken");
+		let data = await new Promise((resolve, reject) => {
+			axios
+				.get(`${process.env.REACT_APP_BE_URL}/chung-tu/all-to-approve/${current}/${token}`)
+				.then((data) => {
+					resolve(data);
+					data.data.map((i) => {
+						const parts = i.thoiGianTao.split("T");
 
+						const datePart = parts[0];
+						const complexTimePart = parts[1];
+
+						const timePart = complexTimePart.split(".")[0];
+
+						const formattedTime = datePart + " - " + timePart;
+
+						return (i.thoiGianTao = formattedTime);
+					});
+					setTempList(data.data);
+					setChungTuDuyet(data.data);
+				})
+				.catch((err) => reject(err));
+		});
+		setLoading(false);
+	}
 	const handleLoaiCTChange = (value) => {
 		setFilter((prev) => ({
 			...prev,
@@ -144,6 +172,7 @@ function QuanLyChungTu({ loading, setLoading }) {
 	useEffect(() => {
 		getLoaiChungTu();
 		getAllChungTu();
+		getAllChungTuDuyet();
 	}, []);
 
 	return (
@@ -244,8 +273,9 @@ function QuanLyChungTu({ loading, setLoading }) {
 				<Table
 					className="table"
 					columns={columnduyet}
-					dataSource={daDuyet}
+					dataSource={chungTuDuyet}
 					bordered={true}
+					onChange={handleTableChange}
 					pagination={{ position: ["topCenter"], pageSize: 10 }}
 				/>
 			)}

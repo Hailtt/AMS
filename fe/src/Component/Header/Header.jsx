@@ -12,13 +12,13 @@ function Header() {
 
 	const handleLogout = (path) => {
 		usenavigate(path);
-		localStorage.removeItem("user");
+		localStorage.removeItem("myToken");
 		window.location.reload();
 	};
 	return (
 		<header>
 			<div className="left-side">
-				<MenuOutlined className="menu-icon" style={{fontSize: "23px"}}/>
+				<MenuOutlined className="menu-icon" style={{ fontSize: "23px" }} />
 				<Link className="home" to="/">
 					<HomeFilled className="icon" />
 					<h3>AMS</h3>
