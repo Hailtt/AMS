@@ -45,15 +45,22 @@ public class ChungTuController {
     	String user = deCrypted.get("user").toString();
     	return chungTuService.getAllChungTuDuyet(user);
     }
+    @GetMapping("/kiem-tra-duyet/{maCT}/{token}")
+    public ResponseEntity<String> kiemTraDuyet(@PathVariable(value="maCT") String maCT, @PathVariable(value="token") String token){
+    	Map<String, Object>deCrypted = jwtGen.tokenDecrypt(token);
+    	String user = deCrypted.get("user").toString();
+    	if(chungTuService.checkAuthentication(maCT, user).equals(false)) {
+    		return null;
+    	}
+    	return chungTuService.processing(maCT, user);
+    }
     @GetMapping("/nhat-ki/{maCT}/{token}")
     public List<TrangThaiModel> getNhatKiChungTu(@PathVariable(value="maCT") String maCT, @PathVariable(value="token") String token) {
     	Map<String, Object>deCrypted = jwtGen.tokenDecrypt(token);
     	String user = deCrypted.get("user").toString();
     	System.out.println(user);
     	System.out.println(maCT);
-    	if(chungTuService.checkAuthentication(maCT, user).equals(false)) {
-    		return null;
-    	}
+
     	return chungTuService.getNhatKiChungTu(maCT);
     }
     @GetMapping("/noi-dung/{maCT}/{token}")
@@ -105,6 +112,7 @@ public class ChungTuController {
     public List<LoaiChungTuModel> getAllLoaiCT(@PathVariable(value="page") int page,@PathVariable(value="token") String token){
     	Map<String, Object>deCrypted = jwtGen.tokenDecrypt(token);
     	String user = deCrypted.get("user").toString();
+
     	return chungTuService.getAllLoaiCT(user);
     }
     @GetMapping("/get-form-field/{formId}")
@@ -112,5 +120,12 @@ public class ChungTuController {
     	return chungTuService.getAllFormFields(formId);
     }
     //Test
-    
+    @PostMapping("/duyet-chung-tu/{maCT}/{token}")
+    public ResponseEntity<String> processing(@PathVariable(value="maCT") String maCT,
+    										@PathVariable(value="token") String token){
+    	Map<String, Object>deCrypted = jwtGen.tokenDecrypt(token);
+    	String user = deCrypted.get("user").toString();
+    	
+    	return null;
+    }
 }
