@@ -54,10 +54,11 @@ function QuanLyChungTu({ loading, setLoading }) {
 	};
 
 	const getLoaiChungTu = async () => {
+		const token = localStorage.getItem("myToken");
 		setLoading(true);
 		let data = await new Promise((resolve, reject) => {
 			axios
-				.get(`${process.env.REACT_APP_BE_URL}/chung-tu/get-loai-chung-tu/1`)
+				.get(`${process.env.REACT_APP_BE_URL}/chung-tu/get-loai-chung-tu/1/${token}`)
 				.then((data) => {
 					resolve(data);
 					setType(data.data);
