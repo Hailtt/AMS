@@ -5,11 +5,10 @@ import { Button, Input, Table } from "antd";
 import { Column } from "./TableDesign";
 import axios from "axios";
 const CreateChungTu = ({ loading, setLoading }) => {
-
 	const initState = {
 		maCT: null,
-		tenCT: null
-	}
+		tenCT: null,
+	};
 
 	const [ListChungTu, setListChungTu] = useState();
 	const [tempList, setTempList] = useState();
@@ -17,17 +16,22 @@ const CreateChungTu = ({ loading, setLoading }) => {
 
 	const getListChungTu = async () => {
 		setLoading(true);
-		const token = localStorage.getItem('myToken')
-		let data = await new Promise((resolve, reject) => {
-			axios.get(`${process.env.REACT_APP_BE_URL}/chung-tu/get-loai-chung-tu/1/${token}`)
-				.then(data => {
-					resolve(data);
-					setListChungTu(data.data);
-					setTempList(data.data);
-				})
-				.catch(err => reject(err));
-		})
-		setLoading(false);
+		const token = localStorage.getItem("myToken");
+		if (token) {
+			let data = await new Promise((resolve, reject) => {
+				axios
+					.get(
+						`${process.env.REACT_APP_BE_URL}/chung-tu/get-loai-chung-tu/1/${token}`
+					)
+					.then((data) => {
+						resolve(data);
+						setListChungTu(data.data);
+						setTempList(data.data);
+					})
+					.catch((err) => reject(err));
+			});
+			setLoading(false);
+		}
 	}
 
 	const handleInput = (e) => {
@@ -35,16 +39,16 @@ const CreateChungTu = ({ loading, setLoading }) => {
 		setFilter(prev => {
 			return {
 				...prev,
-				[name]: value
-			}
-		})
-	}
+				[name]: value,
+			};
+		});
+	};
 
 	const handleKeyDown = (e) => {
 		if (e.key === "Enter") {
 			search();
 		}
-	}
+	};
 
 	const search = () => {
 		let temp = tempList;
@@ -52,23 +56,23 @@ const CreateChungTu = ({ loading, setLoading }) => {
 			setListChungTu(temp);
 		} else {
 			if (filter.maCT) {
-				temp = temp.filter(i => {
+				temp = temp.filter((i) => {
 					return i.id === filter.maCT;
-				})
+				});
 			}
 
 			if (filter.tenCT) {
-				temp = temp.filter(i => {
+				temp = temp.filter((i) => {
 					return i.name.toLowerCase().includes(filter.tenCT.toLowerCase());
-				})
+				});
 			}
 			setListChungTu(temp);
 		}
-	}
+	};
 
 	useEffect(() => {
 		getListChungTu();
-	}, [])
+	}, []);
 
 	return (
 		<div className="createchungtu">
@@ -109,7 +113,6 @@ const CreateChungTu = ({ loading, setLoading }) => {
 					pagination={{ position: ["topCenter"], pageSize: 10 }}
 				/>
 			</div>
-
 		</div>
 	);
 };
