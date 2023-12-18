@@ -1,13 +1,20 @@
 import { Button } from "antd";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
-function ButtonContainer({ avail, id }) {
+function ButtonContainer({ avail, id, info }) {
+	console.log("info", info);
+
+	const [userNguoiDuyet, setUserNguoiDuyet] = useState(info.user || "");
 	const navigate = useNavigate();
+	const userID = localStorage.getItem("userID");
+	console.log("userID", userID);
+	console.log("userNguoiDuyet", userNguoiDuyet);
+
 	const [isDuyet, setIsDuyet] = useState(() => {
 		const urlParts = window.location.href.split("/");
-		const actionsUrl = urlParts[urlParts.indexOf("chitietchungtu") + 2];
+		const actionsUrl = urlParts[urlParts.indexOf("quanlychungtu") + 1];
 		if (actionsUrl === "duyetCT") {
 			return true;
 		}
@@ -31,24 +38,31 @@ function ButtonContainer({ avail, id }) {
 		console.log("Ket Qua Duyet: ", value);
 	};
 
+	useEffect(() => {
+		setUserNguoiDuyet(info.user);
+	}, [info]);
 	return isDuyet ? (
-		<div className="button-container">
-			<Button
-				onClick={() => handleSubmitDuyet("Đồng ý")}
-				className="button"
-				type="primary"
-			>
-				Đồng ý
-			</Button>
-			<Button
-				onClick={() => handleSubmitDuyet("Từ chối")}
-				className="button"
-				type="primary"
-				danger
-			>
-				Từ chối
-			</Button>
-		</div>
+		userNguoiDuyet && userID === userNguoiDuyet ? (
+			<div className="button-container">
+				<Button
+					onClick={() => handleSubmitDuyet("Đồng ý")}
+					className="button"
+					type="primary"
+				>
+					Đồng ý
+				</Button>
+				<Button
+					onClick={() => handleSubmitDuyet("Từ chối")}
+					className="button"
+					type="primary"
+					danger
+				>
+					Từ chối
+				</Button>
+			</div>
+		) : (
+			<></>
+		)
 	) : (
 		<div className="button-container">
 			{avail ? (

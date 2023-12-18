@@ -33,6 +33,7 @@ function Login() {
 				navigate("/");
 				window.location.reload();
 				localStorage.setItem("myToken", res.data);
+				localStorage.setItem("userID", user.id);
 			})
 			.catch((err) => console.log(err));
 		// localStorage.setItem("user", user);

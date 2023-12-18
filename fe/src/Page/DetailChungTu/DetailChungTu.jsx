@@ -8,17 +8,18 @@ import ButtonContainer from "../../Component/ChiTietChungTu/ButtonContainer";
 import { useParams } from "react-router";
 function DetailChungTu({ loading, setLoading }) {
 	const [detail, setDetail] = useState(null);
-	const [diary, getDiary] = useState(null);
+	const [diary, getDiary] = useState([]);
 	const [ketqua, getKetqua] = useState(null);
 	const [avail, setAvail] = useState(true);
 
 	const { id } = useParams();
-	const token = localStorage.getItem('myToken');
+	const token = localStorage.getItem("myToken");
 	const getNhatKy = async () => {
 		setLoading(true);
 		let data = await new Promise((resolve, reject) => {
-			axios.get(`${process.env.REACT_APP_BE_URL}/chung-tu/nhat-ki/${id}/${token}`)
-				.then(data => {
+			axios
+				.get(`${process.env.REACT_APP_BE_URL}/chung-tu/nhat-ki/${id}/${token}`)
+				.then((data) => {
 					resolve(data);
 					data.data.map((i) => {
 						if (i.maTT === "Đã hủy") setAvail(false);
@@ -27,7 +28,7 @@ function DetailChungTu({ loading, setLoading }) {
 						const datePart = parts[0];
 						const complexTimePart = parts[1];
 
-						const timePart = complexTimePart.split('.')[0];
+						const timePart = complexTimePart.split(".")[0];
 
 						const formattedTime = datePart + " - " + timePart;
 
@@ -35,23 +36,26 @@ function DetailChungTu({ loading, setLoading }) {
 					});
 					getDiary(data.data);
 				})
-				.catch(err => reject(err))
-		})
-	}
+				.catch((err) => reject(err));
+		});
+	};
 	const getRes = async () => {
 		let data = await new Promise((resolve, reject) => {
-			axios.get(`${process.env.REACT_APP_BE_URL}/chung-tu/ket-qua-duyet/${id}/${token}`)
-				.then(data => {
+			axios
+				.get(
+					`${process.env.REACT_APP_BE_URL}/chung-tu/ket-qua-duyet/${id}/${token}`
+				)
+				.then((data) => {
 					resolve(data);
 					data.data.map((i) => {
-						if (i.ketQua !== null) setAvail(false)
+						if (i.ketQua !== null) setAvail(false);
 						if (i.thoiGianDuyet !== null) {
 							const parts = i.thoiGianDuyet.split("T");
 
 							const datePart = parts[0];
 							const complexTimePart = parts[1];
 
-							const timePart = complexTimePart.split('.')[0];
+							const timePart = complexTimePart.split(".")[0];
 
 							const formattedTime = datePart + " - " + timePart;
 
@@ -62,31 +66,31 @@ function DetailChungTu({ loading, setLoading }) {
 					});
 					getKetqua(data.data);
 				})
-				.catch(err => reject(err));
-		})
+				.catch((err) => reject(err));
+		});
 		setLoading(false);
-	}
+	};
 
 	const getNoiDung = async () => {
 		let data = await new Promise((resolve, reject) => {
-			axios.get(`${process.env.REACT_APP_BE_URL}/chung-tu/noi-dung/${id}/${token}`)
-				.then(data => {
+			axios
+				.get(`${process.env.REACT_APP_BE_URL}/chung-tu/noi-dung/${id}/${token}`)
+				.then((data) => {
 					resolve(data);
 					const parts = data.data.ngayTao.split("T");
 
 					const datePart = parts[0];
 					const complexTimePart = parts[1];
 
-					const timePart = complexTimePart.split('.')[0];
+					const timePart = complexTimePart.split(".")[0];
 
 					const formattedTime = datePart + " - " + timePart;
 					data.data.ngayTao = formattedTime;
 					setDetail(data.data);
 				})
-				.catch(err => reject(err))
-		})
-	}
-
+				.catch((err) => reject(err));
+		});
+	};
 
 	useEffect(() => {
 		getNhatKy();
@@ -96,9 +100,7 @@ function DetailChungTu({ loading, setLoading }) {
 
 	return (
 		<div className="DTCT">
-			{loading && (
-				<Loading />
-			)}
+			{loading && <Loading />}
 			<div className="top">
 				{detail && <NoiDungChungTu detail={detail} />}
 				{diary && <TrackLog diary={diary} />}
@@ -106,7 +108,13 @@ function DetailChungTu({ loading, setLoading }) {
 
 			<div className="bottom">
 				{ketqua && <KetQuaDuyet ketqua={ketqua} />}
-				{!loading && <ButtonContainer id={id} avail={avail} />}
+				{!loading && (
+					<ButtonContainer
+						id={id}
+						avail={avail}
+						info={diary[diary.length - 1] || ""}
+					/>
+				)}
 			</div>
 		</div>
 	);
