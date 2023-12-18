@@ -10,7 +10,7 @@ export const NavList = [
 		key: 2,
 	},
 	{
-		path: "/quanlychungtu",
+		path: "/quanlychungtu/xemCT",
 		name: "Quản lý chứng từ",
 		key: 3,
 	},

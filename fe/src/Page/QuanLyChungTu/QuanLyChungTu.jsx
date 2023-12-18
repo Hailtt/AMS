@@ -5,6 +5,7 @@ import { columntao, columnduyet, daDuyet, status } from "./Data";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import moment from "moment";
+import { useNavigate } from "react-router";
 
 function QuanLyChungTu({ loading, setLoading }) {
 	const [box, setBox] = useState(1);
@@ -15,6 +16,7 @@ function QuanLyChungTu({ loading, setLoading }) {
 	const [startDate, setStartDate] = useState(null);
 	const [endDate, setEndDate] = useState(null);
 	const [type, setType] = useState();
+	const navigate = useNavigate();
 
 	const initFilter = {
 		maCT: null,
@@ -26,6 +28,16 @@ function QuanLyChungTu({ loading, setLoading }) {
 		},
 	};
 	const [filter, setFilter] = useState(initFilter);
+
+	const handleBoxChange = (value) => {
+		setBox(value);
+
+		if (value === 1) {
+			navigate("/quanlychungtu/xemCT");
+		} else {
+			navigate("/quanlychungtu/duyetCT");
+		}
+	};
 
 	const handleTableChange = (pagination) => {
 		setCurrent(pagination.current);
@@ -46,7 +58,9 @@ function QuanLyChungTu({ loading, setLoading }) {
 		const token = localStorage.getItem("myToken");
 		let data = await new Promise((resolve, reject) => {
 			axios
-				.get(`${process.env.REACT_APP_BE_URL}/chung-tu/get-loai-chung-tu/1/${token}`)
+				.get(
+					`${process.env.REACT_APP_BE_URL}/chung-tu/get-loai-chung-tu/1/${token}`
+				)
 				.then((data) => {
 					resolve(data);
 					setType(data.data);
@@ -86,7 +100,9 @@ function QuanLyChungTu({ loading, setLoading }) {
 		const token = localStorage.getItem("myToken");
 		let data = await new Promise((resolve, reject) => {
 			axios
-				.get(`${process.env.REACT_APP_BE_URL}/chung-tu/all-to-approve/${current}/${token}`)
+				.get(
+					`${process.env.REACT_APP_BE_URL}/chung-tu/all-to-approve/${current}/${token}`
+				)
 				.then((data) => {
 					resolve(data);
 					data.data.map((i) => {
@@ -107,7 +123,7 @@ function QuanLyChungTu({ loading, setLoading }) {
 				.catch((err) => reject(err));
 		});
 		setLoading(false);
-	}
+	};
 	const handleLoaiCTChange = (value) => {
 		setFilter((prev) => ({
 			...prev,
@@ -248,14 +264,14 @@ function QuanLyChungTu({ loading, setLoading }) {
 				<Checkbox
 					checked={box === 1 ? true : false}
 					className="checkbox"
-					onChange={() => setBox(1)}
+					onChange={() => handleBoxChange(1)}
 				>
 					Chứng từ đã tạo
 				</Checkbox>
 				<Checkbox
 					checked={box === 2 ? true : false}
 					className="checkbox"
-					onChange={() => setBox(2)}
+					onChange={() => handleBoxChange(2)}
 				>
 					Duyệt chứng từ
 				</Checkbox>

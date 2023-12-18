@@ -28,12 +28,12 @@ export const PrivateRoutes = [
 		layout: Layout,
 	},
 	{
-		path: "/quanlychungtu",
+		path: "/quanlychungtu/:action",
 		component: QuanLyChungTu,
 		layout: Layout,
 	},
 	{
-		path: "/chitietchungtu/:id/:actions",
+		path: "/quanlychungtu/:action/:id/",
 		component: DetailChungTu,
 		layout: Layout,
 	},
