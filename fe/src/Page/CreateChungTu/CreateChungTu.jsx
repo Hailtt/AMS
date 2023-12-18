@@ -32,11 +32,11 @@ const CreateChungTu = ({ loading, setLoading }) => {
 			});
 			setLoading(false);
 		}
-	};
+	}
 
 	const handleInput = (e) => {
 		const { name, value } = e.target;
-		setFilter((prev) => {
+		setFilter(prev => {
 			return {
 				...prev,
 				[name]: value,

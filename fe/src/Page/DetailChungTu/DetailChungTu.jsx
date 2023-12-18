@@ -14,6 +14,15 @@ function DetailChungTu({ loading, setLoading }) {
 
 	const { id } = useParams();
 	const token = localStorage.getItem("myToken");
+	const getQuyenDuyet = async () => {
+		await axios.get(`${process.env.REACT_APP_BE_URL}/chung-tu/kiem-tra-duyet/${id}/${token}`)
+			.then(res => {
+				console.log("Quyền duyệt:", res.data);
+			})
+			.catch(err => {
+				console.log(err);
+			})
+	}
 	const getNhatKy = async () => {
 		setLoading(true);
 		let data = await new Promise((resolve, reject) => {
@@ -93,6 +102,7 @@ function DetailChungTu({ loading, setLoading }) {
 	};
 
 	useEffect(() => {
+		getQuyenDuyet();
 		getNhatKy();
 		getNoiDung();
 		getRes();
