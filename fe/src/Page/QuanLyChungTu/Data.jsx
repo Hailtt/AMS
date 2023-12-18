@@ -5,6 +5,9 @@ export const status = ["Đang chờ", "Đồng ý", "Từ chối", "Đã hủy"]
 
 export const type = ["Đơn xin nghỉ phép", "Khuyến mãi"];
 
+const urlParts = window.location.href.split("/");
+const formChungTuParam = urlParts[urlParts.indexOf("quanlychungtu") + 1];
+
 export const columntao = [
 	{
 		key: "maCT",
@@ -54,16 +57,11 @@ export const columntao = [
 		title: "Chi tiết",
 		dataIndex: "detail",
 		align: "center",
-		render: (text, record) =>
-			record.maTT === "Đang chờ" ? (
-				<Link className="link" to={`/chitietchungtu/${record.maCT}/duyetCT`}>
-					<Button style={{ width: "70px" }}>Duyệt</Button>
-				</Link>
-			) : (
-				<Link className="link" to={`/chitietchungtu/${record.maCT}/xemCT`}>
-					<Button style={{ width: "70px" }}>Xem</Button>
-				</Link>
-			),
+		render: (text, record) => (
+			<Link className="link" to={`/quanlychungtu/xemCT/${record.maCT}`}>
+				<Button style={{ width: "70px" }}>Xem</Button>
+			</Link>
+		),
 	},
 ];
 
@@ -116,13 +114,16 @@ export const columnduyet = [
 		title: "Chi tiết",
 		dataIndex: "detail",
 		align: "center",
-		render: (text, record) => {
-			return record.status == "Đang chờ" ? (
-				<Button style={{ width: "70px" }}>Duyệt</Button>
+		render: (text, record) =>
+			record.maTT === "Đang chờ" ? (
+				<Link className="link" to={`/quanlychungtu/duyetCT/${record.maCT}`}>
+					<Button style={{ width: "70px" }}>Duyệt</Button>
+				</Link>
 			) : (
-				<Button style={{ width: "70px" }}>Xem</Button>
-			);
-		},
+				<Link className="link" to={`/quanlychungtu/xemCT/${record.maCT}`}>
+					<Button style={{ width: "70px" }}>Xem</Button>
+				</Link>
+			),
 	},
 ];
 
