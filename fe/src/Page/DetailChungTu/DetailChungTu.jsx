@@ -13,11 +13,11 @@ function DetailChungTu({ loading, setLoading }) {
 	const [avail, setAvail] = useState(true);
 
 	const { id } = useParams();
-
+	const token = localStorage.getItem('myToken');
 	const getNhatKy = async () => {
 		setLoading(true);
 		let data = await new Promise((resolve, reject) => {
-			axios.get(`${process.env.REACT_APP_BE_URL}/chung-tu/nhat-ki/${id}`)
+			axios.get(`${process.env.REACT_APP_BE_URL}/chung-tu/nhat-ki/${id}/${token}`)
 				.then(data => {
 					resolve(data);
 					data.data.map((i) => {
@@ -40,7 +40,7 @@ function DetailChungTu({ loading, setLoading }) {
 	}
 	const getRes = async () => {
 		let data = await new Promise((resolve, reject) => {
-			axios.get(`${process.env.REACT_APP_BE_URL}/chung-tu/ket-qua-duyet/${id}`)
+			axios.get(`${process.env.REACT_APP_BE_URL}/chung-tu/ket-qua-duyet/${id}/${token}`)
 				.then(data => {
 					resolve(data);
 					data.data.map((i) => {
@@ -69,7 +69,7 @@ function DetailChungTu({ loading, setLoading }) {
 
 	const getNoiDung = async () => {
 		let data = await new Promise((resolve, reject) => {
-			axios.get(`${process.env.REACT_APP_BE_URL}/chung-tu/noi-dung/${id}`)
+			axios.get(`${process.env.REACT_APP_BE_URL}/chung-tu/noi-dung/${id}/${token}`)
 				.then(data => {
 					resolve(data);
 					const parts = data.data.ngayTao.split("T");

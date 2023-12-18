@@ -14,11 +14,12 @@ const CreateChungTu = ({ loading, setLoading }) => {
 	const [ListChungTu, setListChungTu] = useState();
 	const [tempList, setTempList] = useState();
 	const [filter, setFilter] = useState(initState);
-	
-	const getListChungTu = async() => {
+
+	const getListChungTu = async () => {
 		setLoading(true);
+		const token = localStorage.getItem('myToken');
 		let data = await new Promise((resolve, reject) => {
-			axios.get(`${process.env.REACT_APP_BE_URL}/chung-tu/get-loai-chung-tu/1`)
+			axios.get(`${process.env.REACT_APP_BE_URL}/chung-tu/get-loai-chung-tu/1/${token}`)
 				.then(data => {
 					resolve(data);
 					setListChungTu(data.data);
@@ -30,7 +31,7 @@ const CreateChungTu = ({ loading, setLoading }) => {
 	}
 
 	const handleInput = (e) => {
-		const {name, value} = e.target;
+		const { name, value } = e.target;
 		setFilter(prev => {
 			return {
 				...prev,
@@ -75,18 +76,18 @@ const CreateChungTu = ({ loading, setLoading }) => {
 			<h1 className="title">Tạo Chứng Từ</h1>
 
 			<div className="search">
-				<Input 
-					className="input" 
-					size="large" 
+				<Input
+					className="input"
+					size="large"
 					placeholder="Mã chứng từ"
 					onChange={handleInput}
 					allowClear={true}
 					onKeyDown={handleKeyDown}
 					name="maCT"
 				/>
-				<Input 
-					className="input" 
-					size="large" 
+				<Input
+					className="input"
+					size="large"
 					placeholder="Tên chứng từ"
 					onChange={handleInput}
 					allowClear={true}
