@@ -62,7 +62,7 @@ const PageFormChungTu = () => {
 					)
 					.then((res) => {
 						console.log(res.data);
-						navigate("/quanlychungtu");
+						navigate("/quanlychungtu/xemCT");
 					})
 					.catch((err) => {
 						console.log(err.response);
