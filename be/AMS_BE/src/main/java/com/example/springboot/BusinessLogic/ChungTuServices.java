@@ -38,6 +38,9 @@ public class ChungTuServices {
     public List<ChungTuModel> getAllChungTuDuyet(String user){
     	return chungTuDAO.getAllChungTuDuyet(user);
     }
+    public Boolean checkAuthentication (String maCT, String user) {
+    	return chungTuDAO.checkAuthentication(maCT, user);
+    }
     public List<TrangThaiModel> getNhatKiChungTu(String maCT) {
     	return chungTuDAO.getNhatKiChungTu(maCT);
     }
@@ -268,8 +271,8 @@ public class ChungTuServices {
 //    	System.out.println(capNhatTrangThai);
     	return ResponseEntity.status(200).body("Đã hủy");
     }
-    public List<LoaiChungTuModel> getAllLoaiCT(){
-    	return chungTuDAO.getAllLoaiCT();
+    public List<LoaiChungTuModel> getAllLoaiCT(String user){
+    	return chungTuDAO.getAllLoaiCT(user);
     }
     public List<FormFieldModel> getAllFormFields(String formId){
     	return chungTuDAO.getAllFormFields(formId);

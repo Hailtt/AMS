@@ -44,6 +44,17 @@ public class ChungTuDAO {
 		 		+ "where ck.user_update = ?";
 	    return jdbcTemplate.query(sql, new ChungTuMapper(),user);
 	}
+	public Boolean checkAuthentication (String maCT, String user) {
+		try {
+		String sql = "select distinct on (c.doc_id) c.doc_id from chungtu c join chungtu_ketqua ck on ck.doc_id  = c.doc_id "
+				+ "where c.doc_id = ? and user_create = ? or c.doc_id = ? and ck.user_update = ? ";
+		String userAuthenticated = jdbcTemplate.queryForObject(sql,String.class, maCT,user,maCT,user);
+		return true;
+		}catch(EmptyResultDataAccessException e) {
+			return false;
+		}
+		
+	}
 	public List<TrangThaiModel> getNhatKiChungTu(String maCT) {
 		String sql="select ct.doc_status_id as doc_status_id, c.doc_id as doc_id, as2.status_name as status, ua.full_name as user_update, ct.time_update as time_update "
 				+ "FROM chungtu c "
@@ -246,9 +257,14 @@ public class ChungTuDAO {
 		}
 	}
 	
-	public List<LoaiChungTuModel> getAllLoaiCT(){
-		String sql="select * from ams_form_type";
-		return jdbcTemplate.query(sql, new LoaiCTMapper());
+	public List<LoaiChungTuModel> getAllLoaiCT(String user){
+		String sql="select aft.id , aft.form_type_name , aft.form_id "
+				+ "from ams_form_type aft "
+				+ "join ams_form_type_team aftt on aftt.form_type_id = aft.id "
+				+ "join ams_team_user atu on atu.id = aftt.user_team_id "
+				+ "join ams_user au on au.id = atu.user_id "
+				+ "where au.id = ?";
+		return jdbcTemplate.query(sql, new LoaiCTMapper(),user);
 	}
 	public List<FormFieldModel> getAllFormFields(String formId) {
 		String sql = "SELECT * FROM form_field "
