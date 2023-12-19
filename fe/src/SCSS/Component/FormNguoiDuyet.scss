@@ -2,9 +2,10 @@
 	border-radius: 12px;
 	font-size: 22px;
 	position: relative;
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-template-columns: auto auto;
 	align-items: center;
+	justify-content: center;
 	gap: 80px;
 	transition: all 0.5s ease;
 
@@ -13,10 +14,7 @@
 	}
 	@include breakpoint-down(smalldesktop) {
 		flex-direction: column;
-	}
-
-	@include breakpoint-down(smallphone) {
-		padding: 50px 0px 120px 0px;
+		padding-bottom: 50px;
 	}
 
 	.nguoiduyet {
@@ -36,15 +34,27 @@
 	}
 
 	.nguoiduyet > .list {
-		min-width: 150px;
 		font-size: 20px;
 		padding: 2px;
 		padding-right: 8px;
+		width: 200px;
+		margin: auto;
+		@include breakpoint-down(phone) {
+			padding-right: 0px;
+			font-size: 18px;
+			width: 100px;
+		}
 	}
 
 	.nguoiduyet > .list > .item {
 		font-size: 16px;
 		padding: 29px;
 		text-align: center;
+
+		@include breakpoint-down(phone) {
+			padding-right: 0px;
+			font-size: 16px;
+			width: 100px;
+		}
 	}
 }

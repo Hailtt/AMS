@@ -1,10 +1,11 @@
 @import "../abstracts/variables.scss";
 
 .button-container {
-    flex: 1;
-    margin: 10px 0;
-
-    .button {
-        
-    }
+	flex: 1;
+	margin: 10px 0;
+	gap: 32px;
+	display: flex;
+	width: 100%;
+	.button {
+	}
 }

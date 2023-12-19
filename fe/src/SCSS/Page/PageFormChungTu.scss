@@ -109,6 +109,14 @@
 		background-color: #eee;
 		padding-inline: 200px;
 		padding-bottom: 100px;
+
+		@include breakpoint-down(mediumdesktop) {
+			padding-inline: 50px;
+		}
+
+		@include breakpoint-down(desktop) {
+			padding-inline: 10px;
+		}
 	}
 
 	.btn-box {
@@ -119,6 +127,11 @@
 		right: 20%;
 		padding-inline: 5%;
 		justify-content: space-between;
+
+		@include breakpoint-down(phone) {
+			right: 5%;
+			left: 5%;
+		}
 
 		.button {
 			padding: 12px 20px;
