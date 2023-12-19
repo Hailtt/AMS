@@ -279,10 +279,15 @@ public class ChungTuServices {
     public List<FormFieldModel> getAllFormFields(String formId){
     	return chungTuDAO.getAllFormFields(formId);
     }
-    public  ResponseEntity<String> processing(String maCT, String user){
+    public  ResponseEntity<String> checkBeforeProcessing(String maCT, String user){
     	try {
     	Boolean checkIsTurn = chungTuDAO.checkTurnApprove(maCT, user);
 //    	System.out.println(checkIsTurn);
+    	String chungTuStatus = chungTuDAO.getFinalStatus(maCT);
+    	if(chungTuStatus.equals("TT003") || chungTuStatus.equals("TT004") || chungTuStatus.equals("TT005")){
+//    		System.out.println("Chung tu da co ket qua");
+        	return ResponseEntity.status(200).body("0");
+    	}
     	List<Map<String,String>> checkApproveKind = chungTuDAO.checkApproveKind(maCT,user);
     	Map<String,String> thisApprover = new HashMap<>();
 //    	System.out.println(checkApproveKind);
@@ -303,8 +308,8 @@ public class ChungTuServices {
     	Boolean isTimeToApprove = true;
     	//Check coi duyet chua
     	if(thisApprover.get("result") != null) {
-    		System.out.println("Nguoi nay duyet roi");
-    	  	return ResponseEntity.status(200).body("Không thể duyệt");
+//    		System.out.println("Nguoi nay duyet roi");
+    	  	return ResponseEntity.status(200).body("0");
     	}
     	//Check neu result cua chung tu da co nguoi duyet chua neu kind = OR
     	//Neu chua co ai duyet thi bat dau check lvl thap hon neu co
@@ -312,9 +317,9 @@ public class ChungTuServices {
     		for(Map<String,String> singleApprover : checkApproveKind) {
     			if(singleApprover.get("result") != null && singleApprover.get("lvl").equals(thisApprover.get("lvl"))) {
     				//return da co nguoi duyet neu kind = OR
-    				System.out.println("(OR) Da co nguoi duyet o lvl: " +thisApprover.get("lvl"));
+//    				System.out.println("(OR) Da co nguoi duyet o lvl: " +thisApprover.get("lvl"));
     				isTimeToApprove = false;
-                	return ResponseEntity.status(200).body("Không thể duyệt");
+                	return ResponseEntity.status(200).body("0");
     			}
     		}
     	}
@@ -323,7 +328,7 @@ public class ChungTuServices {
     	//Neu trong buoc duyet nho hon kind = MUS => check tat ca cac buoc duyet o cung cap da co result chua
     	List<Map<String,String>> smallerLvls = new ArrayList<Map<String, String>>();
     	int targetLevel = Integer.parseInt(thisApprover.get("lvl"));
-    	System.out.println("target: "+targetLevel);
+//    	System.out.println("target: "+targetLevel);
     	for(Map<String,String> singleApprover : checkApproveKind) {
     		for (int i = 1; i < targetLevel; i++) {
     			if (Integer.parseInt(singleApprover.get("lvl")) == i) {
@@ -340,7 +345,7 @@ public class ChungTuServices {
     		}
     	}
     	//List nguoi duyet cap nho hon
-    	System.out.println(smallerLvls);
+//    	System.out.println(smallerLvls);
 		
     	for (int i = 1; i < targetLevel; i++) {
     	    int count = 0; // Biến đếm
@@ -356,9 +361,9 @@ public class ChungTuServices {
     	            	kind = "OR";
     	                System.out.println(smaller.get("lvl") + " " +smaller.get("user")+" "+ smaller.get("approve_kind_code")+ " "+smaller.get("result"));      
     	                if(smaller.get("result") != null && smaller.get("result").equals("0")) {
-    	            		System.out.println(smaller.get("user")+" o cap duyet " + smaller.get("lvl")+" da tu choi");
+//    	            		System.out.println(smaller.get("user")+" o cap duyet " + smaller.get("lvl")+" da tu choi");
     	                	isTimeToApprove = false;
-    	                	return ResponseEntity.status(200).body("Không thể duyệt");
+    	                	return ResponseEntity.status(200).body("0");
 
     	                }
     	                if(smaller.get("result") != null && !smaller.get("result").equals("0")) {
@@ -368,9 +373,9 @@ public class ChungTuServices {
     	            	kind = "MUS";
     	                System.out.println(smaller.get("lvl") + " " +smaller.get("user")+" "+ smaller.get("approve_kind_code")+ " "+smaller.get("result"));
     	            	if(smaller.get("result") != null && smaller.get("result").equals("0")) {
-    	            		System.out.println(smaller.get("user")+" o cap duyet " + smaller.get("lvl")+" da tu choi");
+//    	            		System.out.println(smaller.get("user")+" o cap duyet " + smaller.get("lvl")+" da tu choi");
     	            		isTimeToApprove = false;
-    	                	return ResponseEntity.status(200).body("Không thể duyệt");
+    	                	return ResponseEntity.status(200).body("0");
     	            	}
     	                if(smaller.get("result") != null && !smaller.get("result").equals("0")) {
     	                	a.add(new Object());
@@ -386,16 +391,16 @@ public class ChungTuServices {
     	    System.out.println("Level " + i + " co " + count + " buoc duyet " + kind);
     	    if ("OR".equals(kind)) {
     	        if (countStep > 0) {
-    	            System.out.println("=> Level " + i + " da duyet");
+//    	            System.out.println("=> Level " + i + " da duyet");
     	        } else {
-    	            System.out.println("=> Level " + i + " chua duyet du");
+//    	            System.out.println("=> Level " + i + " chua duyet du");
     	            isTimeToApprove = false;
     	        }
     	    } else if ("MUS".equals(kind)) {
     	        if (countStep == count) {
-    	            System.out.println("=> Level " + i + " da duyet");
+//    	            System.out.println("=> Level " + i + " da duyet");
     	        } else {
-    	            System.out.println("=> Level " + i + " chua duyet du");
+//    	            System.out.println("=> Level " + i + " chua duyet du");
     	            isTimeToApprove = false;
     	        }
     	    } else {
@@ -405,14 +410,125 @@ public class ChungTuServices {
 
     	if(isTimeToApprove == false) {
     		System.out.println("==> Khong the duyet");
-        	return ResponseEntity.status(200).body("Không thể duyệt");
+        	return ResponseEntity.status(200).body("0");
     	}else {
     		System.out.println("==> Duyet di bro");
-        	return ResponseEntity.status(200).body("Duyệt đi bồ tèo");
+        	return ResponseEntity.status(200).body("1");
     	}
     	}catch(Exception e) {
-        	return null;
+    		return ResponseEntity.status(400).body(e.getMessage());
     	}
     }
+    
+    public Boolean checkLastStep (GhiNhanDuyet ghiNhan) {
+    	List<KetQuaModel> result = chungTuDAO.getKetQuaChungTu(ghiNhan.getMaCT());
+    	List<Map<String,String>> step = chungTuDAO.getStep(ghiNhan);
+    	String lvlGhiNhan = chungTuDAO.getLvl(ghiNhan);
+    	System.out.println(step);
+    	int count = 0;
+    	for(Map<String,String> lvl : step) {
+    		count++;
+    	}
+    	if(Integer.parseInt(lvlGhiNhan) == count) {
+    		return true;
+    	}
+    	return false;
+    }
+    public ResponseEntity<String> processing (GhiNhanDuyet ghiNhan){
+    	if(ghiNhan.getResult().equals("0")) {
+    		chungTuDAO.updateKetqua(ghiNhan);
+    		chungTuDAO.insertNhatki(ghiNhan);
+    		chungTuDAO.updateFinish(ghiNhan);
+        	return ResponseEntity.status(200).body("Đã từ chối");
+    	}else {
+    		Boolean isLastStep = checkLastStep(ghiNhan);
+//    		if(isLastStep.equals(true)) {
+//    			chungTuDAO.updateKetqua(ghiNhan);
+//    			chungTuDAO.insertNhatki(ghiNhan);
+//    			chungTuDAO.updateFinish(ghiNhan);
+//    		}else {
+    		{
+    			//Neu k phai buoc duyet cuoi cung 
+    			//thi bat dau xu li logic de cap nhat nhat ki cho cac buoc tiep theo
+    			List<Map<String,String>> allApprover = chungTuDAO.getAllApprover(ghiNhan.getMaCT());
+    			Map<String,String> thisApprover = new HashMap<>();
+    			for(Map<String,String> approver : allApprover) {
+    				if(approver.get("user_update").equals(ghiNhan.getToKen())) {
+    					thisApprover.put("lvl",approver.get("lvl"));
+    					thisApprover.put("approve_kind_code",approver.get("approve_kind_code"));
+    					thisApprover.put("result",approver.get("result"));
+    					thisApprover.put("user_update",approver.get("user_update"));
+    				}
+    			}
+    			if(thisApprover.get("approve_kind_code").equals("OR")) {
+    				List<Map<String,String>> greaterLvl = new ArrayList<>();
+    				for(Map<String,String> approver : allApprover) {
+    					if(Integer.parseInt(approver.get("lvl")) - Integer.parseInt(thisApprover.get("lvl")) == 1) {
+    						greaterLvl.add(approver);
+    					}
+    				}
+    				System.out.println(greaterLvl);
+    				chungTuDAO.updateKetqua(ghiNhan);
+        			chungTuDAO.insertNhatki(ghiNhan);
+    				for(Map<String,String> nextLvl : greaterLvl) {
+    					//Them nhat ki cho cac cap duyet sau
+    					chungTuDAO.insertNhatKiNextStep(ghiNhan.getMaCT(),nextLvl.get("user_update"), "TT002", ghiNhan.getTimeUpdate());
+    				}
+    				if(isLastStep.equals(true)) {
+            			chungTuDAO.updateFinish(ghiNhan);
+        			}
+    			}else if(thisApprover.get("approve_kind_code").equals("MUS")) {
+    				List<Map<String,String>> sameLvl = new ArrayList<>();
+    				for(Map<String,String> approver : allApprover) {
+    					if(Integer.parseInt(approver.get("lvl")) == Integer.parseInt(thisApprover.get("lvl")) 
+    							&& approver.get("user_update") != thisApprover.get("user_update")) {
+    						sameLvl.add(approver);
+    					}
+    				}
+    				int count = 0;
+    				int checked = 0;
+    				for(Map<String,String> singleApprover : sameLvl) {
+    					count++;
+    					if(singleApprover.get("result") == null
+    						&& singleApprover.get("user_update") != thisApprover.get("user_update")) {
+    						System.out.println("user "+singleApprover.get("user_update")+" chua duyet");
+    						chungTuDAO.updateKetqua(ghiNhan);
+    	        			chungTuDAO.insertNhatki(ghiNhan);
+    	        			break;
+    					}else if(singleApprover.get("result") != null 
+    							&& singleApprover.get("user_update") != thisApprover.get("user_update")) {
+    						checked ++;
+    						System.out.println("user "+singleApprover.get("user_update")+" da duyet");
+    					}
+    				}
+//    				System.out.println("count: "+count+" checked: "+checked);
+    				if(checked == count) {
+        				List<Map<String,String>> greaterLvl = new ArrayList<>();
+    					for(Map<String,String> approver : allApprover) {
+        					if(Integer.parseInt(approver.get("lvl")) - Integer.parseInt(thisApprover.get("lvl")) == 1) {
+        						greaterLvl.add(approver);
+        					}
+        				}
+        				System.out.println(greaterLvl);
+        				chungTuDAO.updateKetqua(ghiNhan);
+            			chungTuDAO.insertNhatki(ghiNhan);
+        				for(Map<String,String> nextLvl : greaterLvl) {
+        					//Them nhat ki cho cac cap duyet sau
+        					chungTuDAO.insertNhatKiNextStep(ghiNhan.getMaCT(),nextLvl.get("user_update"), "TT002", ghiNhan.getTimeUpdate());
+        				}
+        				if(isLastStep.equals(true)) {
+	            			chungTuDAO.updateFinish(ghiNhan);
+	        			}
+    				}
+    			}else {
+    				System.out.println("Het cuu");
+    			}
+    		}
+    	}
+
+		
+    	return ResponseEntity.status(200).body("da duyet");
+    }
+
 }
 

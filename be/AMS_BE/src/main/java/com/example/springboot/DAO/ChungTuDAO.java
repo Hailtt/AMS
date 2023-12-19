@@ -291,9 +291,11 @@ public class ChungTuDAO {
 		String sql = "select ck.user_update "
 				+ "from chungtu_ketqua ck "
 				+ "join chungtu_trangthai ct on ct.doc_id  = ck.doc_id "
+				+ "join chungtu c on c.doc_id = ck.doc_id "
 				+ "where "
-				+ "	ck.doc_id = ? and ck.user_update = ? and ck.\"result\" isnull  and ct.user_update = ? and ct.status_id = 'TT002' ";
+				+ "	ck.doc_id = ? and ck.user_update = ? and ck.\"result\" isnull  and ct.user_update = ? and ct.status_id = 'TT002' and c.status_id != 'TT005' ";
 		String result = jdbcTemplate.queryForObject(sql,String.class,maCT,user,user);
+		System.out.println("Turn approver: "+ result);
 		return true;
 		}catch(EmptyResultDataAccessException e) {
 			return false;
@@ -312,5 +314,73 @@ public class ChungTuDAO {
 			allResult.put("time_update", rs.getString("time_update"));
 			return allResult;
 		},maCT);
+	}
+
+	public void updateKetqua(GhiNhanDuyet ghiNhan) {
+		String sql = "update chungtu_ketqua "
+				+ "set result = ?, time_update = ? "
+				+ "where doc_id = ? and user_update = ?";
+		try {
+			jdbcTemplate.update(sql,Integer.parseInt(ghiNhan.getResult()),ghiNhan.getTimeUpdate(),ghiNhan.getMaCT(),ghiNhan.getToKen());
+		}catch(Exception e) {
+			System.out.println(e);
+		}
+	}
+	public void insertNhatki(GhiNhanDuyet ghiNhan) {
+		if(ghiNhan.getResult().equals("0")) {
+			String sql = "insert into chungtu_trangthai(doc_id,status_id,user_update,time_update) values (?,?,?,?) ";
+			try {
+				jdbcTemplate.update(sql,ghiNhan.getMaCT(), "TT004",ghiNhan.getToKen(), ghiNhan.getTimeUpdate());
+			}catch(Exception e) {
+				System.out.println(e);
+			}
+		}else{
+			String sql = "insert into chungtu_trangthai(doc_id,status_id,user_update,time_update) values (?,?,?,?) ";
+			try {
+				jdbcTemplate.update(sql,ghiNhan.getMaCT(), "TT003",ghiNhan.getToKen(), ghiNhan.getTimeUpdate());
+			}catch(Exception e) {
+				System.out.println(e);
+			}
+		}
+	}
+	public List<Map<String,String>> getStep (GhiNhanDuyet ghiNhan){
+		String sql = "select distinct on (lvl) * from chungtu_ketqua where doc_id = ?";
+		return jdbcTemplate.query(sql, (rs,rowNum) ->{
+			Map<String,String> step = new HashMap<>();
+			step.put("lvl",rs.getString("lvl"));
+			return step;
+		},ghiNhan.getMaCT());
+	}
+	public String getLvl (GhiNhanDuyet ghiNhan) {
+		String sql = "select lvl from chungtu_ketqua where doc_id = ? and user_update = ?";
+		String lvl = jdbcTemplate.queryForObject(sql, String.class,ghiNhan.getMaCT(), ghiNhan.getToKen());
+		return lvl;
+	}
+	public void updateFinish (GhiNhanDuyet ghiNhan) {
+		String status = "TT003";
+		if(ghiNhan.getResult().equals("0")) {
+			status = "TT004";
+		}
+		String sql = "update chungtu c set status_id = ? where c.doc_id = ?";
+		jdbcTemplate.update(sql,status,ghiNhan.getMaCT());
+	}
+	public String getFinalStatus(String maCT) {
+		String sql = "Select status_id from chungtu c where doc_id = ?";
+		return jdbcTemplate.queryForObject(sql, String.class, maCT);
+	}
+	public List<Map<String,String>> getAllApprover (String maCT){
+		String sql = "Select * from chungtu_ketqua where doc_id = ?";
+		return jdbcTemplate.query(sql, (rs,rowNum)->{
+			Map<String,String> approver = new HashMap<>();
+			approver.put("lvl",String.valueOf(rs.getInt("lvl")));
+			approver.put("approve_kind_code",rs.getString("approve_kind_code"));
+			approver.put("result",rs.getString("result"));
+			approver.put("user_update",rs.getString("user_update"));
+			return approver;
+		},maCT);
+	}
+	public void insertNhatKiNextStep (String maCT, String user, String status, LocalDateTime time) {
+		String sql = "Insert into chungtu_trangthai(doc_id, status_id,user_update,time_update) values (?,?,?,?)";
+		jdbcTemplate.update(sql,maCT,status,user,time);
 	}
 }
