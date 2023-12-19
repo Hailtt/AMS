@@ -1,51 +1,51 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import _ from "lodash";
 import axios from "axios";
-const FormInput = ({ DATA_FORM, currentStep, handleChangeInput, setLoading }) => {
+const FormInput = ({
+	DATA_FORM,
+	currentStep,
+	handleChangeInput,
+	setLoading,
+}) => {
 	const resData = DATA_FORM.sort((a, b) => a.sortOrder - b.sortOrder);
 
 	const [tenNhanVien, setTenNhanVien] = useState("");
 
-	const handleChangeUserID = async(key, label, value) => {
+	const handleChangeUserID = async (key, label, value) => {
 		let data = await new Promise((resolve, reject) => {
 			axios
-			.get(
-				`${process.env.REACT_APP_BE_URL}/chung-tu/lay-ten-nguoi-duyet/${value}`
-			)
-			.then((res) => {
-				resolve(res.data)
-				setTenNhanVien(res.data);
-				handleChangeInput(key, label, value);
-			})
-			.catch((err) => {
-				reject(err)
-				console.error(err);
-				setTenNhanVien("");
-			});
-		})
+				.get(
+					`${process.env.REACT_APP_BE_URL}/chung-tu/lay-ten-nguoi-duyet/${value}`
+				)
+				.then((res) => {
+					resolve(res.data);
+					setTenNhanVien(res.data);
+					handleChangeInput(key, label, value);
+				})
+				.catch((err) => {
+					reject(err);
+					console.error(err);
+					setTenNhanVien("");
+				});
+		});
 	};
 
 	return (
 		<div className="AMS-forminput">
-			<div className="info">
+			<div className="info info-default">
 				<label className="label">Mã nhân viên</label>
 				<input
 					type="text"
 					name="userId"
 					className="tag-input"
-					placeholder="Nhập mã nhân viên"
+					placeholder="Nhập mã "
 					readOnly={currentStep == "nhapthongtin" ? false : true}
 					onBlur={(e) =>
 						handleChangeUserID(e.target.name, "Mã nhân viên", e.target.value)
 					}
 				/>
-			</div>
-
-			<div className="info">
-				<label className="label">Tên nhân viên</label>
-				<p className="tag-p">
-					<strong>{tenNhanVien}</strong>
-				</p>
+				<span>-</span>
+				<strong className="namenv"> {tenNhanVien}</strong>
 			</div>
 
 			{_.map(resData, (item) => (

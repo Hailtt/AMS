@@ -120,7 +120,7 @@ export const columnduyet = [
 					<Button style={{ width: "70px" }}>Duyệt</Button>
 				</Link>
 			) : (
-				<Link className="link" to={`/quanlychungtu/xemCT/${record.maCT}`}>
+				<Link className="link" to={`/quanlychungtu/duyetCT/${record.maCT}`}>
 					<Button style={{ width: "70px" }}>Xem</Button>
 				</Link>
 			),

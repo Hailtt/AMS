@@ -1,0 +1,28 @@
+.Goback {
+	position: relative;
+	left: 0;
+	top: 0;
+	> .btn {
+		position: absolute;
+		border: none;
+		background-color: white;
+		color: rgb(146, 146, 146);
+		cursor: pointer;
+		font-size: 24px;
+		display: flex;
+		justify-content: center;
+		gap: 4px;
+		align-items: center;
+		font-weight: 600;
+		transition: all 0.3s ease;
+
+		&:hover {
+			color: rgb(56, 56, 56);
+		}
+	}
+
+	> .btn > .text {
+		font-size: 20px;
+		height: 100%;
+	}
+}

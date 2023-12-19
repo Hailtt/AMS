@@ -4,7 +4,6 @@ import { SearchOutlined } from "@ant-design/icons";
 import { columntao, columnduyet, daDuyet, status } from "./Data";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import moment from "moment";
 import { useNavigate } from "react-router";
 
 function QuanLyChungTu({ loading, setLoading }) {
@@ -58,7 +57,9 @@ function QuanLyChungTu({ loading, setLoading }) {
 		setLoading(true);
 		let data = await new Promise((resolve, reject) => {
 			axios
-				.get(`${process.env.REACT_APP_BE_URL}/chung-tu/get-loai-chung-tu/1/${token}`)
+				.get(
+					`${process.env.REACT_APP_BE_URL}/chung-tu/get-loai-chung-tu/1/${token}`
+				)
 				.then((data) => {
 					resolve(data);
 					setType(data.data);
@@ -88,7 +89,30 @@ function QuanLyChungTu({ loading, setLoading }) {
 						return (i.thoiGianTao = formattedTime);
 					});
 					setTempList(data.data);
-					getChungTu(data.data);
+
+					// soft theo trang thai chung tu
+					const sortedMaTT = data.data.sort((a, b) => {
+						// Đưa các phần tử có maTT === "Đang chờ" lên đầu mảng
+						if (a.maTT === "Đang chờ" && b.maTT !== "Đang chờ") {
+							return -1;
+						}
+						if (a.maTT !== "Đang chờ" && b.maTT === "Đang chờ") {
+							return 1;
+						}
+
+						// Sắp xếp theo thuộc tính maCT
+						const maCTA = a.maCT.toUpperCase();
+						const maCTB = b.maCT.toUpperCase();
+
+						if (maCTA < maCTB) {
+							return 1;
+						}
+						if (maCTA > maCTB) {
+							return -1;
+						}
+						return 0;
+					});
+					getChungTu(sortedMaTT);
 				})
 				.catch((err) => reject(err));
 		});
@@ -116,7 +140,30 @@ function QuanLyChungTu({ loading, setLoading }) {
 						return (i.thoiGianTao = formattedTime);
 					});
 					setTempList(data.data);
-					setChungTuDuyet(data.data);
+
+					// soft theo trang thai chung tu
+					const sortedMaTT = data.data.sort((a, b) => {
+						// Đưa các phần tử có maTT === "Đang chờ" lên đầu mảng
+						if (a.maTT === "Đang chờ" && b.maTT !== "Đang chờ") {
+							return -1;
+						}
+						if (a.maTT !== "Đang chờ" && b.maTT === "Đang chờ") {
+							return 1;
+						}
+
+						// Sắp xếp theo thuộc tính maCT
+						const maCTA = a.maCT.toUpperCase();
+						const maCTB = b.maCT.toUpperCase();
+
+						if (maCTA < maCTB) {
+							return 1;
+						}
+						if (maCTA > maCTB) {
+							return -1;
+						}
+						return 0;
+					});
+					setChungTuDuyet(sortedMaTT);
 				})
 				.catch((err) => reject(err));
 		});
@@ -188,6 +235,12 @@ function QuanLyChungTu({ loading, setLoading }) {
 		getLoaiChungTu();
 		getAllChungTu();
 		getAllChungTuDuyet();
+
+		const urlParts = window.location.href.split("/");
+		const actionChungTu = urlParts[urlParts.indexOf("quanlychungtu") + 1];
+		if (actionChungTu === "duyetCT") {
+			setBox(2);
+		} else setBox(1);
 	}, []);
 
 	return (

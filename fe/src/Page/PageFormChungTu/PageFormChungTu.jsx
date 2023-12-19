@@ -1,13 +1,24 @@
 import React, { useEffect, useState } from "react";
+<<<<<<< HEAD
 import Loading from "../../Page/Loading/Loading"
 import { DATA_NghiPhep } from "./data";
+=======
+import Loading from "../Loading/Loading";
+
+>>>>>>> 1200499 (commit api duyet)
 import FormInput from "../../Component/FormInput/FormInput";
-import { SyncOutlined, CheckCircleOutlined } from "@ant-design/icons";
+import { CheckCircleOutlined, LoadingOutlined } from "@ant-design/icons";
 import FormNguoiDuyet from "../../Component/FormNguoiDuyet/FormNguoiDuyet";
 import { getCurrentDate } from "./functions";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 const PageFormChungTu = ({ setLoading }) => {
+=======
+import GoBack from "../../Component/GoBack/GoBack";
+
+const PageFormChungTu = ({ loading, setLoading }) => {
+>>>>>>> 1200499 (commit api duyet)
 	const navigate = useNavigate();
 	const [listNguoiDuyets, setListNguoiDuyets] = useState(null);
 	const [currentStep, setCurrentStep] = useState("nhapthongtin");
@@ -32,10 +43,12 @@ const PageFormChungTu = ({ setLoading }) => {
 				resolve(res.data)
 				setformField(res.data);
 				console.log(res.data);
+				setLoading(false);
 			})
 			.catch((err) => {
 				reject(err)
 				console.log(err);
+				setLoading(false);
 			});
 		})
 		setLoading(false);
@@ -51,6 +64,7 @@ const PageFormChungTu = ({ setLoading }) => {
 		if (currentStep === "nhapthongtin") {
 			setCurrentStep("chonnguoiduyet");
 		} else {
+			setLoading(true);
 			const urlParts = window.location.href.split("/");
 			const idChungTu = urlParts[urlParts.indexOf("formchungtu") + 1];
 			const formChungTuParam = urlParts[urlParts.indexOf("formchungtu") + 2];
@@ -77,10 +91,12 @@ const PageFormChungTu = ({ setLoading }) => {
 						resolve(res.data)
 						console.log(res.data);
 						navigate("/quanlychungtu/xemCT");
+						setLoading(false);
 					})
 					.catch((err) => {
 						reject(err)
 						console.log(err.response);
+						setLoading(false);
 					});
 				})
 				setLoading(false);
@@ -184,60 +200,68 @@ const PageFormChungTu = ({ setLoading }) => {
 	};
 
 	return (
-		<div className="pageformchungtu">
-			<h1 className="title">Tạo Chứng Từ</h1>
-			<div className="steps">
-				<div className="checkpoint --active ">
-					{currentStep == "nhapthongtin" ? (
-						<SyncOutlined className="icon" />
-					) : (
-						<CheckCircleOutlined className="icon--success" />
-					)}
-					<span className="text">Nhập thông tin</span>
+		<>
+			{loading && <Loading />}
+			<div className="pageformchungtu">
+				<GoBack value="/createchungtu" />
+				<h1 className="title">Tạo Chứng Từ</h1>
+				<div className="steps">
+					<div className="checkpoint --active ">
+						{currentStep == "nhapthongtin" ? (
+							<LoadingOutlined className="icon" />
+						) : (
+							<CheckCircleOutlined className="icon--success" />
+						)}
+						<span className="text">Nhập thông tin</span>
+					</div>
+					<div
+						className={currentStep == "nhapthongtin" ? "line" : "line --active"}
+					></div>
+					<div
+						className={
+							currentStep == "nhapthongtin"
+								? "checkpoint"
+								: "checkpoint --active"
+						}
+					>
+						<LoadingOutlined className="icon" />
+						<span className="text">Chọn người duyệt</span>
+					</div>
 				</div>
-				<div
-					className={currentStep == "nhapthongtin" ? "line" : "line --active"}
-				></div>
-				<div
-					className={
-						currentStep == "nhapthongtin" ? "checkpoint" : "checkpoint --active"
-					}
-				>
-					<SyncOutlined className="icon" />
-					<span className="text">Chọn người duyệt</span>
-				</div>
-			</div>
-			<div className="container">
-				<FormInput
-					DATA_FORM={formField}
-					currentStep={currentStep}
-					handleChangeInput={handleChangeInput}
-				/>
-				{currentStep === "chonnguoiduyet" && listNguoiDuyets && (
-					<FormNguoiDuyet
-						listNguoiDuyets={listNguoiDuyets}
-						handleChangeNguoiDuyet={handleChangeNguoiDuyet}
+				<div className="container">
+					<FormInput
+						DATA_FORM={formField}
+						currentStep={currentStep}
+						handleChangeInput={handleChangeInput}
 					/>
-				)}
-			</div>
-			<div className="btn-box">
-				<button
-					className={currentStep == "nhapthongtin" ? "button hidden" : "button"}
-					onClick={() => setCurrentStep("nhapthongtin")}
-				>
-					Lùi lại
-				</button>
-				{currentStep == "nhapthongtin" ? (
-					<button className="button" onClick={handleNextStep}>
-						Tiếp theo
+					{currentStep === "chonnguoiduyet" && listNguoiDuyets && (
+						<FormNguoiDuyet
+							listNguoiDuyets={listNguoiDuyets}
+							handleChangeNguoiDuyet={handleChangeNguoiDuyet}
+						/>
+					)}
+				</div>
+				<div className="btn-box">
+					<button
+						className={
+							currentStep == "nhapthongtin" ? "button hidden" : "button"
+						}
+						onClick={() => setCurrentStep("nhapthongtin")}
+					>
+						Lùi lại
 					</button>
-				) : (
-					<button className="button" onClick={handleSubmit}>
-						Tạo chứng từ
-					</button>
-				)}
+					{currentStep == "nhapthongtin" ? (
+						<button className="button" onClick={handleNextStep}>
+							Tiếp theo
+						</button>
+					) : (
+						<button className="button" onClick={handleSubmit}>
+							Tạo chứng từ
+						</button>
+					)}
+				</div>
 			</div>
-		</div>
+		</>
 	);
 };
 
