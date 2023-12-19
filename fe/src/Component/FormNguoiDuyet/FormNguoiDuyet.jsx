@@ -26,6 +26,8 @@ const FormNguoiDuyet = ({ listNguoiDuyets, handleChangeNguoiDuyet }) => {
 
 	const handleDeleteNguoiduyet = (userId, index) => {};
 	useEffect(() => {
+		setResData([]);
+
 		// tạo 2 list fake
 		const newList1 = [];
 		const newList2 = [];
@@ -51,6 +53,7 @@ const FormNguoiDuyet = ({ listNguoiDuyets, handleChangeNguoiDuyet }) => {
 					xuathien = item.frequence;
 				}
 			});
+
 			newList1.map((item) => {
 				if (item.soCap == i) {
 					item.soLan = xuathien;
