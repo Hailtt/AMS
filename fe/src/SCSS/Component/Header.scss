@@ -60,9 +60,13 @@ header > .left-side > nav > .list {
 header > .left-side > nav > .list > .item > .link {
 	margin-left: 20px;
 	padding-left: 20px;
-	color: rgb(36, 36, 36);
+	color: rgb(76, 76, 76);
 	border-left: 1px solid rgba(0, 0, 0, 0.3);
 	text-decoration: none;
+
+	&:hover {
+		font-weight: 600;
+	}
 }
 
 header > .right-side {
@@ -75,6 +79,7 @@ header > .right-side > .icon,
 header > .right-side > .user > .icon {
 	padding: 6px;
 	border-radius: 100%;
+	position: relative;
 	&:hover {
 		cursor: pointer;
 		background-color: black;
@@ -131,12 +136,9 @@ header > .right-side > .user > .list > .item > .link {
 	color: rgb(36, 36, 36);
 }
 
-
 @media screen and (max-width: $ipad-width) {
 	header {
-
 		.left-side {
-
 			.menu-icon {
 				display: inline-flex;
 			}

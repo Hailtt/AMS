@@ -3,18 +3,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
-function ButtonContainer({ avail, id, info }) {
-	console.log("info", info);
-
-	const [userNguoiDuyet, setUserNguoiDuyet] = useState(info.user || "");
+function ButtonContainer({ avail, id, quyenDuyet, onHandleDuyet, setLoading }) {
 	const navigate = useNavigate();
-	const userID = localStorage.getItem("userID");
-	console.log("userID", userID);
-	console.log("userNguoiDuyet", userNguoiDuyet);
-
 	const [isDuyet, setIsDuyet] = useState(() => {
 		const urlParts = window.location.href.split("/");
 		const actionsUrl = urlParts[urlParts.indexOf("quanlychungtu") + 1];
+
 		if (actionsUrl === "duyetCT") {
 			return true;
 		}
@@ -22,57 +16,62 @@ function ButtonContainer({ avail, id, info }) {
 	});
 
 	const huyChungTu = () => {
+		console.log("Huyyyy");
 		const res = window.confirm("Bạn có chắc muốn hủy chứng từ?");
 		if (res) {
+			setLoading(true);
 			axios
 				.get(`${process.env.REACT_APP_BE_URL}/chung-tu/huy-chung-tu/${id}`)
 				.then((data) => {
+					setLoading(false);
+
 					alert(data.data + " thành công !");
-					navigate("/quanlychungtu");
+					navigate("/quanlychungtu/xemCT");
 				})
-				.catch((err) => reject(err));
+				.catch((err) => {
+					setLoading(false);
+					console.log(err);
+				});
 		}
 	};
 
-	const handleSubmitDuyet = (value) => {
-		console.log("Ket Qua Duyet: ", value);
-	};
-
-	useEffect(() => {
-		setUserNguoiDuyet(info.user);
-	}, [info]);
-	return isDuyet ? (
-		userNguoiDuyet && userID === userNguoiDuyet ? (
-			<div className="button-container">
-				<Button
-					onClick={() => handleSubmitDuyet("Đồng ý")}
-					className="button"
-					type="primary"
-				>
-					Đồng ý
-				</Button>
-				<Button
-					onClick={() => handleSubmitDuyet("Từ chối")}
-					className="button"
-					type="primary"
-					danger
-				>
-					Từ chối
-				</Button>
-			</div>
-		) : (
-			<></>
-		)
-	) : (
+	return (
 		<div className="button-container">
-			{avail ? (
-				<Button onClick={() => huyChungTu} className="button" danger>
-					Hủy chứng từ
-				</Button>
+			{isDuyet ? (
+				quyenDuyet ? (
+					<>
+						<Button
+							onClick={() => onHandleDuyet("1")}
+							className="button"
+							type="primary"
+						>
+							Đồng ý
+						</Button>
+						<Button
+							onClick={() => onHandleDuyet("0")}
+							className="button"
+							type="primary"
+							danger
+						>
+							Từ chối
+						</Button>
+					</>
+				) : (
+					<></>
+				)
 			) : (
-				<Button onClick={() => huyChungTu} className="button" danger disabled>
-					Hủy chứng từ
-				</Button>
+				<>
+					{" "}
+					{avail ? (
+						<Button onClick={huyChungTu} className="button" danger>
+							Hủy chứng từ
+						</Button>
+					) : (
+						<Button onClick={huyChungTu} className="button" danger disabled>
+							Hủy chứng từ
+						</Button>
+					)}
+				</>
 			)}
 		</div>
 	);

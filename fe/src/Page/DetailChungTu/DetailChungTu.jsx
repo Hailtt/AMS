@@ -6,23 +6,33 @@ import Loading from "../Loading/Loading";
 import KetQuaDuyet from "../../Component/ChiTietChungTu/KetQuaDuyet";
 import ButtonContainer from "../../Component/ChiTietChungTu/ButtonContainer";
 import { useParams } from "react-router";
+import { getCurrentDate } from "../PageFormChungTu/functions";
+import GoBack from "../../Component/GoBack/GoBack";
 function DetailChungTu({ loading, setLoading }) {
 	const [detail, setDetail] = useState(null);
 	const [diary, getDiary] = useState([]);
 	const [ketqua, getKetqua] = useState(null);
 	const [avail, setAvail] = useState(true);
-
+	const [quyenDuyet, setQuyenDuyet] = useState(0);
 	const { id } = useParams();
 	const token = localStorage.getItem("myToken");
+
+	const urlParts = window.location.href.split("/");
+	const actionChungTu = urlParts[urlParts.indexOf("quanlychungtu") + 1];
+
 	const getQuyenDuyet = async () => {
-		await axios.get(`${process.env.REACT_APP_BE_URL}/chung-tu/kiem-tra-duyet/${id}/${token}`)
-			.then(res => {
+		await axios
+			.get(
+				`${process.env.REACT_APP_BE_URL}/chung-tu/kiem-tra-duyet/${id}/${token}`
+			)
+			.then((res) => {
 				console.log("Quyền duyệt:", res.data);
+				setQuyenDuyet(res.data);
 			})
-			.catch(err => {
+			.catch((err) => {
 				console.log(err);
-			})
-	}
+			});
+	};
 	const getNhatKy = async () => {
 		setLoading(true);
 		let data = await new Promise((resolve, reject) => {
@@ -101,6 +111,28 @@ function DetailChungTu({ loading, setLoading }) {
 		});
 	};
 
+	const handleDuyet = (value) => {
+		//value => 1 = đồng ý, 0 = từ chối
+		const submit = {
+			result: value,
+			toKen: token,
+			timeUpdate: getCurrentDate(),
+			maCT: id,
+		};
+		console.log("Data SUbmit", submit);
+		axios
+			.post(
+				`${process.env.REACT_APP_BE_URL}/chung-tu/gui-ket-qua-duyet`,
+				submit
+			)
+
+			.then((res) => {
+				console.log(res.data);
+				window.location.reload();
+			})
+			.catch((err) => console.log(err));
+	};
+
 	useEffect(() => {
 		getQuyenDuyet();
 		getNhatKy();
@@ -110,7 +142,7 @@ function DetailChungTu({ loading, setLoading }) {
 
 	return (
 		<div className="DTCT">
-			{loading && <Loading />}
+			<GoBack value={`/quanlychungtu/${actionChungTu}`} />
 			<div className="top">
 				{detail && <NoiDungChungTu detail={detail} />}
 				{diary && <TrackLog diary={diary} />}
@@ -122,7 +154,9 @@ function DetailChungTu({ loading, setLoading }) {
 					<ButtonContainer
 						id={id}
 						avail={avail}
-						info={diary[diary.length - 1] || ""}
+						quyenDuyet={quyenDuyet}
+						onHandleDuyet={handleDuyet}
+						setLoading={setLoading}
 					/>
 				)}
 			</div>

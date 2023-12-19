@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 function NoiDungChungTu({ detail }) {
 	const noiDungObj = JSON.parse(detail.noiDung);

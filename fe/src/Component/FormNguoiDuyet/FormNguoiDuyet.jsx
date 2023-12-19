@@ -26,6 +26,8 @@ const FormNguoiDuyet = ({ listNguoiDuyets, handleChangeNguoiDuyet }) => {
 
 	const handleDeleteNguoiduyet = (userId, index) => {};
 	useEffect(() => {
+		setResData([]);
+
 		// tạo 2 list fake
 		const newList1 = [];
 		const newList2 = [];
@@ -51,6 +53,7 @@ const FormNguoiDuyet = ({ listNguoiDuyets, handleChangeNguoiDuyet }) => {
 					xuathien = item.frequence;
 				}
 			});
+
 			newList1.map((item) => {
 				if (item.soCap == i) {
 					item.soLan = xuathien;
@@ -93,7 +96,7 @@ const FormNguoiDuyet = ({ listNguoiDuyets, handleChangeNguoiDuyet }) => {
 		<form className="AMS-formnguoiduyet">
 			{_.map(resData, (item, index) => (
 				<div key={index} className="nguoiduyet">
-					<label className="label">Duyet cap {item.lvl}</label>
+					<label className="label">Duyệt cấp {item.lvl}</label>
 					<select
 						className="list"
 						onChange={(e) => {

@@ -2,9 +2,7 @@ import { HomeFilled, BellOutlined, UserOutlined } from "@ant-design/icons";
 import { NavList, UserList } from "./List.js";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import {
-	MenuOutlined
-} from '@ant-design/icons';
+import { MenuOutlined } from "@ant-design/icons";
 
 function Header() {
 	const usenavigate = useNavigate();
@@ -15,6 +13,8 @@ function Header() {
 		localStorage.removeItem("myToken");
 		window.location.reload();
 	};
+
+	const userID = localStorage.getItem("userID");
 	return (
 		<header>
 			<div className="left-side">
@@ -38,6 +38,9 @@ function Header() {
 			</div>
 
 			<div className="right-side">
+				<p className="text">
+					Xin chào: <strong>{userID} </strong>
+				</p>
 				<BellOutlined style={{ fontSize: 27 }} className="icon" />
 
 				<div className="user">
