@@ -110,7 +110,6 @@ function DetailChungTu({ loading, setLoading }) {
 
 	return (
 		<div className="DTCT">
-			{loading && <Loading />}
 			<div className="top">
 				{detail && <NoiDungChungTu detail={detail} />}
 				{diary && <TrackLog diary={diary} />}
