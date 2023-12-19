@@ -22,31 +22,31 @@ function Login() {
 		});
 	};
 
-	const handleSubmit = async(e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		let data = await new Promise((resolve, reject) => {
 			axios
-			.post(`${process.env.REACT_APP_BE_URL}/user/login`, user)
-			.then((res) => {
-				resolve(res.data)
-				console.log(res.data);
-				navigate("/");
-				window.location.reload();
-				localStorage.setItem("myToken", res.data);
-				localStorage.setItem("userID", user.id);
-			})
-			.catch((err) => reject(err));
-		})
+				.post(`${process.env.REACT_APP_BE_URL}/user/login`, user)
+				.then((res) => {
+					resolve(res.data);
+					console.log(res.data);
+					navigate("/");
+					window.location.reload();
+					localStorage.setItem("myToken", res.data);
+					localStorage.setItem("userID", user.id);
+				})
+				.catch((err) => reject(err));
+		});
 		// localStorage.setItem("user", user);
 		// navigate("/");
 		// window.location.reload();
 	};
-	
+
 	const handleKeyPress = (e) => {
 		if (e.key === "Enter") {
 			handleSubmit();
 		}
-	}
+	};
 
 	return (
 		<div className="login">
