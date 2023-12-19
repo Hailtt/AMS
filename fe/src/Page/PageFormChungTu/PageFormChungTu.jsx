@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Loading from "../../Page/Loading/Loading"
 import { DATA_NghiPhep } from "./data";
 import FormInput from "../../Component/FormInput/FormInput";
 import { SyncOutlined, CheckCircleOutlined } from "@ant-design/icons";
@@ -6,7 +7,7 @@ import FormNguoiDuyet from "../../Component/FormNguoiDuyet/FormNguoiDuyet";
 import { getCurrentDate } from "./functions";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-const PageFormChungTu = () => {
+const PageFormChungTu = ({ setLoading }) => {
 	const navigate = useNavigate();
 	const [listNguoiDuyets, setListNguoiDuyets] = useState(null);
 	const [currentStep, setCurrentStep] = useState("nhapthongtin");
@@ -17,7 +18,9 @@ const PageFormChungTu = () => {
 		noidung: {},
 	});
 
-	useEffect(() => {
+	const getFormField = async() => {
+		setLoading(true);
+		let data = await new Promise((resolve, reject) => {
 		const urlParts = window.location.href.split("/");
 		const formChungTuParam = urlParts[urlParts.indexOf("formchungtu") + 2];
 
@@ -26,15 +29,23 @@ const PageFormChungTu = () => {
 				`${process.env.REACT_APP_BE_URL}/chung-tu/get-form-field/${formChungTuParam}`
 			)
 			.then((res) => {
+				resolve(res.data)
 				setformField(res.data);
 				console.log(res.data);
 			})
 			.catch((err) => {
+				reject(err)
 				console.log(err);
 			});
+		})
+		setLoading(false);
+	}
+
+	useEffect(() => {
+		getFormField();
 	}, []);
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async(e) => {
 		e.preventDefault();
 
 		if (currentStep === "nhapthongtin") {
@@ -55,23 +66,30 @@ const PageFormChungTu = () => {
 
 			console.log("DATA Submitttttt", dataSubmit);
 			if (dataSubmit) {
-				axios
+				setLoading(true);
+				let data = await new Promise((resolve, reject) => {
+					axios
 					.post(
 						`${process.env.REACT_APP_BE_URL}/chung-tu/tao-moi-chung-tu`,
 						dataSubmit
 					)
 					.then((res) => {
+						resolve(res.data)
 						console.log(res.data);
 						navigate("/quanlychungtu/xemCT");
 					})
 					.catch((err) => {
+						reject(err)
 						console.log(err.response);
 					});
+				})
+				setLoading(false);
 			}
 		}
 	};
 
-	const handleNextStep = () => {
+	const handleNextStep = async() => {
+		setLoading(true);
 		setCurrentStep("chonnguoiduyet");
 		const urlParts = window.location.href.split("/");
 		const idChungTu = urlParts[urlParts.indexOf("formchungtu") + 1];
@@ -86,17 +104,22 @@ const PageFormChungTu = () => {
 		};
 
 		console.log("data next step", dataSubmit);
-		axios
+		let data = await new Promise((resolve, reject) => {
+			axios
 			.post(
 				`${process.env.REACT_APP_BE_URL}/chung-tu/chon-nguoi-duyet`,
 				dataSubmit
 			)
 			.then((res) => {
+				resolve(res.data)
 				setListNguoiDuyets(res.data);
 			})
 			.catch((err) => {
+				reject(err)
 				console.log(err.response);
 			});
+		})
+		setLoading(false);
 	};
 
 	const handleChangeInput = (key, label, value) => {

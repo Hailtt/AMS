@@ -16,6 +16,7 @@ function TrackLog({ diary }) {
 
 	useEffect(() => {
 		findMax();
+		console.log("1231231: ", diary)
 	}, [diary]);
 
 	return (
@@ -74,7 +75,7 @@ function TrackLog({ diary }) {
 									<LoadingOutlined />
 									<div className="noidung">
 										<span>
-											<b>{i.maTT + " - " + i.nguoiCapNhat + " "}</b>
+											<b>{i.maTT + " " + i.nguoiCapNhat + " "}</b>
 										</span>
 										<br></br>
 										<span>
@@ -100,7 +101,7 @@ function TrackLog({ diary }) {
 						return (
 							<React.Fragment>
 								<div className="chitiet">
-									{i.maTT + " - " + i.nguoiCapNhat + " "}
+									{i.nguoiCapNhat + " " + i.maTT + " "}
 									<br></br>
 									{i.thoiGianCapNhat}
 								</div>

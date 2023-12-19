@@ -1,25 +1,30 @@
 import React, { useEffect, useState } from "react";
 import _ from "lodash";
 import axios from "axios";
-const FormInput = ({ DATA_FORM, currentStep, handleChangeInput }) => {
+const FormInput = ({ DATA_FORM, currentStep, handleChangeInput, setLoading }) => {
 	const resData = DATA_FORM.sort((a, b) => a.sortOrder - b.sortOrder);
 
 	const [tenNhanVien, setTenNhanVien] = useState("");
 
-	const handleChangeUserID = (key, label, value) => {
-		axios
+	const handleChangeUserID = async(key, label, value) => {
+		let data = await new Promise((resolve, reject) => {
+			axios
 			.get(
 				`${process.env.REACT_APP_BE_URL}/chung-tu/lay-ten-nguoi-duyet/${value}`
 			)
 			.then((res) => {
+				resolve(res.data)
 				setTenNhanVien(res.data);
 				handleChangeInput(key, label, value);
 			})
 			.catch((err) => {
+				reject(err)
 				console.error(err);
 				setTenNhanVien("");
 			});
+		})
 	};
+
 	return (
 		<div className="AMS-forminput">
 			<div className="info">
