@@ -5,10 +5,13 @@ import { useState, Fragment, useEffect } from "react";
 import { PrivateRoutes, PublicRoutes } from "./utili/routes";
 
 function App() {
-	const [isLogin, setIsLogin] = useState(true);
+	const [isLogin, setIsLogin] = useState(false);
 	const [loading, setLoading] = useState(false);
 	useEffect(() => {
 		setIsLogin(localStorage.getItem("myToken"));
+		if (localStorage.getItem("myToken")) {
+			setIsLogin(true);
+		}
 	}, []);
 	return (
 		<div>
@@ -63,7 +66,6 @@ function App() {
 					})}
 				</Routes>
 			)}
-			;
 		</div>
 	);
 }

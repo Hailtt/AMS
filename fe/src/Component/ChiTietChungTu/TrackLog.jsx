@@ -16,7 +16,7 @@ function TrackLog({ diary }) {
 
 	useEffect(() => {
 		findMax();
-		console.log("1231231: ", diary)
+		console.log("1231231: ", diary);
 	}, [diary]);
 
 	return (
