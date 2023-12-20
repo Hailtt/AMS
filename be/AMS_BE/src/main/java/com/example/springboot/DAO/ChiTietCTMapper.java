@@ -16,6 +16,7 @@ public class ChiTietCTMapper implements RowMapper<ChiTietCTModel> {
 		chitietCT.setMaNguoiTao(resultSet.getString("maNguoiTao"));
 		chitietCT.setNgayTao(resultSet.getTimestamp("thoiGianTao").toLocalDateTime());
 		chitietCT.setNoiDung(resultSet.getString("noiDung"));
+		chitietCT.setMaForm(resultSet.getString("maForm"));
 		return chitietCT;
 	}
 }

@@ -80,6 +80,7 @@ public class ChungTuController {
     	if(chungTuService.checkAuthentication(maCT, user).equals(false)) {
     		return null;
     	}
+    	System.out.println("Mã form: " + chungTuService.getChiTietChungTu(maCT).getMaForm());
     	return chungTuService.getChiTietChungTu(maCT);
     }
     @GetMapping("/ket-qua-duyet/{maCT}/{token}")

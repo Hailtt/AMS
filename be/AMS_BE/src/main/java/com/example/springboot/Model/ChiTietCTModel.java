@@ -12,10 +12,11 @@ public class ChiTietCTModel {
 	private String maNguoiTao;
 	private LocalDateTime ngayTao;
 	private String noiDung;
+	private String maForm;
 	public ChiTietCTModel() {
 		
 	}
-	public ChiTietCTModel(String loaiCT, String maCT, String trangThai, String tenNguoiTao, String maNguoiTao, LocalDateTime ngayTao, String noiDung) {
+	public ChiTietCTModel(String loaiCT, String maCT, String trangThai, String tenNguoiTao, String maNguoiTao, LocalDateTime ngayTao, String noiDung,String maForm) {
 		this.loaiCT=loaiCT;
 		this.maCT=maCT;
 		this.trangThai=trangThai;
@@ -23,6 +24,7 @@ public class ChiTietCTModel {
 		this.maNguoiTao=maNguoiTao;
 		this.ngayTao=ngayTao;
 		this.noiDung=noiDung;
+		this.maForm= maForm;
 	}
 	public String getLoaiCT() {
 		return loaiCT;
@@ -66,6 +68,12 @@ public class ChiTietCTModel {
 	}
 	public void setNoiDung(String noiDung) {
 		this.noiDung = noiDung;
+	}
+	public String getMaForm() {
+		return maForm;
+	}
+	public void setMaForm(String maForm) {
+		this.maForm = maForm;
 	}
 
 	

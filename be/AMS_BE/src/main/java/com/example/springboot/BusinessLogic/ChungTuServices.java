@@ -208,7 +208,7 @@ public class ChungTuServices {
                 	 System.out.println(valueToCompare);
                 	
                 	 if (value1 > value2) {
-                         System.out.println("2 bé hơn 1");
+//                         System.out.println("2 bé hơn 1");
                 		 if (valueToCompare >= value2 && valueToCompare <= value1) {
                              System.out.println("Giá trị nằm trong khoảng: " + value2 + " tới " + value1);
                              List<Map<String,String>> approver1 = chungTuDAO.getApprover(key, operator, listComparedValue.get(0), yeuCau.getMaForm());
@@ -228,7 +228,7 @@ public class ChungTuServices {
                              }
                          }
                      } else if (value1 < value2) {
-                         System.out.println("1 bé hơn 2");
+//                         System.out.println("1 bé hơn 2");
                          if (valueToCompare >= value1 && valueToCompare <= value2) {
                              System.out.println("Giá trị nằm trong khoảng: " + value1 + " tới " + value2);
                              List<Map<String,String>> approver1 = chungTuDAO.getApprover(key, operator, listComparedValue.get(0), yeuCau.getMaForm());
@@ -487,6 +487,7 @@ public class ChungTuServices {
     				}
     				int count = 0;
     				int checked = 0;
+    				System.out.println("same level: "+ sameLvl);
     				for(Map<String,String> singleApprover : sameLvl) {
     					count++;
     					if(singleApprover.get("result") == null
@@ -501,6 +502,7 @@ public class ChungTuServices {
     						System.out.println("user "+singleApprover.get("user_update")+" da duyet");
     					}
     				}
+    				//Tat ca nguoi trong cung cap deu da duyet
 //    				System.out.println("count: "+count+" checked: "+checked);
     				if(checked == count) {
         				List<Map<String,String>> greaterLvl = new ArrayList<>();
@@ -509,7 +511,7 @@ public class ChungTuServices {
         						greaterLvl.add(approver);
         					}
         				}
-        				System.out.println(greaterLvl);
+        				System.out.println("greater level: "+greaterLvl);
         				chungTuDAO.updateKetqua(ghiNhan);
             			chungTuDAO.insertNhatki(ghiNhan);
         				for(Map<String,String> nextLvl : greaterLvl) {

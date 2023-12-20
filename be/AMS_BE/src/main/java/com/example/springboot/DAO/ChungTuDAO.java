@@ -67,7 +67,7 @@ public class ChungTuDAO {
 	}
 	
 	public ChiTietCTModel getChiTietChungTu(String maCT) {
-		String sql= "select lc.form_type_name as loaiCT , c.doc_id as maCT , t.status_name as maTT , ua.full_name as nguoiTao, ua.id as maNguoiTao , c.time_create as thoiGianTao , cn.\"content\" as noiDung "
+		String sql= "select lc.form_type_name as loaiCT , c.doc_id as maCT , cn.form_id as maForm, t.status_name as maTT , ua.full_name as nguoiTao, ua.id as maNguoiTao , c.time_create as thoiGianTao , cn.\"content\" as noiDung "
 				+ "from chungtu c "
 				+ "join chungtu_noidung cn on cn.doc_id = c.doc_id "
 				+ "join ams_form_type lc on lc.id  = c.approval_type "
