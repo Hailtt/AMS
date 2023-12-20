@@ -105,6 +105,8 @@ function DetailChungTu({ loading, setLoading }) {
 
 					const formattedTime = datePart + " - " + timePart;
 					data.data.ngayTao = formattedTime;
+
+					console.log("noidungddd 20/12", data.data);
 					setDetail(data.data);
 				})
 				.catch((err) => reject(err));

@@ -32,7 +32,7 @@ const PageFormChungTu = ({ loading, setLoading }) => {
 				.then((res) => {
 					resolve(res.data);
 					setformField(res.data);
-					console.log(res.data);
+					console.log("data form field", res.data);
 					setLoading(false);
 				})
 				.catch((err) => {
